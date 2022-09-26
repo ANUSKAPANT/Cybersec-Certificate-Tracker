@@ -1,18 +1,33 @@
 ```shell
 git clone
 ```
+ruby version = 2.7.2
+
+Install Dependencies
+```shell
+bundle install
+```
+
+```shell
+yarn install
+```
+
+Create Database
+```shell
+rails db:create
+```
+
+Migrate Database
+```shell
+rails db:migrate
+```
 
 Run webpack development server
 ```shell
 ./bin/webpack --watch
 ```
 
-Create database, run migrations, and seed data
-```shell
-rails db:create db:migrate db:seed
-```
-
 Run rails server
 ```shell
-./bin/rails server
+rails server
 ```

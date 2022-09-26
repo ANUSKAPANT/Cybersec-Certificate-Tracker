@@ -34,14 +34,13 @@ gem 'petergate'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-# JAVASCRIPT
-gem 'jquery-rails'
-
 # DATA
 gem 'faker'
 
 gem 'slim-rails'
 gem 'toastr-rails'
+gem 'rack-cors'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,6 +1,4 @@
-class CertificatesController < ApplicationController
-  layout 'dashboard'
-
+class CertificatesController < DashboardsController
   def index
   end
 end

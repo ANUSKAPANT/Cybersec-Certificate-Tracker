@@ -4,11 +4,18 @@
     <title>CybersecCertTracker</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= render 'layouts/assets/stylesheets' %>
+    <%= render 'layouts/assets/javascripts' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'certificate', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 d-flex" id="root"></main>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= render 'layouts/shared/header' %>
+    <main class="container mx-auto mt-28 px-5 " id="root">
+      <%= yield %>
+    </main>
   </body>
 </html>

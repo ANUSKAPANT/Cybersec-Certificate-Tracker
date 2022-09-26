@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CertificateApp</title>
+    <title>CybersecCertTracker</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= render 'layouts/assets/stylesheets' %>
+    <%= render 'layouts/assets/javascripts' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <main class="container mx-auto mt-28 px-5">
       <%= yield %>
     </main>
   </body>
