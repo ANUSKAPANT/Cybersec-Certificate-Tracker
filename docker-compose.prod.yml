@@ -13,16 +13,16 @@ services:
       timeout: 5s
       retries: 5
   app:
-    #platform: linux/x86_64
     build: 
       context : .
       dockerfile : Dockerfile
     ports:
       - '3000:3000'
-    # environment:
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
     #   DB_PASSWORD: mysecretpassword
     #   DB_NAME: audit_portal
-    #   DB_USER: postgres
+        DB_USER: postgres
     #   DB_PORT: 5432
     depends_on:
       postgres:
