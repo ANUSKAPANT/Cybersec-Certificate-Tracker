@@ -31,3 +31,13 @@ Run rails server
 ```shell
 rails server
 ```
+
+Dev postgres
+```shell
+docker-compose up -d
+```
+
+Prod setup
+```shell
+docker-compose -f docker-compose.prod.yml up -d
+```
