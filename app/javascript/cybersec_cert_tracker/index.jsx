@@ -5,28 +5,24 @@ import {
   Route,
   Routes,
   Navigate,
-  Redirect,
 } from "react-router-dom";
 import { StoreProvider } from "./Store";
 import CybersecCertTrackerInit from "./CybersecCertTrackerInit";
+
 import history from "./history";
+import Dashboard from "./Dashboard";
 
 export default function CybersecCertTrackerApp({ data }) {
   return (
     <StoreProvider>
-      <Router history={history}>
-        <Routes>
-          <Route
-            path="/admin"
-            element={
-              <CybersecCertTrackerInit
-                userData={data}
-              ></CybersecCertTrackerInit>
-            }
-          />
-          <Route path="/" element={<Navigate to="/admin/" />} />
-        </Routes>
-      </Router>
+      <CybersecCertTrackerInit userData={data}>
+        <Router history={history}>
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard></Dashboard>} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+          </Routes>
+        </Router>
+      </CybersecCertTrackerInit>
     </StoreProvider>
   );
 }
