@@ -18,9 +18,9 @@ export default function CybersecCertTrackerApp({ data }) {
       <StoreProvider>
         <Router history={history}>
           <Routes>
-            <Route path="/admin" element = {<CybersecCertTrackerInit userData={data} notificationAlertRef={notificationAlertRef}></CybersecCertTrackerInit>} 
+            <Route path="/dashboard" element = {<CybersecCertTrackerInit userData={data} notificationAlertRef={notificationAlertRef}></CybersecCertTrackerInit>} 
             />
-            <Route path="/" element={<Navigate to="/admin/" />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </Router>
       </StoreProvider>
