@@ -16,7 +16,7 @@ module CybersecCertTracker
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     # TODO fix this hardcoding
-    config.web_console.whitelisted_ips = ['172.19.0.1']
+    #config.web_console.whitelisted_ips = ['172.19.0.1']
     
     # # Check if we use Docker to allow docker ip through web-console
     # if File.file?('/.dockerenv') == true
