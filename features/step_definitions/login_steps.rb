@@ -1,6 +1,7 @@
 sign_in_text = "You need to sign in or sign up before continuing."
 sign_in_path = "/users/sign_in"
 sign_in_button_text = "Get Started"
+unsuccessful_login_text = "Login Unsuccessful!"
 #save_and_open_page - for taking a ss and debugging
 
 Given("user is not signed in") do
@@ -17,4 +18,17 @@ end
 
 Then("user should see Get Started Button") do 
     expect(page.find('#login_button').text).to eq(sign_in_button_text)
+end
+
+Given("user entered email") do
+    visit "/"
+    fill_in 'email', :with => 'random@gmail.com'
+end
+
+When("user clicks get started button") do 
+    page.find("#login_button").click
+end
+
+Then("user should be told login unsuccessful") do 
+    expect(page.find('#custom_alert').text).to eq(unsuccessful_login_text)
 end
