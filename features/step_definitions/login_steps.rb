@@ -20,7 +20,11 @@ Then("user should see Get Started Button") do
     expect(page.find('#login_button').text).to eq(sign_in_button_text)
 end
 
-Given("user entered email") do
+Given("user is on sign in page") do
+    visit sign_in_path
+end
+
+When("user enter email") do
     visit "/"
     fill_in 'email', :with => 'random@gmail.com'
 end
