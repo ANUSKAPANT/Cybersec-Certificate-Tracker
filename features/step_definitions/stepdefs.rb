@@ -11,4 +11,7 @@ end
 
 Then("user should be redirected to sign in page") do 
     expect(page.current_path).to eq(sign_in_path)
+    puts page.body
+    #save_and_open_page
+    fill_in 'email', :with => 'some text', wait: 1000000
 end
