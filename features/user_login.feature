@@ -1,3 +1,4 @@
+@javascript 
 Feature: User is asked to sign in
   Unauthorised user is shown sign in page
 
