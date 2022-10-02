@@ -91,7 +91,7 @@ export default function Login() {
                 </Form>
               </CardBody>
               <CardFooter>
-              <Button block className="mb-3" color="primary" onClick={handleSubmit} size="lg">
+              <Button id="login_button" block className="mb-3" color="primary" onClick={handleSubmit} size="lg">
                 Get Started
               </Button>
               </CardFooter>
