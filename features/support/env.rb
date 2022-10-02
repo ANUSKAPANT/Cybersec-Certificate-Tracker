@@ -37,6 +37,13 @@ Capybara.javascript_driver = :chrome
 
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
+
+#Add test user
+Before do
+  user = User.new({ email: "test@gmail.com", password:"test777" })
+  user.save
+end
+
 begin
   DatabaseCleaner.strategy = :transaction
 rescue NameError
