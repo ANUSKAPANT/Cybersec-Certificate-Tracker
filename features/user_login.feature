@@ -7,6 +7,12 @@ Feature: User signs in
     When user clicks get started button
     Then user should be told login unsuccessful
 
+  Scenario: User enters password and click sign in
+    Given user is on sign in page
+    When user enter valid password
+    When user clicks get started button
+    Then user should be told login unsuccessful
+
   Scenario: User enters valid email, password and click sign in
     Given user is on sign in page
     When user enter valid email
