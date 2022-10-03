@@ -1,5 +1,6 @@
 sign_in_text = "You need to sign in or sign up before continuing."
 sign_in_path = "/users/sign_in"
+dashboard_path = "/dashboard"
 sign_in_button_text = "Get Started"
 unsuccessful_login_text = "Login Unsuccessful!"
 test_email = "test@gmail.com"
@@ -46,6 +47,7 @@ Then("user should be told login unsuccessful") do
     expect(page.find('#custom_alert').text).to eq(unsuccessful_login_text)
 end
 
-# Then("user should login successful") do 
-#     puts body
-# end
+Then("user should login successful") do 
+    sleep(1) # TODO: Change this hack to check for page redirection
+    expect(page.current_path).to eq(dashboard_path)
+end
