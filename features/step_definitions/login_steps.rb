@@ -27,12 +27,16 @@ Given("user is on sign in page") do
     visit sign_in_path
 end
 
-When("user enter email") do
+When("user enter invalid email") do
     fill_in 'email', :with => 'random@gmail.com'
 end
 
 When("user enter valid email") do
     fill_in 'email', :with => test_email
+end
+
+When("user enter invalid password") do
+    fill_in 'password', :with => 'random777'
 end
 
 When("user enter valid password") do
