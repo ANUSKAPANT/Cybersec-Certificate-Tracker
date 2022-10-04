@@ -44,9 +44,12 @@ export default function Login() {
   };
 
   const handleSubmit = (event) => {
-    const csrf = document
-      .querySelector("meta[name='csrf-token']")
-      .getAttribute("content");
+    let csrf = "";
+    //Not present always
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
     event.preventDefault();
 
     var pattern = new RegExp(
