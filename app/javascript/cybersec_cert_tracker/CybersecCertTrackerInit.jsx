@@ -43,7 +43,7 @@ function CybersecCertTrackerInit({ userData, children }) {
     <>
       <Navbar color="black" dark>
         <NavbarBrand href="/" className="me-auto">
-          reactstrap
+          CyberSec
         </NavbarBrand>
         <NavbarToggler onClick={toggleNavbar} className="me-2" />
         <Collapse isOpen={!collapsed} navbar>

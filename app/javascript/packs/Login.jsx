@@ -102,7 +102,7 @@ export default function Login() {
                       type="email"
                       name="email"
                       id="userEmail"
-                      placeholder="Please Enter valid Email"
+                      placeholder="Enter Email"
                       onChange={(e) => setEmail(e.target.value)}
                       invalid={emailValidation == "Invalid"}
                     />
@@ -116,7 +116,7 @@ export default function Login() {
                       type="password"
                       name="password"
                       id="userPassword"
-                      placeholder="Please Enter Password"
+                      placeholder="Enter Password"
                       onChange={(e) => setPassword(e.target.value)}
                       invalid={passValidation == "Invalid"}
                     />
