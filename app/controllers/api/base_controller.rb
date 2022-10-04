@@ -23,7 +23,6 @@ class Api::BaseController < ActionController::API
   end
 
   def render_unauthorized
-    debugger
     render json: { message: "Invalid credentials." }, status: :unauthorized unless @current_user
   end
 
