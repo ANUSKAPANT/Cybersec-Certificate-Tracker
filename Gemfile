@@ -65,6 +65,7 @@ end
 group :test do
   gem 'cucumber-rails'
   gem 'rspec-rails'
+  gem 'simplecov'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'database_cleaner-active_record'
