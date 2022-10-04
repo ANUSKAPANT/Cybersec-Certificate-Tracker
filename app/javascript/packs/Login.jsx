@@ -54,7 +54,6 @@ export default function Login() {
     );
 
     if (!pattern.test(email)) {
-      console.log("invalid");
       setEmailValidation("Invalid");
       return "Invalid";
     } else {
@@ -76,12 +75,10 @@ export default function Login() {
         if (response.status === 201) {
           window.location.href = "/";
         } else {
-          console.log(response);
-          notify("bc");
+          notify(res.response.data["error"]);
         }
       })
       .catch((res) => {
-        console.log(res);
         notify(res.response.data["error"]);
       });
   };
