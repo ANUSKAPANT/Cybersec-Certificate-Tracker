@@ -51,9 +51,12 @@ export default function Login() {
   };
 
   const handleSubmit = (event) => {
-    const csrf = document
-      .querySelector("meta[name='csrf-token']")
-      .getAttribute("content");
+    let csrf = "";
+    //Not present always
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
     event.preventDefault();
 
     var pattern = new RegExp(
@@ -100,9 +103,9 @@ export default function Login() {
       place,
       message: (
         <div>
-          <div>
+          <div id="custom_alert">
             <i className="" />
-            {text}
+            Login Unsuccessful!
           </div>
         </div>
       ),
@@ -169,6 +172,18 @@ export default function Login() {
                   </Button>
                 </Form>
               </CardBody>
+              <CardFooter>
+                <Button
+                  id="login_button"
+                  block
+                  className="mb-3"
+                  color="primary"
+                  onClick={handleSubmit}
+                  size="lg"
+                >
+                  Get Started
+                </Button>
+              </CardFooter>
             </Card>
           </Col>
         </div>
