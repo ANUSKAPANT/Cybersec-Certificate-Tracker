@@ -1,15 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   useTable,
   useFilters,
   useGlobalFilter,
   useAsyncDebounce,
 } from "react-table";
+import { Table } from "reactstrap";
+import ReactPaginate from "react-paginate";
 
-// A great library for fuzzy filtering/sorting items
-import matchSorter from "match-sorter";
-import "./MainTable.sass";
-import makeData from "./makeData";
+// import "./MainTable.sass";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -186,19 +185,63 @@ function NumberRangeColumnFilter({
   );
 }
 
-function fuzzyTextFilterFn(rows, id, filterValue) {
-  return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
+// Define a custom filter filter function!
+function filterGreaterThan(rows, id, filterValue) {
+  return rows.filter((row) => {
+    const rowValue = row.values[id];
+    return rowValue >= filterValue;
+  });
 }
 
-// Let the table remove the filter if the string is empty
-fuzzyTextFilterFn.autoRemove = (val) => !val;
+// This is an autoRemove method on the filter function that
+// when given the new filter value and returns true, the filter
+// will be automatically removed. Normally this is just an undefined
+// check, but here, we want to remove the filter if it's not a number
+filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
-function Table({ columns, data }) {
+function DashboardTable({ data }) {
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "First Name",
+        accessor: "firstName",
+      },
+      {
+        Header: "Last Name",
+        accessor: "lastName",
+      },
+
+      {
+        Header: "Age",
+        accessor: "age",
+        Filter: SliderColumnFilter,
+        filter: "equals",
+      },
+      {
+        Header: "Visits",
+        accessor: "visits",
+        Filter: NumberRangeColumnFilter,
+        filter: "between",
+      },
+      {
+        Header: "Status",
+        accessor: "status",
+        Filter: SelectColumnFilter,
+        filter: "includes",
+      },
+      {
+        Header: "Profile Progress",
+        accessor: "progress",
+        Filter: SliderColumnFilter,
+        filter: filterGreaterThan,
+      },
+    ],
+    []
+  );
+
   const filterTypes = React.useMemo(
     () => ({
-      // Add a new fuzzyTextFilterFn filter type.
-      fuzzyText: fuzzyTextFilterFn,
       // Or, override the default text filter to use
       // "startWith"
       text: (rows, id, filterValue) => {
@@ -247,18 +290,40 @@ function Table({ columns, data }) {
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
   const firstPageRows = rows.slice(0, 10);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + itemsPerPage;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    setCurrentItems(rows.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(rows.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, rows]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % rows.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
 
   return (
     <>
-      <table {...getTableProps()} className="table">
+      <GlobalFilter
+        preGlobalFilteredRows={preGlobalFilteredRows}
+        globalFilter={state.globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+      <Table striped {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
-            <tr
-              {...headerGroup.getHeaderGroupProps()}
-              className="row header blue"
-            >
+            <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className="cell">
+                <th {...column.getHeaderProps()}>
                   {column.render("Header")}
                   {/* Render the columns filter UI */}
                   <div>{column.canFilter ? column.render("Filter") : null}</div>
@@ -266,40 +331,44 @@ function Table({ columns, data }) {
               ))}
             </tr>
           ))}
-          <tr>
-            <th
-              colSpan={visibleColumns.length}
-              style={{
-                textAlign: "left",
-              }}
-            >
-              <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter}
-              />
-            </th>
-          </tr>
         </thead>
         <tbody {...getTableBodyProps()}>
-          {firstPageRows.map((row, i) => {
+          {currentItems.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()} className="row">
+              <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()} className="cell">
-                      {cell.render("Cell")}
-                    </td>
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </Table>
+      <ReactPaginate
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakLabel="..."
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+        renderOnZeroPageCount={null}
+      />
       <br />
-      <div>Showing the first 20 results of {rows.length} rows</div>
+      <div>Showing the first 10 results of {rows.length} rows</div>
       <div>
         <pre>
           <code>{JSON.stringify(state.filters, null, 2)}</code>
@@ -309,74 +378,4 @@ function Table({ columns, data }) {
   );
 }
 
-// Define a custom filter filter function!
-function filterGreaterThan(rows, id, filterValue) {
-  return rows.filter((row) => {
-    const rowValue = row.values[id];
-    return rowValue >= filterValue;
-  });
-}
-
-// This is an autoRemove method on the filter function that
-// when given the new filter value and returns true, the filter
-// will be automatically removed. Normally this is just an undefined
-// check, but here, we want to remove the filter if it's not a number
-filterGreaterThan.autoRemove = (val) => typeof val !== "number";
-
-function MainTable() {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Name",
-        columns: [
-          {
-            Header: "First Name",
-            accessor: "firstName",
-          },
-          {
-            Header: "Last Name",
-            accessor: "lastName",
-            // Use our custom `fuzzyText` filter on this column
-            filter: "fuzzyText",
-          },
-        ],
-      },
-      {
-        Header: "Info",
-        columns: [
-          {
-            Header: "Age",
-            accessor: "age",
-            Filter: SliderColumnFilter,
-            filter: "equals",
-          },
-          {
-            Header: "Visits",
-            accessor: "visits",
-            Filter: NumberRangeColumnFilter,
-            filter: "between",
-          },
-          {
-            Header: "Status",
-            accessor: "status",
-            Filter: SelectColumnFilter,
-            filter: "includes",
-          },
-          {
-            Header: "Profile Progress",
-            accessor: "progress",
-            Filter: SliderColumnFilter,
-            filter: filterGreaterThan,
-          },
-        ],
-      },
-    ],
-    []
-  );
-
-  const data = React.useMemo(() => makeData(100000), []);
-
-  return <Table columns={columns} data={data} className="table-style" />;
-}
-
-export default MainTable;
+export default DashboardTable;

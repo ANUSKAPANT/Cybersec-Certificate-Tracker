@@ -95,7 +95,7 @@ export default function Login() {
             <Card className="bg-white login-card">
               <CardTitle tag="h1">Log in</CardTitle>
               <CardBody>
-                <Form role="form">
+                <Form role="form" onSubmit={handleSubmit}>
                   <FormGroup>
                     <Label for="userEmail">Email</Label>
                     <Input
@@ -131,6 +131,7 @@ export default function Login() {
                     color="primary"
                     onClick={handleSubmit}
                     size="lg"
+                    type="submit"
                   >
                     Submit
                   </Button>

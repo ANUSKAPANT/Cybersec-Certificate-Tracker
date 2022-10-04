@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
   Navigate,
+  Redirect,
 } from "react-router-dom";
 import { StoreProvider } from "./Store";
 import CybersecCertTrackerInit from "./CybersecCertTrackerInit";
