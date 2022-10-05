@@ -1,8 +1,8 @@
 sign_in_text = "You need to sign in or sign up before continuing."
 sign_in_path = "/users/sign_in"
 dashboard_path = "/dashboard"
-sign_in_button_text = "Get Started"
-unsuccessful_login_text = "Login Unsuccessful!"
+sign_in_button_text = "Submit"
+unsuccessful_login_text = "Invalid Email or password."
 test_email = "test@gmail.com"
 test_password = "test777"
 #save_and_open_page - for taking a ss and debugging
@@ -48,7 +48,11 @@ When("user clicks get started button") do
 end
 
 Then("user should be told login unsuccessful") do 
-    expect(page.find('#custom_alert').text).to eq(unsuccessful_login_text)
+    expect(page).to have_content(unsuccessful_login_text)
+end
+
+Then("user should be told to enter email") do 
+    expect(page).to have_content("Please Enter a valid email")
 end
 
 Then("user should login successful") do 

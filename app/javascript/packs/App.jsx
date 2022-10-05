@@ -1,13 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import CybersecCertTracker from '../cybersec_cert_tracker';
+import React from "react";
+import ReactDOM from "react-dom";
+import CybersecCertTracker from "../cybersec_cert_tracker";
+import "./App.css";
 
-document.addEventListener('DOMContentLoaded', () => {
-  const node = document.getElementById('user_data');
-  const data = JSON.parse(node.getAttribute('data')) || {};
+document.addEventListener("DOMContentLoaded", () => {
+  const node = document.getElementById("user_data");
+  const data = JSON.parse(node.getAttribute("data")) || {};
 
   ReactDOM.render(
     <CybersecCertTracker data={data} />,
-    document.body.appendChild(document.createElement('div')),
+    document.body.appendChild(document.createElement("div"))
   );
 });

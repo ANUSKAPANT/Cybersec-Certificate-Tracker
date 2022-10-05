@@ -11,7 +11,7 @@ Feature: User signs in
     Given user is on sign in page
     When user enter valid password
     When user clicks get started button
-    Then user should be told login unsuccessful
+    Then user should be told to enter email
 
   Scenario: User enters invalid email and invalid password and click sign in
     Given user is on sign in page
