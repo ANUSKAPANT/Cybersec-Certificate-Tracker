@@ -88,7 +88,7 @@ export default function Login() {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer/>
       <div className="bg-gradient-info">
         <div className="container d-flex flex-column min-vh-100 justify-content-center align-items-center">
           <Col lg="4" md="6" className="mx-auto my-auto">
@@ -132,6 +132,7 @@ export default function Login() {
                     onClick={handleSubmit}
                     size="lg"
                     type="submit"
+                    id="login_button"
                   >
                     Submit
                   </Button>
