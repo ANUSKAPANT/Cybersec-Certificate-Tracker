@@ -23,7 +23,11 @@ function CybersecCertTrackerInit({ userData, children }) {
   }, []);
 
   const logout = () => {
-    const csrf = document
+    let csrf;
+
+    if(document
+      .querySelector("meta[name='csrf-token']"))
+    csrf = document
       .querySelector("meta[name='csrf-token']")
       .getAttribute("content");
 

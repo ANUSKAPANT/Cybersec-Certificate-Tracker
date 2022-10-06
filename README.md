@@ -32,6 +32,11 @@ Run rails server
 rails server
 ```
 
+Run rails rspec test
+```shell
+RAILS_ENV=test rspec
+```
+
 Dev postgres
 ```shell
 docker-compose up -d
