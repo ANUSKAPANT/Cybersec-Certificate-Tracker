@@ -52,7 +52,7 @@ function CybersecCertTrackerInit({ userData, children }) {
         <Collapse isOpen={!collapsed} navbar>
           <Nav navbar>
             <NavItem>
-              <NavLink onClick={() => logout()}>Logout</NavLink>
+              <NavLink onClick={() => logout()} id="logout_button">Logout</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

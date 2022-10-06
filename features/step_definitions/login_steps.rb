@@ -47,6 +47,11 @@ When("user clicks get started button") do
     page.find("#login_button").click
 end
 
+When("user clicks get logout") do 
+    page.find("body > div > nav > div > button > span").click
+    page.find("#logout_button").click
+end
+
 Then("user should be told login unsuccessful") do 
     expect(page).to have_content(unsuccessful_login_text)
 end
@@ -58,4 +63,8 @@ end
 Then("user should login successful") do 
     sleep(1) # TODO: Change this hack to check for page redirection
     expect(page.current_path).to eq(dashboard_path)
+end
+
+Then("user should logout successful") do 
+    expect(page.current_path).to eq(sign_in_path)
 end
