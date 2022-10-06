@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  student_course: one
+  certification_name: MyString
+  created_date: 2022-10-03
+  expiry_date: 2022-10-03
+
+two:
+  student_course: two
+  certification_name: MyString
+  created_date: 2022-10-03
+  expiry_date: 2022-10-03
