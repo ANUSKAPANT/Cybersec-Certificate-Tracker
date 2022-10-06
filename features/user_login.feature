@@ -40,3 +40,12 @@ Feature: User signs in
     When user enter valid password
     When user clicks get started button
     Then user should login successful
+
+  Scenario: User enters valid email, password and click sign in. Then logs out successful
+    Given user is on sign in page
+    When user enter valid email
+    When user enter valid password
+    When user clicks get started button
+    Then user should login successful
+    When user clicks get logout
+    Then user should logout successful
