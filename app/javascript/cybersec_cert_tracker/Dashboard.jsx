@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import { Button } from "reactstrap";
+import React from "react";
 import "./table.css";
-import { useStoreContext } from "./Store";
-import { setUserData } from "./Actions";
+import DashboardTable from "./DashboardTable";
+import makeData from "./makeData";
 
 function Dashboard() {
-  const { globalState, dispatch } = useStoreContext();
+  const data = React.useMemo(() => makeData(100000), []);
 
-  return <div>Dashboard</div>;
+  return <DashboardTable data={data} />;
 }
 
 export default Dashboard;
