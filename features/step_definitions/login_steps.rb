@@ -66,5 +66,6 @@ Then("user should login successful") do
 end
 
 Then("user should logout successful") do 
+    sleep(1) # TODO: Change this hack to check for page redirection
     expect(page.current_path).to eq(sign_in_path)
 end
