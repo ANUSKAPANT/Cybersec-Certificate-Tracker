@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post 'dashboard/upload_file', to: 'api/v1/dashboard#upload_file'
+  post 'uploaded_files/create'
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
