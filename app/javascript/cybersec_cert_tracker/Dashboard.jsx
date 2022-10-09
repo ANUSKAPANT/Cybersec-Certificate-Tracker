@@ -16,12 +16,16 @@ function Dashboard() {
         .querySelector("meta[name='csrf-token']")
         .getAttribute("content");
 
+    const formData = new FormData();
+    formData.append("selectedFile", event.target.files[0]);
+
     const res =  await axios({
       method: "post",
       url: "/dashboard/upload_file",
       headers: {
-        "Content-Type": "application/json",
+        "Content-type":"multipart/form-data",
         "X-CSRF-Token": csrf,
+        data: formData,
       },
     });
     console.log("🚀 ~ file: Dashboard.jsx ~ line 21 ~ fileUpload ~ res", res)

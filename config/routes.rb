@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :v1 do
-      post 'dashboard/upload_file'
-    end
-  end
+  post 'dashboard/upload_file', to: 'api/v1/dashboard#upload_file'
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
