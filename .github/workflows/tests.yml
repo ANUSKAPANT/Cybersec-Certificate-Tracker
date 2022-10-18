@@ -21,15 +21,18 @@ jobs:
       run: docker-compose -f "docker-compose.prod.yml" up -d --build
 
     - name: Install node
-      uses: actions/setup-node@v1
+      uses: actions/setup-ruby@v1
       with:
-        node-version: 14.x
+        ruby-version: 2.7
 
     - name: Install dependencies
-      run: npm install
+      run: bundle install
+    
+    - name: Install yarn dependencies
+      run: yarn install
 
     - name: Run tests
-      run: npm run test
+      run: RAILS_ENV=test rspec
 
     - name: Stop containers
       if: always()
