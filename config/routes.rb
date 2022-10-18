@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  
+  resources :student_infos
+  get 'home/form'
+  get 'home/upload_csv'
   post 'uploaded_files/create'
   devise_for :users, controllers: {
     sessions: 'users/sessions'

@@ -1,0 +1,33 @@
+h1 Listing student_infos
+
+table class="table table-striped table-hover table-bordered"
+  thead class="table-dark"
+    tr
+      th First name
+      th Last name
+      th Email
+      th Title
+      th Registration type
+      th Company name
+      th
+      th
+      th
+
+  tbody
+    - @student_infos.each do |student_info|
+      tr
+        td = student_info.first_name
+        td = student_info.last_name
+        td = student_info.email
+        td = student_info.title
+        td = student_info.registration_type
+        td = student_info.company_name
+        td = link_to "Show", student_info
+        td = link_to "Edit", edit_student_info_path(student_info)
+        td = link_to "Destroy", student_info, data: {confirm: "Are you sure?"}, method: :delete
+
+br
+
+= link_to "New Student info", new_student_info_path
+
+
