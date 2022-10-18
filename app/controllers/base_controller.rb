@@ -1,4 +1,4 @@
-class Api::BaseController < ActionController::API
+class BaseController < ActionController::Base
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionView::Helpers::SanitizeHelper
 
