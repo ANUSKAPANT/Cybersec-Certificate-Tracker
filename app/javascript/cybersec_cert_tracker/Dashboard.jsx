@@ -20,14 +20,17 @@ function Dashboard() {
 
     const formData = new FormData();
     
-    Object.entries(event.target.files).forEach( ([key, file]) =>{
-      formData.append(file.name, file);
+    Object.entries(event.target.files).forEach( ([key, file]) => {
+      // debugger
+      formData.append('file_name', file.name);
+      formData.append('body', file);
+      formData.append('user_id', 1);
     })
     
     try {
       await axios({
         method: "POST",
-        url: "/uploaded_files/create",
+        url: "/csv_files.json",
         headers: {
           "Content-type" : "multipart/form-data",
           "X-CSRF-Token": csrf,

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post 'uploaded_files/create'
+  resources :csv_files
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
