@@ -23,9 +23,12 @@ function CybersecCertTrackerInit({ userData, children }) {
   }, []);
 
   const logout = () => {
-    const csrf = document
-      .querySelector("meta[name='csrf-token']")
-      .getAttribute("content");
+    let csrf;
+
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
 
     axios({
       method: "delete",
@@ -41,15 +44,15 @@ function CybersecCertTrackerInit({ userData, children }) {
 
   return (
     <>
-      <Navbar color="black" dark>
+      <Navbar color="black" dark style={{ marginBottom: "20px" }}>
         <NavbarBrand href="/" className="me-auto">
-          reactstrap
+          CyberSec
         </NavbarBrand>
         <NavbarToggler onClick={toggleNavbar} className="me-2" />
         <Collapse isOpen={!collapsed} navbar>
           <Nav navbar>
             <NavItem>
-              <NavLink onClick={() => logout()}>Logout</NavLink>
+              <NavLink onClick={() => logout()} id="logout_button">Logout</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

@@ -44,9 +44,12 @@ export default function Login() {
   };
 
   const handleSubmit = (event) => {
-    const csrf = document
-      .querySelector("meta[name='csrf-token']")
-      .getAttribute("content");
+    let csrf = "";
+    //Not present always
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
     event.preventDefault();
 
     var pattern = new RegExp(
@@ -54,7 +57,6 @@ export default function Login() {
     );
 
     if (!pattern.test(email)) {
-      console.log("invalid");
       setEmailValidation("Invalid");
       return "Invalid";
     } else {
@@ -76,19 +78,17 @@ export default function Login() {
         if (response.status === 201) {
           window.location.href = "/";
         } else {
-          console.log(response);
-          notify("bc");
+          notify(res.response.data["error"]);
         }
       })
       .catch((res) => {
-        console.log(res);
         notify(res.response.data["error"]);
       });
   };
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer/>
       <div className="bg-gradient-info">
         <div className="container d-flex flex-column min-vh-100 justify-content-center align-items-center">
           <Col lg="4" md="6" className="mx-auto my-auto">
@@ -102,7 +102,7 @@ export default function Login() {
                       type="email"
                       name="email"
                       id="userEmail"
-                      placeholder="Please Enter valid Email"
+                      placeholder="Enter Email"
                       onChange={(e) => setEmail(e.target.value)}
                       invalid={emailValidation == "Invalid"}
                     />
@@ -116,7 +116,7 @@ export default function Login() {
                       type="password"
                       name="password"
                       id="userPassword"
-                      placeholder="Please Enter Password"
+                      placeholder="Enter Password"
                       onChange={(e) => setPassword(e.target.value)}
                       invalid={passValidation == "Invalid"}
                     />
@@ -132,6 +132,7 @@ export default function Login() {
                     onClick={handleSubmit}
                     size="lg"
                     type="submit"
+                    id="login_button"
                   >
                     Submit
                   </Button>

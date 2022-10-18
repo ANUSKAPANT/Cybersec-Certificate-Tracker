@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post 'uploaded_files/create'
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }

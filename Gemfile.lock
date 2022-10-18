@@ -84,6 +84,46 @@ GEM
     choice (0.2.0)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
+    cucumber (7.1.0)
+      builder (~> 3.2, >= 3.2.4)
+      cucumber-core (~> 10.1, >= 10.1.0)
+      cucumber-create-meta (~> 6.0, >= 6.0.1)
+      cucumber-cucumber-expressions (~> 14.0, >= 14.0.0)
+      cucumber-gherkin (~> 22.0, >= 22.0.0)
+      cucumber-html-formatter (~> 17.0, >= 17.0.0)
+      cucumber-messages (~> 17.1, >= 17.1.1)
+      cucumber-wire (~> 6.2, >= 6.2.0)
+      diff-lcs (~> 1.4, >= 1.4.4)
+      mime-types (~> 3.3, >= 3.3.1)
+      multi_test (~> 0.1, >= 0.1.2)
+      sys-uname (~> 1.2, >= 1.2.2)
+    cucumber-core (10.1.1)
+      cucumber-gherkin (~> 22.0, >= 22.0.0)
+      cucumber-messages (~> 17.1, >= 17.1.1)
+      cucumber-tag-expressions (~> 4.1, >= 4.1.0)
+    cucumber-create-meta (6.0.4)
+      cucumber-messages (~> 17.1, >= 17.1.1)
+      sys-uname (~> 1.2, >= 1.2.2)
+    cucumber-cucumber-expressions (14.0.0)
+    cucumber-gherkin (22.0.0)
+      cucumber-messages (~> 17.1, >= 17.1.1)
+    cucumber-html-formatter (17.0.0)
+      cucumber-messages (~> 17.1, >= 17.1.0)
+    cucumber-messages (17.1.1)
+    cucumber-rails (2.5.1)
+      capybara (>= 2.18, < 4)
+      cucumber (>= 3.2, < 8)
+      mime-types (~> 3.3)
+      nokogiri (~> 1.10)
+      railties (>= 5.0, < 8)
+      rexml (~> 3.0)
+      webrick (~> 1.7)
+    cucumber-tag-expressions (4.1.0)
+    cucumber-wire (6.2.1)
+      cucumber-core (~> 10.1, >= 10.1.0)
+      cucumber-cucumber-expressions (~> 14.0, >= 14.0.0)
+    database_cleaner (2.0.1)
+      database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -98,6 +138,7 @@ GEM
       actionmailer (>= 4.1.0)
       devise (>= 4.0.0)
     diff-lcs (1.5.0)
+    docile (1.4.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -120,6 +161,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jsonapi-renderer (0.2.2)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -131,10 +174,14 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    mime-types (3.4.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.16.3)
     msgpack (1.5.6)
+    multi_test (0.1.2)
     nio4r (2.5.8)
     nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
@@ -237,6 +284,14 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-matchers (5.2.0)
+      activesupport (>= 5.2.0)
+    simplecov (0.21.2)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.4)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -255,6 +310,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    sys-uname (1.2.2)
+      ffi (~> 1.1)
     temple (0.8.2)
     thor (1.2.1)
     thread_safe (0.3.6)
@@ -283,6 +340,7 @@ GEM
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
       railties (>= 4.2)
+    webrick (1.7.0)
     websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -301,6 +359,8 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  cucumber-rails
+  database_cleaner
   database_cleaner-active_record
   devise
   devise_invitable (~> 1.7.0)
@@ -308,6 +368,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   jbuilder (~> 2.7)
+  launchy
   listen (~> 3.2)
   petergate
   pg (>= 0.18, < 2.0)
@@ -319,6 +380,8 @@ DEPENDENCIES
   rspec-rails
   sass-rails (>= 6)
   selenium-webdriver
+  shoulda-matchers
+  simplecov
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)
@@ -333,4 +396,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.2.16
+   2.3.22

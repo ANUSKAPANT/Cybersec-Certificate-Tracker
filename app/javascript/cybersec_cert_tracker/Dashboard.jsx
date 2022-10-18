@@ -1,32 +1,61 @@
-import React, { useEffect } from "react";
-import { Button } from "reactstrap";
-import DashboardTable from "./DashboardTable";
+import React from "react";
 import "./table.css";
-import { useStoreContext } from "./Store";
-import { setUserData } from "./Actions";
-import axios from "axios";
+import DashboardTable from "./DashboardTable";
 import makeData from "./makeData";
+import { Label, Input } from 'reactstrap';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
-  const { globalState, dispatch } = useStoreContext();
   const data = React.useMemo(() => makeData(100000), []);
 
-  return (
-    <div className="table-container">
-      <h1>Hello {globalState.userData.role}!</h1>
-      {globalState.userData.role == "admin" && (
-        <div>
-          <Button color="primary" size="lg" className="btn-1 ">
-            + Import CSV
-          </Button>{" "}
-          <Button color="success" size="lg" className="btn-2 mx-2">
-            Add Data
-          </Button>
-        </div>
-      )}
-      <DashboardTable data={data} />;
-    </div>
-  );
+  const fileUpload = async (event) => {
+    let csrf;
+
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+
+    const formData = new FormData();
+    
+    Object.entries(event.target.files).forEach( ([key, file]) =>{
+      formData.append(file.name, file);
+    })
+    
+    try {
+      await axios({
+        method: "POST",
+        url: "/uploaded_files/create",
+        headers: {
+          "Content-type" : "multipart/form-data",
+          "X-CSRF-Token": csrf,
+        },
+        data: formData,
+      });
+      toast.success("Success!", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    } catch (error) {
+      toast.error("Something went wrong", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
+  }
+
+  return <>
+  <ToastContainer/>
+  <Label for="exampleCustomFileBrowser">Upload CSV</Label>
+  <Input type="file" id="exampleCustomFileBrowser" name="customFile" accept=".csv" multiple onChange={fileUpload}/>
+  <DashboardTable data={data} />
+  </>;
 }
 
 export default Dashboard;
