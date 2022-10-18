@@ -7,7 +7,7 @@ class CsvFile < ApplicationRecord
       "EMAIL ADDRESS" => "email_id",
       "COMPANY NAME" => "company_name",
       "TITLE" => "title",
-      "FULL NAME" => "full_name",
+      "FULL NAME" => "full_name_tees",
       "REGISTRATION TYPE" => "registration_type",
       "AMOUNT PAID" => "",
       "AMOUNT DUE" => "",
@@ -20,8 +20,9 @@ class CsvFile < ApplicationRecord
   end
 
   def create_records(file_path)
-    converter = lambda { |header| map_headers(header) }
-    csv = CSV.read(file_path, :headers => true, header_converters: converter)
+    converter = lambda { |header| map_headers(header.upcase) }
+    file = File.open(file_path, "r:bom|utf-8")
+    csv = CSV.parse(file, :headers => true, header_converters: converter)
     csv.each do |row|
       # company = Company.create(name: row['company_name'], smc: row['smc'] || false)
       # student = Student.create(email_id: row['email_id', first_name: row['full_name'].split(',')[1], last_name: row['full_name'].split(',')[0], company_id: company.id])
