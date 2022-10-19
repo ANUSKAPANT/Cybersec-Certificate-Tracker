@@ -61,16 +61,17 @@ rails db:migrate
 rails server
 ```
 
-6. Run rails rspec test
-```shell
-rspec
-```
-
-7. Run postgres server locally or via docker
+6. Run postgres via docker
 Dev postgres docker
 ```shell
 docker-compose up -d
 ```
+
+7. Run rails rspec test
+```shell
+RAILS_ENV=test rspec
+```
+
 
 8. Access rails console
 ```shell
