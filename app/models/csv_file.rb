@@ -23,14 +23,20 @@ class CsvFile < ApplicationRecord
     header_map["#{header}"]
   end
 
+  def add_company_record(row)
+    Company.find_by(name: row['company_name']) || Company.create(name: row['company_name'], smc: row['smc'] || false)
+  end
+
   def create_records(file_path)
     converter = lambda { |header| map_headers(header.upcase) }
     file = File.open(file_path, "r:bom|utf-8")
     csv = CSV.parse(file, :headers => true, header_converters: converter)
     csv.each do |row|
-      # company = Company.create(name: row['company_name'], smc: row['smc'] || false)
-      # student = Student.create(email_id: row['email_id', first_name: row['full_name'].split(',')[1], last_name: row['full_name'].split(',')[0], company_id: company.id])
-      # StudentCourse.create(student_id: student.id, )
+    # add company
+      if not row['company_name'] || row['company_name']==''
+        row['company_name'] = 'Unknown'
+      end
+      company = add_company_record(row)  
     end
   end
 end
