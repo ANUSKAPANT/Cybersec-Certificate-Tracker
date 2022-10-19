@@ -66,9 +66,11 @@ class CsvFile < ApplicationRecord
     if row['full_name_canvas']
       course = Course.find_by(name: row['course_name']) || Course.create(name: row['course_name'], vendor_id: vendor.id)
     end
+    course
   end
 
   def add_student_course(row, student, course)
+    return unless student && course
     std_course = StudentCourse.find_by(student_id: student.id, course_id:course.id)
     if not std_course
       course_completion = row['course_completion'] != nil && row['course_completion'] != ""
