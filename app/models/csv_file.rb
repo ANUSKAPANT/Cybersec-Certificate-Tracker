@@ -15,6 +15,10 @@ class CsvFile < ApplicationRecord
       "CERTIFICATE ISSUE DATE" => "",
       "PARTICIPANT" => "",
       "REFERENCE ID" => "reference_id",
+      "STUDENT EMAIL" => "email_id" ,
+      "STUDENT NAME" => "full_name_canvas",
+      "CREATED AT" => "course_registration_date",
+      "LISTING NAME"=> "course_name",
     }
     header_map["#{header}"]
   end
