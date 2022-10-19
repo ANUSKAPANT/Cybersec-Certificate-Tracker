@@ -19,7 +19,7 @@ export default function CybersecCertTrackerApp({ data }) {
       <CybersecCertTrackerInit userData={data}>
         <Router history={history}>
           <Routes>
-            <Route path="/dashboard" element={<Dashboard></Dashboard>} />
+            <Route path="/dashboard" element={<Dashboard userData={data}/>} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </Router>
