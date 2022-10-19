@@ -2,7 +2,6 @@ class CsvFilesController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    debugger
     @file = CsvFile.new(file_params)
     if @file.save
       @file.create_records(params[:body].path)
