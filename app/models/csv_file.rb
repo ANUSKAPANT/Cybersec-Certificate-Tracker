@@ -60,6 +60,13 @@ class CsvFile < ApplicationRecord
     student
   end
 
+  def create_or_update_course_record(row)
+    vendor = Vendor.find_by(name: "CompTier") # only one vendor for now
+    if row['full_name_canvas']
+      course = Course.find_by(name: row['course_name']) || Course.create(name: row['course_name'], vendor_id: vendor.id)
+    end
+  end
+
   def create_records(file_path)
     converter = lambda { |header| map_headers(header.upcase) }
     file = File.open(file_path, "r:bom|utf-8")
@@ -71,7 +78,9 @@ class CsvFile < ApplicationRecord
       end
       company = add_company_record(row)  
       # add student
-      student = create_or_update_student_record(row, company) 
+      student = create_or_update_student_record(row, company)
+      # add course
+      course = create_or_update_course_record(row)
     end
   end
 end
