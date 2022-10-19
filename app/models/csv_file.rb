@@ -19,7 +19,8 @@ class CsvFile < ApplicationRecord
       "STUDENT NAME" => "full_name_canvas",
       "CREATED AT" => "course_registration_date",
       "LISTING NAME"=> "course_name",
-      "ID" => "canvas_id"
+      "ID" => "canvas_id",
+      "COMPLETED AT" => "course_completion"
     }
     header_map["#{header}"]
   end
@@ -67,6 +68,15 @@ class CsvFile < ApplicationRecord
     end
   end
 
+  def add_student_course(row, student, course)
+    std_course = StudentCourse.find_by(student_id: student.id, course_id:course.id)
+    if not std_course
+      course_completion = row['course_completion'] != nil && row['course_completion'] != ""
+      registration_date = DateTime.strptime(row["course_registration_date"], "%m/%d/%Y %H:%M")
+      StudentCourse.create(student_id: student.id, course_id: course.id, registration_date: registration_date, canvas_course_completion: course_completion )
+    end
+  end
+
   def create_records(file_path)
     converter = lambda { |header| map_headers(header.upcase) }
     file = File.open(file_path, "r:bom|utf-8")
@@ -81,6 +91,9 @@ class CsvFile < ApplicationRecord
       student = create_or_update_student_record(row, company)
       # add course
       course = create_or_update_course_record(row)
+      # add student course
+      add_student_course(row, student, course)
+
     end
   end
 end
