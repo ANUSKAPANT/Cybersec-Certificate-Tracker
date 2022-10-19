@@ -1,10 +1,7 @@
-test_email = "test@gmail.com"
-test_password = "test777"
-
 Given("user is on dashboard page") do
     visit "/"
-    fill_in 'email', :with => test_email
-    fill_in 'password', :with => test_password
+    fill_in 'email', :with => $test_email
+    fill_in 'password', :with => $test_password
     page.find("#login_button").click
 end
 
