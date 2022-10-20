@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :csv_files
   resources :records, only: :index
+  resources :vendors
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
