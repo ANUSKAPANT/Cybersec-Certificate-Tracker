@@ -15,10 +15,10 @@ services:
   app:
     build: 
       context : .
-      dockerfile : Dockerfile
+      dockerfile : Dockerfile.test
     ports:
       - '3000:3000'
-    command: bash -c "rm -f tmp/pids/server.pid && RAILS_ENV=test rspec"
+    command: bash -c "rm -f tmp/pids/server.pid && DB_USER=postgres rails db:create && DB_USER=postgres rails db:migrate && RAILS_ENV=test rspec"
     environment:
     #   DB_PASSWORD: mysecretpassword
     #   DB_NAME: audit_portal
