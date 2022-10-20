@@ -44,6 +44,7 @@ Capybara.javascript_driver = :chrome
 Before do
   user = User.new({ email: "test@gmail.com", password:"test777" })
   user.save
+  Vendor.create(name:'CompTier')
 end
 
 begin
