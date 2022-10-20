@@ -5,10 +5,11 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
 } from "react-table";
+import { css } from "@emotion/react";
+import "./DashboardTable.css";
 import { Table } from "reactstrap";
+import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
-
-// import "./MainTable.sass";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -23,9 +24,20 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <span>
-      Search:{" "}
-      <input
+    <div className="super-search-container">
+      <div>Search:</div>
+      <TextField
+        id="outlined-basic"
+        variant="outlined"
+        value={value || ""}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`${count} records...`}
+        size="small"
+      />
+      {/* <input
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -36,8 +48,8 @@ function GlobalFilter({
           fontSize: "1.1rem",
           border: "0",
         }}
-      />
-    </span>
+      /> */}
+    </div>
   );
 }
 
