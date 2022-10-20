@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :records, only: :index
   resources :vendors
   resources :students
+  resources :companies
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
