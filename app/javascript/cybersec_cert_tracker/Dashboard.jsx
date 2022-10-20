@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./table.css";
 import DashboardTable from "./DashboardTable";
 import makeData from "./makeData";
@@ -7,8 +7,19 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function Dashboard() {
-  const data = React.useMemo(() => makeData(100000), []);
+function Dashboard({userData}) {
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    axios.get('/records.json', { headers: {"Authorization" : `Bearer ${userData.token}`}})
+      .then((res) => {
+        const { records } = res.data;
+        console.log(records);
+        setTableData(records);
+      }).catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const fileUpload = async (event) => {
     let csrf;
@@ -20,14 +31,16 @@ function Dashboard() {
 
     const formData = new FormData();
     
-    Object.entries(event.target.files).forEach( ([key, file]) =>{
-      formData.append(file.name, file);
+    Object.entries(event.target.files).forEach( ([key, file]) => {
+      formData.append('file_name', file.name);
+      formData.append('body', file);
+      formData.append('user_id', 1);
     })
     
     try {
       await axios({
         method: "POST",
-        url: "/uploaded_files/create",
+        url: "/csv_files.json",
         headers: {
           "Content-type" : "multipart/form-data",
           "X-CSRF-Token": csrf,
@@ -54,7 +67,7 @@ function Dashboard() {
   <ToastContainer/>
   <Label for="exampleCustomFileBrowser">Upload CSV</Label>
   <Input type="file" id="exampleCustomFileBrowser" name="customFile" accept=".csv" multiple onChange={fileUpload}/>
-  <DashboardTable data={data} />
+  <DashboardTable data={tableData} />
   </>;
 }
 

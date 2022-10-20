@@ -30,6 +30,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'devise'
 gem 'devise_invitable', '~> 1.7.0'
 gem 'petergate'
+gem 'fast_jsonapi'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false

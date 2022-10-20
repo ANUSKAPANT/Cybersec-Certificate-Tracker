@@ -204,38 +204,49 @@ function DashboardTable({ data }) {
   const columns = React.useMemo(
     () => [
       {
-        Header: "First Name",
-        accessor: "firstName",
+        Header: "Cert Name",
+        accessor: "cert_name",
       },
       {
-        Header: "Last Name",
-        accessor: "lastName",
-      },
-
-      {
-        Header: "Age",
-        accessor: "age",
-        Filter: SliderColumnFilter,
-        filter: "equals",
+        Header: "Full Name",
+        accessor: "full_name",
       },
       {
-        Header: "Visits",
-        accessor: "visits",
-        Filter: NumberRangeColumnFilter,
-        filter: "between",
+        Header: "Email Address",
+        accessor: "email_address",
       },
       {
-        Header: "Status",
-        accessor: "status",
-        Filter: SelectColumnFilter,
-        filter: "includes",
+        Header: "Company Name",
+        accessor: "company_name",
       },
       {
-        Header: "Profile Progress",
-        accessor: "progress",
-        Filter: SliderColumnFilter,
-        filter: filterGreaterThan,
+        Header: "Registration Date",
+        accessor: "registration_date",
       },
+      // {
+      //   Header: "Age",
+      //   accessor: "age",
+      //   Filter: SliderColumnFilter,
+      //   filter: "equals",
+      // },
+      // {
+      //   Header: "Visits",
+      //   accessor: "visits",
+      //   Filter: NumberRangeColumnFilter,
+      //   filter: "between",
+      // },
+      // {
+      //   Header: "Status",
+      //   accessor: "status",
+      //   Filter: SelectColumnFilter,
+      //   filter: "includes",
+      // },
+      // {
+      //   Header: "Profile Progress",
+      //   accessor: "progress",
+      //   Filter: SliderColumnFilter,
+      //   filter: filterGreaterThan,
+      // },
     ],
     []
   );
