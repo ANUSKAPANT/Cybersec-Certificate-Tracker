@@ -37,26 +37,15 @@ function GlobalFilter({
         placeholder={`${count} records...`}
         size="small"
       />
-      {/* <input
-        value={value || ""}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`${count} records...`}
-        style={{
-          fontSize: "1.1rem",
-          border: "0",
-        }}
-      /> */}
     </div>
   );
 }
 
 // Define a default UI for filtering
 function DefaultColumnFilter({
-  column: { filterValue, preFilteredRows, setFilter },
+  column: { filterValue, preFilteredRows, setFilter, filteredRows, rows },
 }) {
+  console.log(preFilteredRows.length, filteredRows.length, rows);
   const count = preFilteredRows.length;
 
   return (
@@ -312,7 +301,6 @@ function DashboardTable({ data }) {
 
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
-  const firstPageRows = rows.slice(0, 10);
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);

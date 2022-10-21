@@ -62,8 +62,7 @@ function Dashboard({ userData }) {
         .getAttribute("content");
 
     const formData = new FormData();
-
-    Object.entries(event.target.files).forEach(([key, file]) => {
+    Object.entries(event).forEach(([key, file]) => {
       formData.append("file_name", file.name);
       formData.append("body", file);
       formData.append("user_id", 1);
@@ -136,6 +135,8 @@ function Dashboard({ userData }) {
           </div>
           <div>Fetching the data...</div>
         </div>
+      ) : tableData.length === 0 ? (
+        <div className="">No Table Records to Show</div>
       ) : (
         <DashboardTable data={tableData} />
       )}
