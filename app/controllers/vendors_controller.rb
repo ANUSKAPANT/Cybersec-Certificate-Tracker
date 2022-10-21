@@ -6,7 +6,7 @@ class VendorsController < ApplicationController
   end
 
   def create
-    @vendor = Vendor.new(vendor_params(params))
+    @vendor = Vendor.new(vendor_params)
     if @vendor.save
       respond_to do |format|
         format.json  { render json: @vendor, status: :created }
