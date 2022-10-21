@@ -9,8 +9,14 @@ When("user uploads a empty csv") do
     attach_file('csvFile', 'features/test_data/empty.csv')
 end
 
-When("user uploads a data csv") do
-    attach_file('csvFile', 'features/test_data/data.csv')
+When("user uploads a canvas csv") do
+    attach_file('csvFile', 'features/test_data/canvas.csv')
+    sleep(1) #wait for data upload to finish in backend
+    expect(page).to have_content("Success")
+end
+
+When("user uploads a tees csv") do
+    attach_file('csvFile', 'features/test_data/tees.csv')
     sleep(1) #wait for data upload to finish in backend
     expect(page).to have_content("Success")
 end
