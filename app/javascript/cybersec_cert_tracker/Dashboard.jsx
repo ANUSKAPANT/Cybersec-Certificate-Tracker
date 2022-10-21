@@ -94,6 +94,7 @@ function Dashboard({ userData }) {
     }
   };
 
+<<<<<<< HEAD
   return (
     <>
       <ToastContainer />
@@ -142,6 +143,14 @@ function Dashboard({ userData }) {
       )}
     </>
   );
+=======
+  return <>
+  <ToastContainer/>
+  <Label for="exampleCustomFileBrowser">Upload CSV</Label>
+  <Input type="file" id="exampleCustomFileBrowser" name="csvFile" accept=".csv" multiple onChange={fileUpload}/>
+  <DashboardTable data={tableData} />
+  </>;
+>>>>>>> main
 }
 
 export default Dashboard;
