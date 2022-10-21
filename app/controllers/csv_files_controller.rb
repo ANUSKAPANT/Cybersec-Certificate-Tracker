@@ -17,6 +17,6 @@ class CsvFilesController < ApplicationController
 
   private
   def file_params
-    params.permit(:id, :file_name, :body, :user_id)
+    params.permit(:file_name, :body, :user_id)
   end
 end
