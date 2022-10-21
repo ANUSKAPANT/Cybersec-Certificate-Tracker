@@ -15,6 +15,10 @@ When("user uploads a data csv") do
     expect(page).to have_content("Success")
 end
 
+When("user uploads a corrupt csv") do
+    attach_file('csvFile', 'features/test_data/corrupt.csv')
+end
+
 When("user refreshes the page") do
     visit current_path
 end
@@ -25,4 +29,8 @@ end
 
 Then("user should see data in table") do
     expect(page).to have_content("dummy@tamu.edu")
+end
+
+Then("user should see something went wrong error") do
+    expect(page).to have_content("Something went wrong")
 end
