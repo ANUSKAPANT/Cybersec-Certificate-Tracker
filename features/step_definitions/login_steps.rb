@@ -1,11 +1,6 @@
 sign_in_text = "You need to sign in or sign up before continuing."
-sign_in_path = "/users/sign_in"
-dashboard_path = "/dashboard"
 sign_in_button_text = "Submit"
 unsuccessful_login_text = "Invalid Email or password."
-test_email = "test@gmail.com"
-test_password = "test777"
-#save_and_open_page - for taking a ss and debugging
 
 Given("user is not signed in") do
     visit "/"
@@ -16,7 +11,7 @@ Then("user should be told You need to sign in or sign up before continuing.") do
 end
 
 Then("user should be redirected to sign in page") do 
-    expect(page.current_path).to eq(sign_in_path)
+    expect(page.current_path).to eq($sign_in_path)
 end
 
 Then("user should see Get Started Button") do 
@@ -24,7 +19,7 @@ Then("user should see Get Started Button") do
 end
 
 Given("user is on sign in page") do
-    visit sign_in_path
+    visit $sign_in_path
 end
 
 When("user enter invalid email") do
@@ -32,7 +27,7 @@ When("user enter invalid email") do
 end
 
 When("user enter valid email") do
-    fill_in 'email', :with => test_email
+    fill_in 'email', :with => $test_email
 end
 
 When("user enter invalid password") do
@@ -40,7 +35,7 @@ When("user enter invalid password") do
 end
 
 When("user enter valid password") do
-    fill_in 'password', :with => test_password
+    fill_in 'password', :with => $test_password
 end
 
 When("user clicks get started button") do 
@@ -62,10 +57,10 @@ end
 
 Then("user should login successful") do 
     sleep(1) # TODO: Change this hack to check for page redirection
-    expect(page.current_path).to eq(dashboard_path)
+    expect(page.current_path).to eq($dashboard_path)
 end
 
 Then("user should logout successful") do 
     sleep(1) # TODO: Change this hack to check for page redirection
-    expect(page.current_path).to eq(sign_in_path)
+    expect(page.current_path).to eq($sign_in_path)
 end
