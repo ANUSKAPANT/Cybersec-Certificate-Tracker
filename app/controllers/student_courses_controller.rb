@@ -48,7 +48,7 @@ class StudentCoursesController < ApplicationController
 
   private
 
-  def student_course_params(params)
+  def student_course_params
     params = params.permit(:student_id, :course_id, :registration_date, :canvas_course_completion, :dcldp_code, :voucher_purchased, :test_result)
   end
 end
