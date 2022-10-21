@@ -6,7 +6,7 @@ class StudentsController < ApplicationController
     end
   
     def create
-      @student = Student.new(student_params)
+      @student = Student.new(student_params(params))
       if @student.save
         respond_to do |format|
           format.json  { render json: @student, status: :created }
@@ -48,8 +48,8 @@ class StudentsController < ApplicationController
   
     private
   
-    def student_params
-      params = params.permit(:name)
+    def student_params(params)
+      params = params.require(:student).permit(:first_name, :last_name, :canvas_id, :title, :company_id, :email_id)
     end
   end
   

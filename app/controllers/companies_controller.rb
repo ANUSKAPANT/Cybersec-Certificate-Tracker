@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
     end
   
     def create
-      @company = Company.new(company_params)
+      @company = Company.new(company_params(params))
       if @company.save
         respond_to do |format|
           format.json  { render json: @company, status: :created }
@@ -48,8 +48,8 @@ class CompaniesController < ApplicationController
   
     private
   
-    def company_params
-      params = params.permit(:name)
+    def company_params(params)
+      params = params.require(:company).permit(:name, :smc)
     end
   end
   

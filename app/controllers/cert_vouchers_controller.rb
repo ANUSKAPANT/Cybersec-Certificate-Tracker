@@ -6,7 +6,7 @@ class CertVouchersController < ApplicationController
     end
   
     def create
-      @cert_voucher = CertVoucher.new(cert_voucher_params)
+      @cert_voucher = CertVoucher.new(cert_voucher_params(params))
       if @cert_voucher.save
         respond_to do |format|
           format.json  { render json: @cert_voucher, status: :created }
@@ -48,8 +48,8 @@ class CertVouchersController < ApplicationController
   
     private
   
-    def cert_voucher_params
-      params = params.permit(:name)
+    def cert_voucher_params(params)
+      params = params.require('cert_voucher').permit(:std_crse_id, :certification_name, :created_date, :expiry_date)
     end
   end
   

@@ -6,7 +6,7 @@ class VendorsController < ApplicationController
   end
 
   def create
-    @vendor = Vendor.new(vendor_params)
+    @vendor = Vendor.new(vendor_params(params))
     if @vendor.save
       respond_to do |format|
         format.json  { render json: @vendor, status: :created }
@@ -48,7 +48,7 @@ class VendorsController < ApplicationController
 
   private
 
-  def vendor_params
-    params = params.permit(:name)
+  def vendor_params(params)
+    params = params.require(:vendor).permit(:name)
   end
 end

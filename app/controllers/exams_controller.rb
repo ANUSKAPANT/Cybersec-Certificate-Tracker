@@ -6,7 +6,7 @@ class ExamsController < ApplicationController
     end
   
     def create
-      @exam = Exam.new(exam_params)
+      @exam = Exam.new(exam_params(params))
       if @exam.save
         respond_to do |format|
           format.json  { render json: @exam, status: :created }
@@ -48,8 +48,8 @@ class ExamsController < ApplicationController
   
     private
   
-    def exam_params
-      params = params.permit(:name)
+    def exam_params(params)
+      params = params.require('exam').permit(:cert_voucher_id, :exam_code, :exam_date, :passed, :exam_grade)
     end
   end
   
