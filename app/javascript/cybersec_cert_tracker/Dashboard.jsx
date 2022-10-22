@@ -1,14 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./table.css";
 import DashboardTable from "./DashboardTable";
 import makeData from "./makeData";
-import { Label, Input, Button} from 'reactstrap';
+import { Label, Input, Button, Modal} from 'reactstrap';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const data = React.useMemo(() => makeData(100000), []);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
+  // const [isOpen, setIsOpen] = useState(false);
+ 
+  // const togglePopup = () => {
+  //   setIsOpen(!isOpen);
+  // }
+
   const fileUpload = async (event) => {
     let csrf;
 
@@ -53,10 +63,8 @@ function Dashboard() {
     <Label for="exampleCustomFileBrowser">Upload CSV</Label>
     <Input type="file" id="exampleCustomFileBrowser" name="customFile" accept=".csv" multiple onChange={fileUpload}/>{' '}
     <Button onClick={() => setShow(true)}>Add Form</Button>
-    <DashboardTable data={data} />
-  
-    {/* <Modal show={show}
-    onHide={() => setShow(false)}
+    <Modal show={show}
+    onHide={handleClose}
     dialogClassName="modal-90w"
     aria-labelledby="example-custom-modal-styling-title"
     >
@@ -70,7 +78,8 @@ function Dashboard() {
           Hello
         </p>
       </Modal.Body> 
-    </Modal>  */}
+    </Modal> 
+    <DashboardTable data={data} />
     </>
     );  
   }
