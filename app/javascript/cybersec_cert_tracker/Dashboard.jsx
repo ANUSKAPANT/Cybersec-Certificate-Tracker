@@ -1,15 +1,14 @@
-import React from "react";
+import React from 'react';
 import "./table.css";
 import DashboardTable from "./DashboardTable";
 import makeData from "./makeData";
-import { Label, Input } from 'reactstrap';
+import { Label, Input, Button} from 'reactstrap';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const data = React.useMemo(() => makeData(100000), []);
-
   const fileUpload = async (event) => {
     let csrf;
 
@@ -49,13 +48,34 @@ function Dashboard() {
       });
     }
   }
+  return (<>
+    <ToastContainer/>
+    <Label for="exampleCustomFileBrowser">Upload CSV</Label>
+    <Input type="file" id="exampleCustomFileBrowser" name="customFile" accept=".csv" multiple onChange={fileUpload}/>{' '}
+    <Button onClick={() => setShow(true)}>Add Form</Button>
+    <DashboardTable data={data} />
+  
+    {/* <Modal show={show}
+    onHide={() => setShow(false)}
+    dialogClassName="modal-90w"
+    aria-labelledby="example-custom-modal-styling-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="example-custom-modal-styling-title">
+          Custom Modal Styling
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>
+          Hello
+        </p>
+      </Modal.Body> 
+    </Modal>  */}
+    </>
+    );  
+  }
+  export default Dashboard;
 
-  return <>
-  <ToastContainer/>
-  <Label for="exampleCustomFileBrowser">Upload CSV</Label>
-  <Input type="file" id="exampleCustomFileBrowser" name="customFile" accept=".csv" multiple onChange={fileUpload}/>
-  <DashboardTable data={data} />
-  </>;
-}
 
-export default Dashboard;
+
+  
