@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./table.css";
 import DashboardTable from "./DashboardTable";
 import makeData from "./makeData";
-import { Label, Input } from 'reactstrap';
+import { Label, Input, Button, Modal } from 'reactstrap';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard({userData}) {
   const [tableData, setTableData] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
 
   useEffect(() => {
     axios.get('/records.json', { headers: {"Authorization" : `Bearer ${userData.token}`}})
@@ -67,6 +70,23 @@ function Dashboard({userData}) {
   <ToastContainer/>
   <Label for="exampleCustomFileBrowser">Upload CSV</Label>
   <Input type="file" id="exampleCustomFileBrowser" name="csvFile" accept=".csv" multiple onChange={fileUpload}/>
+  <Button onClick={() => setShow(true)}>Add Form</Button>
+    <Modal show={show}
+    onHide={handleClose}
+    dialogClassName="modal-90w"
+    aria-labelledby="example-custom-modal-styling-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="example-custom-modal-styling-title">
+          Custom Modal Styling
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>
+          Hello
+        </p>
+      </Modal.Body> 
+    </Modal> 
   <DashboardTable data={tableData} />
   </>;
 }
