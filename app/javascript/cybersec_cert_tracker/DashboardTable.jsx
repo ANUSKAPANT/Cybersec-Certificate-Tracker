@@ -5,10 +5,11 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
 } from "react-table";
+import { css } from "@emotion/react";
+import "./DashboardTable.css";
 import { Table } from "reactstrap";
+import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
-
-// import "./MainTable.sass";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -23,28 +24,28 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <span>
-      Search:{" "}
-      <input
+    <div className="super-search-container">
+      <div>Search:</div>
+      <TextField
+        id="outlined-basic"
+        variant="outlined"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
         placeholder={`${count} records...`}
-        style={{
-          fontSize: "1.1rem",
-          border: "0",
-        }}
+        size="small"
       />
-    </span>
+    </div>
   );
 }
 
 // Define a default UI for filtering
 function DefaultColumnFilter({
-  column: { filterValue, preFilteredRows, setFilter },
+  column: { filterValue, preFilteredRows, setFilter, filteredRows, rows },
 }) {
+  console.log(preFilteredRows.length, filteredRows.length, rows);
   const count = preFilteredRows.length;
 
   return (
@@ -300,7 +301,6 @@ function DashboardTable({ data }) {
 
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
-  const firstPageRows = rows.slice(0, 10);
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
