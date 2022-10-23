@@ -110,6 +110,7 @@ function Dashboard({ userData }) {
         color="success"
         className="csv-button"
         onClick={() => setOpen(true)}
+        id="uploadCSVButton"
       >
         + Upload CSV
       </Button>
@@ -122,9 +123,10 @@ function Dashboard({ userData }) {
         <Box sx={style}>
           <FileUploader
             multiple={true}
-            name="file"
+            name="csvFile"
             types={fileTypes}
             handleChange={fileUpload}
+            id="csvFile"
           />
         </Box>
       </Modal>

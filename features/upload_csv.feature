@@ -18,6 +18,7 @@ Feature: User uploads csv
     When user uploads a corrupt csv
     Then user should see something went wrong error
 
+  @wip
   Scenario: User clicks on upload csv button and adds a canvas and tees csv file
     Given user is on dashboard page
     When user uploads a canvas csv
