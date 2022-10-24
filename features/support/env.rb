@@ -33,7 +33,12 @@ require 'cucumber/rails'
 ActionController::Base.allow_rescue = false
 
 Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
+  browser_options = ::Selenium::WebDriver::Chrome::Options.new
+  browser_options.args << '--headless'
+  browser_options.args << '--no-sandbox'
+  browser_options.args << '--disable-gpu'
+  browser_options.args << '--window-size=1920,1080'
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
 end
 Capybara.javascript_driver = :chrome
 
