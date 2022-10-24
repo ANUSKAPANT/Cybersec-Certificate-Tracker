@@ -37,20 +37,27 @@ function Dashboard({ userData }) {
   const [tableData, setTableData] = useState([]);
   const [open, setOpen] = React.useState(false);
 
-  useEffect(() => {
-    axios
-      .get("/records.json", {
+  const fetchRecords = async () => {
+    try {
+      const res = await axios.get("/records.json", {
         headers: { Authorization: `Bearer ${userData.token}` },
-      })
-      .then((res) => {
-        const { records } = res.data;
-        console.log(records);
-        setLoading(false);
-        setTableData(records);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+      const { records } = res.data;
+      setLoading(false);
+      setTableData(records);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in fetching records", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
+  }
+
+  useEffect(() => {
+    fetchRecords();
   }, []);
 
   const fileUpload = async (event) => {
@@ -84,6 +91,7 @@ function Dashboard({ userData }) {
         hideProgressBar: false,
         closeOnClick: true,
       });
+      fetchRecords();
     } catch (error) {
       toast.error("Something went wrong", {
         position: "bottom-center",
