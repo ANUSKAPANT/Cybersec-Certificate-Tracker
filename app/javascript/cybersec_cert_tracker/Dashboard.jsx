@@ -44,7 +44,6 @@ function Dashboard({ userData }) {
       })
       .then((res) => {
         const { records } = res.data;
-        console.log(records);
         setLoading(false);
         setTableData(records);
       })
