@@ -2,7 +2,8 @@ class CertVouchersController < ApplicationController
   before_action :set_cert_voucher, only: %i[update destroy show]
 
   def index
-    render json: CertVoucherSerializer.new(CertVoucher.all).serialized_json
+    options = { include: [:exam, :student_course, "student_course.student", "student_course.course"] }
+    render json: CertVoucherSerializer.new(CertVoucher.all, options).serialized_json
   end
 
   def create
@@ -15,7 +16,8 @@ class CertVouchersController < ApplicationController
   end
 
   def show
-    render json: CertVoucherSerializer.new(@cert_voucher).serialized_json, status: :ok
+    options = { include: [:exam, :student_course, "student_course.student", "student_course.course"] }
+    render json: CertVoucherSerializer.new(@cert_voucher, options).serialized_json, status: :ok
   end
 
   def update
