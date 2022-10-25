@@ -61,6 +61,10 @@ function Dashboard({ userData }) {
         .querySelector("meta[name='csrf-token']")
         .getAttribute("content");
 
+    if (Object.entries(event).length == 0) {
+      return;
+    }
+
     const formData = new FormData();
     Object.entries(event).forEach(([key, file]) => {
       formData.append("file_name", file.name);
@@ -97,15 +101,6 @@ function Dashboard({ userData }) {
   return (
     <>
       <ToastContainer />
-      {/* <Label for="exampleCustomFileBrowser">Upload CSV</Label>
-      <Input
-        type="file"
-        id="exampleCustomFileBrowser"
-        name="customFile"
-        accept=".csv"
-        multiple
-        onChange={fileUpload}
-      /> */}
       <Button
         color="success"
         className="csv-button"
