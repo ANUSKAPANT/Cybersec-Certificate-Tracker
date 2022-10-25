@@ -45,7 +45,6 @@ function GlobalFilter({
 function DefaultColumnFilter({
   column: { filterValue, preFilteredRows, setFilter, filteredRows, rows },
 }) {
-  console.log(preFilteredRows.length, filteredRows.length, rows);
   const count = preFilteredRows.length;
 
   return (
@@ -309,7 +308,6 @@ function DashboardTable({ data }) {
   useEffect(() => {
     // Fetch items from another resources.
     const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setCurrentItems(rows.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(rows.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, rows]);
