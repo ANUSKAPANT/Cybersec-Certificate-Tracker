@@ -4,6 +4,7 @@ import {
   useFilters,
   useGlobalFilter,
   useAsyncDebounce,
+  useSortBy,
 } from "react-table";
 import { css } from "@emotion/react";
 import "./DashboardTable.css";
@@ -12,12 +13,7 @@ import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
 
 // Define a default UI for filtering
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}) {
-  const count = preGlobalFilteredRows.length;
+function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
@@ -34,7 +30,7 @@ function GlobalFilter({
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`${count} records...`}
+        placeholder={`${numRows} records...`}
         size="small"
       />
     </div>
@@ -42,18 +38,17 @@ function GlobalFilter({
 }
 
 // Define a default UI for filtering
-function DefaultColumnFilter({
-  column: { filterValue, preFilteredRows, setFilter, filteredRows, rows },
-}) {
-  const count = preFilteredRows.length;
-
+// {
+//   column: { filterValue, preFilteredRows, setFilter},
+// }
+function DefaultColumnFilter(filterValue, preFilteredRows, setFilter, numRows) {
   return (
     <input
       value={filterValue || ""}
       onChange={(e) => {
         setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder={`Search ${count} records...`}
+      placeholder={`Search ${numRows} records...`}
     />
   );
 }
@@ -295,7 +290,8 @@ function DashboardTable({ data }) {
       filterTypes,
     },
     useFilters, // useFilters!
-    useGlobalFilter // useGlobalFilter!
+    useGlobalFilter, // useGlobalFilter!
+    useSortBy
   );
 
   // We don't want to render all of the rows for this example, so cap
@@ -314,16 +310,13 @@ function DashboardTable({ data }) {
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % rows.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
 
   return (
     <>
       <GlobalFilter
-        preGlobalFilteredRows={preGlobalFilteredRows}
+        numRows={rows.length}
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
@@ -332,10 +325,26 @@ function DashboardTable({ data }) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
+                  </span>
                   {/* Render the columns filter UI */}
-                  <div>{column.canFilter ? column.render("Filter") : null}</div>
+                  <div>
+                    {column.canFilter
+                      ? DefaultColumnFilter(
+                          column.filterValue,
+                          column.preFilteredRows,
+                          column.setFilter,
+                          rows.length
+                        )
+                      : null}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -356,26 +365,28 @@ function DashboardTable({ data }) {
           })}
         </tbody>
       </Table>
-      <ReactPaginate
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={2}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        pageClassName="page-item"
-        pageLinkClassName="page-link"
-        previousClassName="page-item"
-        previousLinkClassName="page-link"
-        nextClassName="page-item"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="active"
-        renderOnZeroPageCount={null}
-      />
+      <div className="pagination-container">
+        <ReactPaginate
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </div>
       <br />
       {/* <div>Showing the first 10 results of {rows.length} rows</div>
       <div>

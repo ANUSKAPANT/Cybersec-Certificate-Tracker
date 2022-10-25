@@ -4,3 +4,8 @@
   gap: 10px;
   margin-left: 10px;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
