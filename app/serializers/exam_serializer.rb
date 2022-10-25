@@ -1,5 +1,6 @@
 class ExamSerializer
-    include FastJsonapi::ObjectSerializer
-    attributes :id, :cert_voucher_id, :exam_code, :exam_date, :passed, :exam_grade
-  end
+  include FastJsonapi::ObjectSerializer
+  attributes :id, :cert_voucher_id, :exam_code, :exam_date, :passed, :exam_grade
+  belongs_to :cert_voucher
+end
   

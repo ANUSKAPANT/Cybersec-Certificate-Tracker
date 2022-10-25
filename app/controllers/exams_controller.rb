@@ -2,7 +2,8 @@ class ExamsController < ApplicationController
   before_action :set_exam, only: %i[update destroy show]
 
   def index
-    render json: ExamSerializer.new(Exam.all).serialized_json
+    options = { include: [:cert_voucher] }
+    render json: ExamSerializer.new(Exam.all, options).serialized_json
   end
 
   def create

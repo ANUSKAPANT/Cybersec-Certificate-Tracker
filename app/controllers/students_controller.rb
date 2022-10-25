@@ -2,7 +2,8 @@ class StudentsController < ApplicationController
   before_action :set_student, only: %i[update destroy show]
 
   def index
-    render json: StudentSerializer.new(Student.all).serialized_json
+    options = { include: [:company, :student_courses, "student_courses.cert_vouchers", "student_courses.cert_vouchers.exam", "student_courses.course.vendor"] }
+    render json: StudentSerializer.new(Student.all, options).serialized_json
   end
 
   def create
@@ -15,7 +16,8 @@ class StudentsController < ApplicationController
   end
 
   def show
-    render json: StudentSerializer.new(@student).serialized_json, status: :ok
+    options = { include: [:company, :student_courses, "student_courses.cert_vouchers", "student_courses.cert_vouchers.exam", "student_courses.course.vendor"] }
+    render json: StudentSerializer.new(@student, options).serialized_json, status: :ok
   end
 
   def update

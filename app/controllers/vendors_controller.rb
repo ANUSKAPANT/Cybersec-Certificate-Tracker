@@ -2,7 +2,8 @@ class VendorsController < ApplicationController
   before_action :set_vendor, only: %i[update destroy show]
 
   def index
-    render json: VendorSerializer.new(Vendor.all).serialized_json
+    options = { include: [:courses] }
+    render json: VendorSerializer.new(Vendor.all, options).serialized_json
   end
 
   def create
@@ -15,7 +16,8 @@ class VendorsController < ApplicationController
   end
 
   def show
-    render json: VendorSerializer.new(@vendor).serialized_json, status: :ok
+    options = { include: [:courses] }
+    render json: VendorSerializer.new(@vendor, options).serialized_json, status: :ok
   end
 
   def update
