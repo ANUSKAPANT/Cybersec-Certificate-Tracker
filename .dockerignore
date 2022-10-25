@@ -19,3 +19,4 @@ coverage/
 .env
 .env.local
 .env.template
+db/schema.rb
