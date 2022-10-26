@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :student_courses
   resources :exams
   resources :cert_vouchers
+  resources :users
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
