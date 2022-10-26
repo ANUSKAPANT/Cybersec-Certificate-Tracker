@@ -3,7 +3,7 @@ class RecordsController < BaseController
     all_records = {}
     all_record_rows = []
 
-    StudentCourse.all.each do |student_course|
+    StudentCourse.includes(:student, :course).all.each do |student_course|
       record_row = {}
       record_row[:stucourse_id] = student_course.id
       record_row[:participant_id] = student_course.student_id
