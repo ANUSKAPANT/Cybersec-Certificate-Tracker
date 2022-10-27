@@ -12,11 +12,13 @@ import {
   NavLink,
 } from "reactstrap";
 import axios from "axios";
+import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
+import { Link } from "react-router-dom";
+import "./CybersecCertTrackerInit.css";
 
 function CybersecCertTrackerInit({ userData, children }) {
   const { dispatch } = useStoreContext();
-  const [collapsed, setCollapsed] = useState(true);
-  const toggleNavbar = () => setCollapsed(!collapsed);
+  const { toggleSidebar } = useProSidebar();
 
   useEffect(() => {
     setUserData(dispatch, userData);
@@ -48,15 +50,23 @@ function CybersecCertTrackerInit({ userData, children }) {
         <NavbarBrand href="/" className="me-auto">
           CyberSec
         </NavbarBrand>
-        <NavbarToggler onClick={toggleNavbar} className="me-2" />
-        <Collapse isOpen={!collapsed} navbar>
-          <Nav navbar>
-            <NavItem>
-              <NavLink onClick={() => logout()} id="logout_button">Logout</NavLink>
-            </NavItem>
-          </Nav>
-        </Collapse>
+        <NavbarToggler onClick={() => toggleSidebar()} className="me-2" />
       </Navbar>
+      <div className="sidebar">
+        <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
+          <Menu>
+            <MenuItem routerLink={<Link to="/dashboard/students" />}>
+              Students
+            </MenuItem>
+            <MenuItem> Courses</MenuItem>
+            <MenuItem> Companies</MenuItem>
+            <MenuItem> Certificate Vouchers</MenuItem>
+            <MenuItem> Exams</MenuItem>
+            <MenuItem> Vendors</MenuItem>
+            <MenuItem> Users</MenuItem>
+          </Menu>
+        </Sidebar>
+      </div>
       {children}
     </>
   );

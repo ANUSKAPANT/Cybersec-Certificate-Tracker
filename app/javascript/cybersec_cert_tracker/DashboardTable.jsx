@@ -6,11 +6,13 @@ import {
   useAsyncDebounce,
   useSortBy,
 } from "react-table";
-import { css } from "@emotion/react";
 import "./DashboardTable.css";
 import { Table } from "reactstrap";
 import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
+import Columns from "./columns";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -193,58 +195,20 @@ function filterGreaterThan(rows, id, filterValue) {
 // will be automatically removed. Normally this is just an undefined
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
-
+let col = Columns("Student");
+col.push({
+  Header: "",
+  id: "edit",
+  Cell: () => (
+    <div>
+      <EditOutlinedIcon />
+      <RemoveCircleOutlineOutlinedIcon />
+    </div>
+  ),
+});
 // Our table component
 function DashboardTable({ data }) {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Cert Name",
-        accessor: "cert_name",
-      },
-      {
-        Header: "Full Name",
-        accessor: "full_name",
-      },
-      {
-        Header: "Email Address",
-        accessor: "email_address",
-      },
-      {
-        Header: "Company Name",
-        accessor: "company_name",
-      },
-      {
-        Header: "Registration Date",
-        accessor: "registration_date",
-      },
-      // {
-      //   Header: "Age",
-      //   accessor: "age",
-      //   Filter: SliderColumnFilter,
-      //   filter: "equals",
-      // },
-      // {
-      //   Header: "Visits",
-      //   accessor: "visits",
-      //   Filter: NumberRangeColumnFilter,
-      //   filter: "between",
-      // },
-      // {
-      //   Header: "Status",
-      //   accessor: "status",
-      //   Filter: SelectColumnFilter,
-      //   filter: "includes",
-      // },
-      // {
-      //   Header: "Profile Progress",
-      //   accessor: "progress",
-      //   Filter: SliderColumnFilter,
-      //   filter: filterGreaterThan,
-      // },
-    ],
-    []
-  );
+  const columns = React.useMemo(() => col, []);
 
   const filterTypes = React.useMemo(
     () => ({
@@ -320,7 +284,7 @@ function DashboardTable({ data }) {
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table striped {...getTableProps()}>
+      <Table striped hover {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

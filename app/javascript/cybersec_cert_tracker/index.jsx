@@ -9,21 +9,27 @@ import {
 } from "react-router-dom";
 import { StoreProvider } from "./Store";
 import CybersecCertTrackerInit from "./CybersecCertTrackerInit";
-
+import { ProSidebarProvider } from "react-pro-sidebar";
 import history from "./history";
 import Dashboard from "./Dashboard";
+import Student from "./sidebar-pages/Student";
 
 export default function CybersecCertTrackerApp({ data }) {
   return (
     <StoreProvider>
-      <CybersecCertTrackerInit userData={data}>
+      <ProSidebarProvider>
         <Router history={history}>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard userData={data}/>} />
-            <Route path="/" element={<Navigate to="/dashboard" />} />
-          </Routes>
+          <CybersecCertTrackerInit userData={data}>
+            <Routes>
+              <Route path="/dashboard">
+                <Route index element={<Dashboard userData={data} />} />
+                <Route path="students" element={<Student userData={data} />} />
+              </Route>
+              <Route path="/" element={<Navigate to="/dashboard" />} />
+            </Routes>
+          </CybersecCertTrackerInit>
         </Router>
-      </CybersecCertTrackerInit>
+      </ProSidebarProvider>
     </StoreProvider>
   );
 }
