@@ -150,7 +150,7 @@ function Student({ userData }) {
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
-        + Upload CSV
+        + Add Students
       </Button>
       <Modal
         open={open}
@@ -158,15 +158,7 @@ function Student({ userData }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <FileUploader
-            multiple={true}
-            name="csvFile"
-            types={fileTypes}
-            handleChange={fileUpload}
-            id="csvFile"
-          />
-        </Box>
+        <Box sx={style}></Box>
       </Modal>
       {loading == true ? (
         <div className="spinner-container">
@@ -178,7 +170,7 @@ function Student({ userData }) {
       ) : students.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
-        <DashboardTable data={students} />
+        <DashboardTable data={students} type="Student" />
       )}
     </>
   );

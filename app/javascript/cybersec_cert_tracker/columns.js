@@ -7,27 +7,22 @@ export default function Columns(table) {
         {
           Header: "Cert Name",
           accessor: "cert_name",
-          type: "default",
         },
         {
           Header: "Full Name",
           accessor: "full_name",
-          type: "default",
         },
         {
           Header: "Email Address",
           accessor: "email_address",
-          type: "default",
         },
         {
           Header: "Company Name",
           accessor: "company_name",
-          type: "default",
         },
         {
           Header: "Registration Date",
           accessor: "registration_date",
-          type: "default",
         },
       ];
 

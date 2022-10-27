@@ -195,19 +195,23 @@ function filterGreaterThan(rows, id, filterValue) {
 // will be automatically removed. Normally this is just an undefined
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
-let col = Columns("Student");
-col.push({
-  Header: "",
-  id: "edit",
-  Cell: () => (
-    <div>
-      <EditOutlinedIcon />
-      <RemoveCircleOutlineOutlinedIcon />
-    </div>
-  ),
-});
+
 // Our table component
-function DashboardTable({ data }) {
+function DashboardTable({ data, type }) {
+  let col = Columns(type);
+  if (type !== "Dashboard") {
+    col.push({
+      Header: "",
+      id: "edit",
+      Cell: () => (
+        <div>
+          <EditOutlinedIcon />
+          <RemoveCircleOutlineOutlinedIcon />
+        </div>
+      ),
+    });
+  }
+
   const columns = React.useMemo(() => col, []);
 
   const filterTypes = React.useMemo(

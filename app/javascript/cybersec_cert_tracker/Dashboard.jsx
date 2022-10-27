@@ -54,7 +54,7 @@ function Dashboard({ userData }) {
         closeOnClick: true,
       });
     }
-  }
+  };
 
   useEffect(() => {
     fetchRecords();
@@ -143,7 +143,7 @@ function Dashboard({ userData }) {
       ) : tableData.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
-        <DashboardTable data={tableData} />
+        <DashboardTable data={tableData} type="Dashboard" />
       )}
     </>
   );
