@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   resources :records, only: :index
   resources :vendors
   resources :students
-  resources :companies
+  resources :companies do
+    collection do
+      get :match_companies
+    end
+  end
   resources :courses
   resources :student_courses
   resources :exams
