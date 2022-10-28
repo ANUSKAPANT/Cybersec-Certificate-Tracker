@@ -8,10 +8,10 @@ Rails.application.routes.draw do
   resources :student_courses
   resources :exams
   resources :cert_vouchers
-  resources :users
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
+  resources :users, except: %i[edit new]
   root "homes#index"
   match '*path', to: 'homes#index', via: :all
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
