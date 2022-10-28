@@ -76,7 +76,7 @@ function Dashboard({ userData }) {
     Object.entries(event).forEach(([key, file]) => {
       formData.append("file_name", file.name);
       formData.append("body", file);
-      formData.append("user_id", 1);
+      formData.append("user_id", userData.id);
     });
 
     try {
