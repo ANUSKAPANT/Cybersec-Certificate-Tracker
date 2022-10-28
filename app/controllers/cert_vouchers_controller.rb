@@ -32,11 +32,11 @@ class CertVouchersController < ApplicationController
     @cert_voucher.destroy
   end
 
+  private
+
   def set_cert_voucher
     @cert_voucher = CertVoucher.find(params[:id])
   end
-
-  private
 
   def cert_voucher_params
     params.permit(:student_course_id, :certification_name, :created_date, :expiry_date)

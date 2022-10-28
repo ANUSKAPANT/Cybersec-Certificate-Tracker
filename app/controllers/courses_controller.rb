@@ -32,11 +32,11 @@ class CoursesController < ApplicationController
     @course.destroy
   end
 
+  private
+  
   def set_course
     @course = Course.find(params[:id])
   end
-
-  private
 
   def course_params
     params.permit(:name, :vendor_id)
