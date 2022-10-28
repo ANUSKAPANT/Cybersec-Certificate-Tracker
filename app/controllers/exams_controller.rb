@@ -31,11 +31,11 @@ class ExamsController < ApplicationController
     @exam.destroy
   end
 
+  private
+
   def set_exam
     @exam = Exam.find(params[:id])
   end
-
-  private
 
   def exam_params
     params.permit(:cert_voucher_id, :exam_code, :exam_date, :passed, :exam_grade)

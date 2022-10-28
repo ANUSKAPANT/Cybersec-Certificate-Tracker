@@ -52,4 +52,20 @@ RSpec.describe CompaniesController, type: :controller do
       expect(response).to have_http_status(204)
     end
   end
+
+  describe 'Get match companies' do
+    it 'searches companies with a matching name' do
+      company = Company.new( name: "Test company", smc: true )
+      company.save
+      get :match_companies, params: { term: "test" }
+      expect(response.body).to include("Test company")
+    end
+
+    it 'searches companies without a matching name' do
+      company = Company.new( name: "Test company", smc: true )
+      company.save
+      get :match_companies, params: { term: "anu" }
+      expect(response.body).not_to include("Test company")
+    end
+  end
 end
