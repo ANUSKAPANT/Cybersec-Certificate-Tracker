@@ -21,7 +21,7 @@ export default function CybersecCertTrackerApp({ data }) {
         <Router history={history}>
           <Routes>
             <Route path="/dashboard" element={<Dashboard userData={data}/>} />
-            <Route path="/student" element={<StudentProfile/>} />
+            <Route path="/student" element={<StudentProfile userData={data}/>} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </Router>
