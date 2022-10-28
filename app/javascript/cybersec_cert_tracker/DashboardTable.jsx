@@ -11,6 +11,7 @@ import "./DashboardTable.css";
 import { Table } from "reactstrap";
 import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from 'react-router-dom';
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -196,6 +197,9 @@ filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
 function DashboardTable({ data }) {
+
+  const navigate = useNavigate();
+
   const columns = React.useMemo(
     () => [
       {
@@ -218,30 +222,6 @@ function DashboardTable({ data }) {
         Header: "Registration Date",
         accessor: "registration_date",
       },
-      // {
-      //   Header: "Age",
-      //   accessor: "age",
-      //   Filter: SliderColumnFilter,
-      //   filter: "equals",
-      // },
-      // {
-      //   Header: "Visits",
-      //   accessor: "visits",
-      //   Filter: NumberRangeColumnFilter,
-      //   filter: "between",
-      // },
-      // {
-      //   Header: "Status",
-      //   accessor: "status",
-      //   Filter: SelectColumnFilter,
-      //   filter: "includes",
-      // },
-      // {
-      //   Header: "Profile Progress",
-      //   accessor: "progress",
-      //   Filter: SliderColumnFilter,
-      //   filter: filterGreaterThan,
-      // },
     ],
     []
   );
@@ -293,6 +273,10 @@ function DashboardTable({ data }) {
     useGlobalFilter, // useGlobalFilter!
     useSortBy
   );
+
+  const handleRowClick = (row) => {
+    navigate(`/student?id=${row.id}`);
+  }
 
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
@@ -354,7 +338,7 @@ function DashboardTable({ data }) {
           {currentItems.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>

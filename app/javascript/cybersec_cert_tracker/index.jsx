@@ -12,6 +12,7 @@ import CybersecCertTrackerInit from "./CybersecCertTrackerInit";
 
 import history from "./history";
 import Dashboard from "./Dashboard";
+import StudentProfile from "./StudentProfile";
 
 export default function CybersecCertTrackerApp({ data }) {
   return (
@@ -20,6 +21,7 @@ export default function CybersecCertTrackerApp({ data }) {
         <Router history={history}>
           <Routes>
             <Route path="/dashboard" element={<Dashboard userData={data}/>} />
+            <Route path="/student" element={<StudentProfile/>} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </Router>
