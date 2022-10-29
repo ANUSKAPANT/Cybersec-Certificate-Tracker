@@ -276,7 +276,7 @@ function DashboardTable({ data }) {
 
   const handleRowClick = (row) => {
     const id = row.original.participant_id; 
-    navigate(`/student?id=${id}`);
+    navigate(`/student/profile?id=${id}`);
   }
 
   // We don't want to render all of the rows for this example, so cap
