@@ -2,10 +2,14 @@ import Jsona from 'jsona';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody } from 'reactstrap';
+import "./StudentProfile.css";
 
 function StudentProfile({userData}) {
     const dataFormatter = new Jsona();
+    const [studentInfo, setStudentInfo] = useState({});
+    const [coursesInfo, setCoursesInfo] = useState([]);
+
     const [readOnly, setReadOnly] = useState(true);
 
     const search = useLocation().search;
@@ -17,7 +21,7 @@ function StudentProfile({userData}) {
         const data = dataFormatter.deserialize(response.data);
         
         const { canvas_id, company, email_id, first_name, last_name, student_courses } = data;
-
+        setStudentInfo({ canvas_id, company_name : company.name, email_id, first_name, last_name });
         const courses = student_courses.map((student_course) => {
             return ({
               canvas_course: student_course.course.name,
@@ -34,7 +38,7 @@ function StudentProfile({userData}) {
               passed: student_course.cert_vouchers.map((cv) => cv.exam.passed),
             });
         });
-        console.log(courses);
+        setCoursesInfo(courses);
     }
 
     useEffect(() => {
@@ -44,31 +48,58 @@ function StudentProfile({userData}) {
     return(
         <>
         <Col sm={12} style={{paddingLeft: '100px', paddingRight: '100px'}}>
+        <h4 class="heading">Student Info</h4>
         <Form>
+            <Card>
+            <CardBody>
             <FormGroup row>
-            <Label for="exampleEmail" sm={2}>Email</Label>
+            <Label for="first_name" sm={2}>First Name</Label>
             <Col sm={10}>
-                <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" readOnly={readOnly}/>
+                <Input name="first_name" id="first_name" defaultValue={studentInfo.first_name} readOnly={readOnly}/>
             </Col>
             </FormGroup>
             <FormGroup row>
-            <Label for="examplePassword" sm={2}>Password</Label>
+            <Label for="last_name" sm={2}>Last Name</Label>
             <Col sm={10}>
-                <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" readOnly={readOnly}/>
+                <Input name="last_name" id="last_name" defaultValue={studentInfo.last_name} readOnly={readOnly}/>
             </Col>
             </FormGroup>
             <FormGroup row>
-            <Label for="exampleSelect" sm={2}>Select</Label>
+            <Label for="email_id" sm={2}>Email</Label>
             <Col sm={10}>
-                <Input type="select" name="select" id="exampleSelect" readOnly={readOnly}/>
+                <Input name="email_id" id="email_id" defaultValue={studentInfo.email_id} readOnly={readOnly}/>
             </Col>
             </FormGroup>
             <FormGroup row>
-            <Label for="exampleText" sm={2}>Text Area</Label>
-            <Col sm={10}>
-                <Input type="textarea" name="text" id="exampleText" readOnly={readOnly}/>
+            <Label for="company_name" sm={2}>Company</Label><Col sm={10}>
+                <Input name="company_name" id="company_name" defaultValue={studentInfo.company_name} readOnly={readOnly}/>
             </Col>
             </FormGroup>
+            <FormGroup row>
+            <Label for="canvas_id" sm={2}>Canvas id</Label>
+            <Col sm={10}>
+                <Input name="canvas_id" id="canvas_id" defaultValue={studentInfo.canvas_id} readOnly={readOnly}/>
+            </Col>
+            </FormGroup>
+            </CardBody>
+            </Card>
+            <h4 class="heading">Courses Info</h4>
+            {coursesInfo.map( (courseInfo, idx) => {
+                return (
+                <Card key={idx}>
+                    <CardBody>
+                    {Object.entries(courseInfo).map(([key,value]) => (
+                            <FormGroup row key={key}>
+                            <Label for={key} sm={2}>{key}</Label>
+                            <Col sm={10}>
+                                <Input name={key} id={key} defaultValue={value} readOnly={readOnly}/>
+                            </Col>
+                            </FormGroup>
+                    ))}
+                    </CardBody>
+                </Card>
+                )
+            })}
             {readOnly ? <></> :  
             <FormGroup check row>
             <Col sm={{ size: 10, offset: 2 }}>
