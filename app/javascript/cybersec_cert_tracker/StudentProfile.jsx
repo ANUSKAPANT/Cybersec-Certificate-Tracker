@@ -45,10 +45,16 @@ function StudentProfile({userData}) {
         fetchProfile();
       }, []);
 
+    const formatString = (str) => {
+        let temp = str.split('_');
+        temp = temp.map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
+        return temp.reduce((previousValue, currentValue) => previousValue + " " + currentValue);
+    }
+
     return(
         <>
         <Col sm={12} style={{paddingLeft: '100px', paddingRight: '100px'}}>
-        <h4 class="heading">Student Info</h4>
+        <h4 className="heading">Student Info</h4>
         <Form>
             <Card>
             <CardBody>
@@ -76,21 +82,21 @@ function StudentProfile({userData}) {
             </Col>
             </FormGroup>
             <FormGroup row>
-            <Label for="canvas_id" sm={2}>Canvas id</Label>
+            <Label for="canvas_id" sm={2}>Canvas Id</Label>
             <Col sm={10}>
                 <Input name="canvas_id" id="canvas_id" defaultValue={studentInfo.canvas_id} readOnly={readOnly}/>
             </Col>
             </FormGroup>
             </CardBody>
             </Card>
-            <h4 class="heading">Courses Info</h4>
+            <h4 className="heading">Courses Info</h4>
             {coursesInfo.map( (courseInfo, idx) => {
                 return (
                 <Card key={idx}>
                     <CardBody>
                     {Object.entries(courseInfo).map(([key,value]) => (
                             <FormGroup row key={key}>
-                            <Label for={key} sm={2}>{key}</Label>
+                            <Label for={key} sm={2}>{formatString(key)}</Label>
                             <Col sm={10}>
                                 <Input name={key} id={key} defaultValue={value} readOnly={readOnly}/>
                             </Col>
