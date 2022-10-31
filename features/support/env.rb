@@ -63,6 +63,7 @@ $test_email = "test@gmail.com"
 $test_password = "test777"
 $dashboard_path = "/dashboard"
 $sign_in_path = "/users/sign_in"
+$student_profile_path = "/student/profile"
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
