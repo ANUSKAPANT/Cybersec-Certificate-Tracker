@@ -16,3 +16,8 @@ end
 Then("user should see be redirected to student->profile") do 
     expect(page.current_path).to eq($student_profile_path)
 end
+
+Then("user should see dummy email record details") do 
+    sleep(1)
+    expect(find("input#email_id", :visible => false).value).to eq 'dummy@tamu.edu'
+end
