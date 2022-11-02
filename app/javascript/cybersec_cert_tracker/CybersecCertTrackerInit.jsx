@@ -76,7 +76,9 @@ function CybersecCertTrackerInit({ userData, children }) {
             <MenuItem routerLink={<Link to="/dashboard/users" />}>
               Users
             </MenuItem>
-            <MenuItem onClick={() => logout()}>Logout</MenuItem>
+            <MenuItem onClick={() => logout()} id="logout_button">
+              Logout
+            </MenuItem>
           </Menu>
         </Sidebar>
       </div>
