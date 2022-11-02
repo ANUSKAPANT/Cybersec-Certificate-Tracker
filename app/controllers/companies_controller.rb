@@ -30,11 +30,16 @@ class CompaniesController < ApplicationController
     @company.destroy
   end
 
-  def set_company
-    @company = Company.find(params[:id])
+  def match_companies
+    companies = Company.where("cast(name as text) ilike '%#{params[:term]}%'")
+    render json: companies
   end
 
   private
+
+  def set_company
+    @company = Company.find(params[:id])
+  end
 
   def company_params
     params.permit(:name, :smc)

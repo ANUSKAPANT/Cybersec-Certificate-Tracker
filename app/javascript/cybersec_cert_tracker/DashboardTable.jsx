@@ -269,6 +269,11 @@ function DashboardTable({ data, type, deleteItem }) {
     useSortBy
   );
 
+  const handleRowClick = (row) => {
+    const id = row.original.participant_id;
+    navigate(`/student/profile?id=${id}`);
+  };
+
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
   const [currentItems, setCurrentItems] = useState([]);
@@ -329,7 +334,7 @@ function DashboardTable({ data, type, deleteItem }) {
           {currentItems.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>

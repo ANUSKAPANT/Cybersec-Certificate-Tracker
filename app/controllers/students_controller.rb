@@ -32,11 +32,11 @@ class StudentsController < ApplicationController
     @student.destroy
   end
 
+  private
+
   def set_student
     @student = Student.find(params[:id])
   end
-
-  private
 
   def student_params
     params.permit(:first_name, :last_name, :canvas_id, :title, :company_id, :email_id)
