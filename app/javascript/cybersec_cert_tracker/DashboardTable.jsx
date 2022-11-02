@@ -13,6 +13,7 @@ import ReactPaginate from "react-paginate";
 import Columns from "./columns";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import { useNavigate } from "react-router-dom";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -199,6 +200,9 @@ filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 // Our table component
 function DashboardTable({ data, type, deleteItem }) {
   let col = Columns(type);
+
+  const navigate = useNavigate();
+
   if (type !== "Dashboard") {
     col.push({
       Header: "",
@@ -270,8 +274,10 @@ function DashboardTable({ data, type, deleteItem }) {
   );
 
   const handleRowClick = (row) => {
-    const id = row.original.participant_id;
-    navigate(`/student/profile?id=${id}`);
+    if (type == "Dashboard") {
+      const id = row.original.participant_id;
+      navigate(`/student/profile?id=${id}`);
+    }
   };
 
   // We don't want to render all of the rows for this example, so cap
