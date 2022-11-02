@@ -12,7 +12,13 @@ import CybersecCertTrackerInit from "./CybersecCertTrackerInit";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import history from "./history";
 import Dashboard from "./Dashboard";
-import Student from "./sidebar-pages/Student";
+import Students from "./sidebar-pages/Students";
+import Courses from "./sidebar-pages/Courses";
+import Companies from "./sidebar-pages/Companies";
+import CertificateVouchers from "./sidebar-pages/CertificateVouchers";
+import Exams from "./sidebar-pages/Exams";
+import Vendors from "./sidebar-pages/Vendors";
+import Users from "./sidebar-pages/Users";
 
 export default function CybersecCertTrackerApp({ data }) {
   return (
@@ -23,7 +29,19 @@ export default function CybersecCertTrackerApp({ data }) {
             <Routes>
               <Route path="/dashboard">
                 <Route index element={<Dashboard userData={data} />} />
-                <Route path="students" element={<Student userData={data} />} />
+                <Route path="students" element={<Students userData={data} />} />
+                <Route path="courses" element={<Courses userData={data} />} />
+                <Route
+                  path="companies"
+                  element={<Companies userData={data} />}
+                />
+                <Route
+                  path="cert_vouchers"
+                  element={<CertificateVouchers userData={data} />}
+                />
+                <Route path="exams" element={<Exams userData={data} />} />
+                <Route path="vendors" element={<Vendors userData={data} />} />
+                <Route path="users" element={<Users userData={data} />} />
               </Route>
               <Route path="/" element={<Navigate to="/dashboard" />} />
             </Routes>

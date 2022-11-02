@@ -67,6 +67,56 @@ export default function Columns(table) {
           accessor: "company.name",
         },
       ];
+
+    case "Course":
+      return [
+        {
+          Header: "Course Name",
+          accessor: "name",
+        },
+        {
+          Header: "Vendor",
+          accessor: "vendor",
+        },
+      ];
+
+    case "Company":
+      return [
+        {
+          Header: "Company Name",
+          accessor: "name",
+        },
+        {
+          Header: "SMC",
+          accessor: "smc",
+        },
+      ];
+
+    case "Vendor":
+      return [
+        {
+          Header: "Name",
+          accessor: "name",
+        },
+        {
+          Header: "Courses",
+          accessor: "courses",
+          Cell: ({ row }) => {
+            if (row.original.courses.length == 1) {
+              return <div>{row.original.courses[0].name}</div>;
+            }
+            return row.original.courses.map((course, number) => {
+              let label = number + 1;
+              return (
+                <div key={number}>
+                  <strong>{label}</strong>
+                  {". " + course.name}
+                </div>
+              );
+            });
+          },
+        },
+      ];
     default:
       break;
   }

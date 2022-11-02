@@ -197,18 +197,25 @@ function filterGreaterThan(rows, id, filterValue) {
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
-function DashboardTable({ data, type }) {
+function DashboardTable({ data, type, deleteItem }) {
   let col = Columns(type);
   if (type !== "Dashboard") {
     col.push({
       Header: "",
       id: "edit",
-      Cell: () => (
-        <div>
-          <EditOutlinedIcon />
-          <RemoveCircleOutlineOutlinedIcon />
-        </div>
-      ),
+      Cell: ({ row }) => {
+        return (
+          <div>
+            <EditOutlinedIcon />
+            <RemoveCircleOutlineOutlinedIcon
+              onClick={() => {
+                console.log(row.original.id);
+                deleteItem(row.original.id);
+              }}
+            />
+          </div>
+        );
+      },
     });
   }
 

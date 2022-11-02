@@ -58,12 +58,24 @@ function CybersecCertTrackerInit({ userData, children }) {
             <MenuItem routerLink={<Link to="/dashboard/students" />}>
               Students
             </MenuItem>
-            <MenuItem> Courses</MenuItem>
-            <MenuItem> Companies</MenuItem>
-            <MenuItem> Certificate Vouchers</MenuItem>
-            <MenuItem> Exams</MenuItem>
-            <MenuItem> Vendors</MenuItem>
-            <MenuItem> Users</MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/courses" />}>
+              Courses
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/companies" />}>
+              Companies
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />}>
+              Certificate Vouchers
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/exams" />}>
+              Exams
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/vendors" />}>
+              Vendors
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/users" />}>
+              Users
+            </MenuItem>
           </Menu>
         </Sidebar>
       </div>

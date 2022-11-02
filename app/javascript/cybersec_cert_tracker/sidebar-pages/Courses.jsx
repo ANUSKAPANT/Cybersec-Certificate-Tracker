@@ -32,16 +32,14 @@ const style = {
 
 const dataFormatter = new Jsona();
 
-const fileTypes = ["csv"];
-
-function Student({ userData }) {
+function Courses({ userData }) {
   const [loading, setLoading] = useState(true);
-  const [students, setStudents] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [open, setOpen] = React.useState(false);
 
   const fetchRecords = async () => {
     axios
-      .get(`/students`, {
+      .get(`/courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((response) => {
@@ -49,35 +47,18 @@ function Student({ userData }) {
 
         console.log(data);
 
-        const studentData = data.map((student) => {
+        const coursesData = data.map((course) => {
           return {
-            id: student.id,
+            id: course.id,
 
-            full_name: student.full_comma_separated_name,
+            name: course.name,
 
-            first_name: student.first_name,
-
-            last_name: student.last_name,
-
-            email_id: student.email_id,
-
-            canvas_id: student.canvas_id,
-
-            company: student.company,
-
-            courses: student.student_courses.map((sc) => {
-              return {
-                id: sc.course.id,
-                name: sc.course.name,
-              };
-            }),
+            vendor: course.vendor.name,
           };
         });
 
         setLoading(false);
-        setStudents(studentData);
-
-        console.log(studentData);
+        setCourses(coursesData);
       })
 
       .catch((error) => {
@@ -95,50 +76,35 @@ function Student({ userData }) {
     fetchRecords();
   }, []);
 
-  const fileUpload = async (event) => {
-    let csrf;
+  const deleteRecords = async (idx) => {
+    axios
+      .delete(`/courses/${idx}`, {
+        headers: { Authorization: `Bearer ${userData.token}` },
+      })
+      .then((res) => {
+        toast.success("Successfully Deleted", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      })
+      .catch((err) => {
+        toast.error("Error in deletingrecords", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      });
+  };
 
-    if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document
-        .querySelector("meta[name='csrf-token']")
-        .getAttribute("content");
-
-    if (Object.entries(event).length == 0) {
-      return;
-    }
-
-    const formData = new FormData();
-    Object.entries(event).forEach(([key, file]) => {
-      formData.append("file_name", file.name);
-      formData.append("body", file);
-      formData.append("user_id", 1);
+  const deleteItem = (idx) => {
+    deleteRecords(idx);
+    setCourses((prev) => {
+      const tempArray = prev.slice();
+      return tempArray.filter((item) => item.id !== idx);
     });
-
-    try {
-      await axios({
-        method: "POST",
-        url: "/csv_files.json",
-        headers: {
-          "Content-type": "multipart/form-data",
-          "X-CSRF-Token": csrf,
-        },
-        data: formData,
-      });
-      toast.success("Success!", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
-      fetchRecords();
-    } catch (error) {
-      toast.error("Something went wrong", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
-    }
   };
 
   return (
@@ -150,7 +116,7 @@ function Student({ userData }) {
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
-        + Add Students
+        + Add Courses
       </Button>
       <Modal
         open={open}
@@ -167,13 +133,13 @@ function Student({ userData }) {
           </div>
           <div>Fetching the data...</div>
         </div>
-      ) : students.length === 0 ? (
+      ) : courses.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
-        <DashboardTable data={students} type="Student" />
+        <DashboardTable data={courses} type="Course" deleteItem={deleteItem} />
       )}
     </>
   );
 }
 
-export default Student;
+export default Courses;
