@@ -6,12 +6,14 @@ import {
   useAsyncDebounce,
   useSortBy,
 } from "react-table";
-import { css } from "@emotion/react";
 import "./DashboardTable.css";
 import { Table } from "reactstrap";
 import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
-import { useNavigate } from 'react-router-dom';
+import Columns from "./columns";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import { useNavigate } from "react-router-dom";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -196,35 +198,32 @@ function filterGreaterThan(rows, id, filterValue) {
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
-function DashboardTable({ data }) {
+function DashboardTable({ data, type, deleteItem }) {
+  let col = Columns(type);
 
   const navigate = useNavigate();
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Cert Name",
-        accessor: "cert_name",
+  if (type !== "Dashboard") {
+    col.push({
+      Header: "",
+      id: "edit",
+      Cell: ({ row }) => {
+        return (
+          <div>
+            <EditOutlinedIcon />
+            <RemoveCircleOutlineOutlinedIcon
+              onClick={() => {
+                console.log(row.original.id);
+                deleteItem(row.original.id);
+              }}
+            />
+          </div>
+        );
       },
-      {
-        Header: "Full Name",
-        accessor: "full_name",
-      },
-      {
-        Header: "Email Address",
-        accessor: "email_address",
-      },
-      {
-        Header: "Company Name",
-        accessor: "company_name",
-      },
-      {
-        Header: "Registration Date",
-        accessor: "registration_date",
-      },
-    ],
-    []
-  );
+    });
+  }
+
+  const columns = React.useMemo(() => col, []);
 
   const filterTypes = React.useMemo(
     () => ({
@@ -275,9 +274,11 @@ function DashboardTable({ data }) {
   );
 
   const handleRowClick = (row) => {
-    const id = row.original.participant_id; 
-    navigate(`/student/profile?id=${id}`);
-  }
+    if (type == "Dashboard") {
+      const id = row.original.participant_id;
+      navigate(`/student/profile?id=${id}`);
+    }
+  };
 
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
@@ -305,7 +306,7 @@ function DashboardTable({ data }) {
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table striped {...getTableProps()}>
+      <Table striped hover {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
