@@ -53,7 +53,7 @@ function Companies({ userData }) {
 
             name: company.name,
 
-            smc: company.smc.toString(),
+            smc: String(company.smc),
           };
         });
 
@@ -82,6 +82,7 @@ function Companies({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((res) => {
+        console.log(res);
         toast.success("Successfully Deleted", {
           position: "bottom-center",
           autoClose: 3000,
@@ -90,6 +91,7 @@ function Companies({ userData }) {
         });
       })
       .catch((err) => {
+        console.log(err.response.data);
         toast.error("Error in deletingrecords", {
           position: "bottom-center",
           autoClose: 3000,
