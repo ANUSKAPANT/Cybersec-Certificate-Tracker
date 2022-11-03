@@ -15,6 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
 
 const override = {
   display: "block",
@@ -46,10 +47,35 @@ function Students({ userData }) {
 
   const handleClose = () => setOpen(false);
 
+  const submitData = async () =>{
+    let csrf = "";
+    //Not present always
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+
+    //await axios.post(`/students`, { headers: { Authorization: `Bearer ${userData.token}`, "X-CSRF-Token": csrf}, data:{...formValue} });
+    const response =await axios({
+      method: "POST",
+      url: "/students.json",
+      headers: {
+        "Content-type": "application/json",
+        "X-CSRF-Token": csrf,
+      },
+      data: {...formValue} ,
+    });
+    
+    console.log(response);    
+}
+
   const handleSubmit = (event) => {
+    event.preventDefault();
+
     setOpen(false);
     console.log(event);
     console.log(formValue)
+    submitData();
   }
 
   const handleChange = (field, event) => {
@@ -57,6 +83,8 @@ function Students({ userData }) {
     temp[field] = event.target.value
     setFormValue(temp);
   };
+
+
 
   const style = {
     position: 'absolute',
@@ -173,22 +201,25 @@ function Students({ userData }) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-            <Box
+            <Box 
             component="form"
             sx={{...style,
-                '& .MuiTextField-root': { m: 1, width: '40ch' },
+                '& .MuiTextField-root': { m: 1, width: '40ch' }, display: 'flex', flexWrap: 'wrap'
             }}
             noValidate
             autoComplete="off"
-            >
-           
-            
+            >   
             <div>
             <h2>Add Student Information</h2>
+            <TextField 
+                label="First Name"
+                value={formValue.first_name}
+                onChange={(e) => {handleChange('first_name', e)}}
+                />
                 <TextField
-                label="Full Name"
-                value={formValue.name}
-                onChange={(e) => {handleChange('name', e)}}
+                label="Last Name"
+                value={formValue.last_name}
+                onChange={(e) => {handleChange('last_name', e)}}
                 />
 
                 <TextField
@@ -197,47 +228,61 @@ function Students({ userData }) {
                 onChange={(e) => {handleChange('email', e)}}
                 />
 
-            <FormControl fullWidth>
+                <TextField
+                label="Company ID"
+                value={formValue.company_id}
+                onChange={(e) => {handleChange('company_id', e)}}
+                />  
+
+                <div></div>
+
+                <FormControl fullWidth sx={{ m: 1, width: '50ch' }}>
                     <InputLabel id="demo-simple-select-label">Canvas Course Enrollment</InputLabel>
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={formValue.age}
-                    onChange={(e) => {handleChange('age', e)}}
+                    value={formValue.canvas_course}
+                    onChange={(e) => {handleChange('canvas_course', e)}}
                     label="Canvas Course Enrollment"
                     >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={10}>CYBER: CompTIA Network+ Certificate Prep Course</MenuItem>
+                    <MenuItem value={20}>CYBER: CompTIA Security+ Certificate Prep Course</MenuItem>
                     </Select>
                 </FormControl>
 
-                <TextField
-                label="Company Name"
-                value={formValue.company}
-                onChange={(e) => {handleChange('company', e)}}
-                />
-
+                <div></div>
                 <TextField
                 label="Title"
                 value={formValue.title}
                 onChange={(e) => {handleChange('title', e)}}
                 />
-                
 
                 <TextField
-                label="Canvas Course Progress"
-                value={formValue.course_progress}
-                onChange={(e) => {handleChange('course_progress', e)}}
+                label="Canvas ID"
+                value={formValue.canvas_id}
+                onChange={(e) => {handleChange('canvas_id', e)}}
                 />
 
+                <div></div>
+                <FormControl fullWidth sx={{ m: 1, width: '50ch'}}>
+                    <InputLabel id="demo-simple-select-label">Canvas Course Progress</InputLabel>
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={formValue.course_progress}
+                    onChange={(e) => {handleChange('course_progress', e)}}
+                    label="Canvas Course Progress"
+                    >
+                    <MenuItem value={10}>Completed</MenuItem>
+                    <MenuItem value={20}>Not Completed</MenuItem>
+                    </Select>
+                </FormControl>
+                <div></div>
                 <TextField
                 label="SMC"
                 value={formValue.smc}
                 onChange={(e) => {handleChange('smc', e)}}
                 />
-
-               
 
                 <TextField
                 label="Registration Date"
@@ -262,9 +307,11 @@ function Students({ userData }) {
                 value={formValue.voucher_use_by}
                 onChange={(e) => {handleChange('voucher_use_by', e)}}
                 />
-
-            <Button onClick={handleClose}>Close</Button>
-            <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+                <div></div>
+                <Stack direction="row" spacing={2}>
+                  <Button variant="contained" onClick={handleClose}>Close</Button>
+                  <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+                </Stack> 
             </div>
             </Box>        
       </Modal>
