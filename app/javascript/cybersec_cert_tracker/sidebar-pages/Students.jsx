@@ -52,8 +52,6 @@ function Students({ userData }) {
     console.log(formValue)
   }
 
-  const [age, setAge] = React.useState('');
-
   const handleChange = (field, event) => {
     const temp = formValue;
     temp[field] = event.target.value
@@ -189,7 +187,8 @@ function Students({ userData }) {
             <h2>Add Student Information</h2>
                 <TextField
                 label="Full Name"
-                defaultValue="Full Name"
+                value={formValue.name}
+                onChange={(e) => {handleChange('name', e)}}
                 />
 
                 <TextField
@@ -203,7 +202,8 @@ function Students({ userData }) {
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={formValue.age}
+                    onChange={(e) => {handleChange('age', e)}}
                     label="Canvas Course Enrollment"
                     >
                     <MenuItem value={10}>Ten</MenuItem>
@@ -214,45 +214,53 @@ function Students({ userData }) {
 
                 <TextField
                 label="Company Name"
-                defaultValue="Company Name"
+                value={formValue.company}
+                onChange={(e) => {handleChange('company', e)}}
                 />
 
                 <TextField
                 label="Title"
-                defaultValue="Title"
+                value={formValue.title}
+                onChange={(e) => {handleChange('title', e)}}
                 />
                 
 
                 <TextField
                 label="Canvas Course Progress"
-                defaultValue="Canvas Course Progress"
+                value={formValue.course_progress}
+                onChange={(e) => {handleChange('course_progress', e)}}
                 />
 
                 <TextField
                 label="SMC"
-                defaultValue="SMC"
+                value={formValue.smc}
+                onChange={(e) => {handleChange('smc', e)}}
                 />
 
                
 
                 <TextField
                 label="Registration Date"
-                defaultValue="Registration Date"
+                value={formValue.reg_date}
+                onChange={(e) => {handleChange('reg_date', e)}}
                 />
 
                 <TextField
                 label="DCLDP Code"
-                defaultValue="DCLDP Code"
+                value={formValue.dcldp}
+                onChange={(e) => {handleChange('dcldp', e)}}
                 />
 
                 <TextField
                 label="Voucher Purchased Date"
-                defaultValue="Voucher Purchased Date"
+                value={formValue.voucher_purchase_date}
+                onChange={(e) => {handleChange('voucher_purchase_date', e)}}
                 />
 
                 <TextField
                 label="Voucher Use By"
-                defaultValue="Voucher Use By"
+                value={formValue.voucher_use_by}
+                onChange={(e) => {handleChange('voucher_use_by', e)}}
                 />
 
             <Button onClick={handleClose}>Close</Button>
