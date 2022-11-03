@@ -6,7 +6,7 @@ Given("user is on dashboard page with data uploaded") do
     page.find("#uploadCSVButton").click
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
     sleep(1) #wait for data upload to finish in backend
-    page.find('body').click #remove upload box
+    visit current_path #remove upload box
 end
 
 When("user clicks a table row") do
@@ -19,5 +19,5 @@ end
 
 Then("user should see dummy email record details") do 
     sleep(1)
-    expect(find("input#email_id", :visible => false).value).to eq 'dummy@tamu.edu'
+    expect(find("input#email_id").value).to eq 'dummy@tamu.edu'
 end
