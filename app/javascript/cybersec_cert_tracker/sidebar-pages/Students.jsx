@@ -41,13 +41,23 @@ function Students({ userData }) {
   const [students, setStudents] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [show, setShow] = useState(false);
+  const [formValue, setFormValue] = useState({});
+
 
   const handleClose = () => setOpen(false);
 
+  const handleSubmit = (event) => {
+    setOpen(false);
+    console.log(event);
+    console.log(formValue)
+  }
+
   const [age, setAge] = React.useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleChange = (field, event) => {
+    const temp = formValue;
+    temp[field] = event.target.value
+    setFormValue(temp);
   };
 
   const style = {
@@ -184,7 +194,8 @@ function Students({ userData }) {
 
                 <TextField
                 label="Email Address"
-                defaultValue="Email Address"
+                value={formValue.email}
+                onChange={(e) => {handleChange('email', e)}}
                 />
 
             <FormControl fullWidth>
@@ -245,7 +256,7 @@ function Students({ userData }) {
                 />
 
             <Button onClick={handleClose}>Close</Button>
-            <Button variant="contained" onClick={handleClose}>Submit</Button>
+            <Button variant="contained" onClick={handleSubmit}>Submit</Button>
             </div>
             </Box>        
       </Modal>
