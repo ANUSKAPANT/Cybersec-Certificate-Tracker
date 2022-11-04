@@ -1,10 +1,9 @@
-import React, { useEffect, useState, CSSProperties } from "react";
+import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
 import { Button } from "reactstrap";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,15 +43,10 @@ function Companies({ userData }) {
       })
       .then((response) => {
         const data = dataFormatter.deserialize(response.data);
-
-        console.log(data);
-
         const companiesData = data.map((company) => {
           return {
             id: company.id,
-
             name: company.name,
-
             smc: String(company.smc),
           };
         });

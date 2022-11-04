@@ -1,10 +1,9 @@
-import React, { useEffect, useState, CSSProperties } from "react";
+import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
 import { Button } from "reactstrap";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,23 +43,18 @@ function CertificateVouchers({ userData }) {
       })
       .then((response) => {
         const data = dataFormatter.deserialize(response.data);
-
-        console.log(data);
-
-        // const certificateVouchersData = data.map((cert_vouchers) => {
-        //   return {
-        //     id: cert_vouchers.id,
-
-        //     name: cert_vouchers.name,
-
-        //     smc: cert_vouchers.smc.toString(),
-        //   };
-        // });
-
-        // setLoading(false);
-        // setCertificateVouchers(certificateVouchersData);
+        const certificateVouchersData = data.map((cert_voucher) => {
+          return {
+            id: cert_voucher.id,
+            cert_name: cert_voucher.certification_name,
+            course: cert_voucher.student_course.course.name,
+            created_date: cert_voucher.created_date,
+            expiry_date: cert_voucher.expiry_date,
+          };
+        });
+        setLoading(false);
+        setCertificateVouchers(certificateVouchersData);
       })
-
       .catch((error) => {
         console.log(error);
         toast.error("Error in fetching records", {
@@ -133,11 +127,11 @@ function CertificateVouchers({ userData }) {
           </div>
           <div>Fetching the data...</div>
         </div>
-      ) : companies.length === 0 ? (
+      ) : certificateVouchers.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
         <DashboardTable
-          data={companies}
+          data={certificateVouchers}
           type="Certificate_Voucher"
           deleteItem={deleteItem}
         />
