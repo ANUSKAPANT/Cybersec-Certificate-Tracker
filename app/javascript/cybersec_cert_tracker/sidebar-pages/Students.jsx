@@ -47,7 +47,7 @@ function Students({ userData }) {
 
   const handleClose = () => setOpen(false);
 
-  const submitData = async () =>{
+  const submitData = async () => {
     let csrf = "";
     //Not present always
     if (document.querySelector("meta[name='csrf-token']"))
@@ -56,18 +56,18 @@ function Students({ userData }) {
         .getAttribute("content");
 
     //await axios.post(`/students`, { headers: { Authorization: `Bearer ${userData.token}`, "X-CSRF-Token": csrf}, data:{...formValue} });
-    const response =await axios({
+    const response = await axios({
       method: "POST",
       url: "/students.json",
       headers: {
         "Content-type": "application/json",
         "X-CSRF-Token": csrf,
       },
-      data: {...formValue} ,
+      data: { ...formValue },
     });
-    
-    console.log(response);    
-}
+
+    console.log(response);
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -191,7 +191,7 @@ function Students({ userData }) {
         color="success"
         className="csv-button"
         onClick={() => setOpen(true)}
-        id="uploadCSVButton"
+        id="add_student_button"
       >
         + Add Students
       </Button>
@@ -201,119 +201,127 @@ function Students({ userData }) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-            <Box 
-            component="form"
-            sx={{...style,
-                '& .MuiTextField-root': { m: 1, width: '40ch' }, display: 'flex', flexWrap: 'wrap'
-            }}
-            noValidate
-            autoComplete="off"
-            >   
-            <div>
+        <Box
+          component="form"
+          sx={{
+            ...style,
+            '& .MuiTextField-root': { m: 1, width: '40ch' }, display: 'flex', flexWrap: 'wrap'
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <div>
             <h2>Add Student Information</h2>
-            <TextField 
-                label="First Name"
-                value={formValue.first_name}
-                onChange={(e) => {handleChange('first_name', e)}}
-                />
-                <TextField
-                label="Last Name"
-                value={formValue.last_name}
-                onChange={(e) => {handleChange('last_name', e)}}
-                />
+            <TextField
+              label="First Name"
+              value={formValue.first_name}
+              id="first_name"
+              onChange={(e) => { handleChange('first_name', e) }}
+            />
+            <TextField
+              label="Last Name"
+              value={formValue.last_name}
+              id="last_name"
+              onChange={(e) => { handleChange('last_name', e) }}
+            />
 
-                <TextField
-                label="Email Address"
-                value={formValue.email}
-                onChange={(e) => {handleChange('email', e)}}
-                />
+            <TextField
+              label="Email Address"
+              value={formValue.email}
+              id="email"
+              onChange={(e) => { handleChange('email', e) }}
+            />
 
-                <TextField
-                label="Company ID"
-                value={formValue.company_id}
-                onChange={(e) => {handleChange('company_id', e)}}
-                />  
+            <TextField
+              label="Company ID"
+              value={formValue.company_id}
+              id="company_id"
+              onChange={(e) => { handleChange('company_id', e) }}
+            />
 
-                <div></div>
+            <div></div>
 
-                <FormControl fullWidth sx={{ m: 1, width: '50ch' }}>
-                    <InputLabel id="demo-simple-select-label">Canvas Course Enrollment</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={formValue.canvas_course}
-                    onChange={(e) => {handleChange('canvas_course', e)}}
-                    label="Canvas Course Enrollment"
-                    >
-                    <MenuItem value={10}>CYBER: CompTIA Network+ Certificate Prep Course</MenuItem>
-                    <MenuItem value={20}>CYBER: CompTIA Security+ Certificate Prep Course</MenuItem>
-                    </Select>
-                </FormControl>
+            <FormControl fullWidth sx={{ m: 1, width: '50ch' }}>
+              <InputLabel id="demo-simple-select-label">Canvas Course Enrollment</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formValue.canvas_course}
+                onChange={(e) => { handleChange('canvas_course', e) }}
+                label="Canvas Course Enrollment"
+              >
+                <MenuItem value={10}>CYBER: CompTIA Network+ Certificate Prep Course</MenuItem>
+                <MenuItem value={20}>CYBER: CompTIA Security+ Certificate Prep Course</MenuItem>
+              </Select>
+            </FormControl>
 
-                <div></div>
-                <TextField
-                label="Title"
-                value={formValue.title}
-                onChange={(e) => {handleChange('title', e)}}
-                />
+            <div></div>
+            <TextField
+              label="Title"
+              value={formValue.title}
+              id="title"
+              onChange={(e) => { handleChange('title', e) }}
+            />
 
-                <TextField
-                label="Canvas ID"
-                value={formValue.canvas_id}
-                onChange={(e) => {handleChange('canvas_id', e)}}
-                />
+            <TextField
+              label="Canvas ID"
+              value={formValue.canvas_id}
+              id="canvas_id"
+              onChange={(e) => { handleChange('canvas_id', e) }}
+            />
 
-                <div></div>
-                <FormControl fullWidth sx={{ m: 1, width: '50ch'}}>
-                    <InputLabel id="demo-simple-select-label">Canvas Course Progress</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={formValue.course_progress}
-                    onChange={(e) => {handleChange('course_progress', e)}}
-                    label="Canvas Course Progress"
-                    >
-                    <MenuItem value={10}>Completed</MenuItem>
-                    <MenuItem value={20}>Not Completed</MenuItem>
-                    </Select>
-                </FormControl>
-                <div></div>
-                <TextField
-                label="SMC"
-                value={formValue.smc}
-                onChange={(e) => {handleChange('smc', e)}}
-                />
+            <div></div>
+            <FormControl fullWidth sx={{ m: 1, width: '50ch' }}>
+              <InputLabel id="demo-simple-select-label">Canvas Course Progress</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formValue.course_progress}
+                onChange={(e) => { handleChange('course_progress', e) }}
+                label="Canvas Course Progress"
+              >
+                <MenuItem value={10}>Completed</MenuItem>
+                <MenuItem value={20}>Not Completed</MenuItem>
+              </Select>
+            </FormControl>
+            <div></div>
+            <TextField
+              label="SMC"
+              value={formValue.smc}
+              id="smc"
+              onChange={(e) => { handleChange('smc', e) }}
+            />
 
-                <TextField
-                label="Registration Date"
-                value={formValue.reg_date}
-                onChange={(e) => {handleChange('reg_date', e)}}
-                />
+            <TextField
+              label="Registration Date"
+              value={formValue.reg_date}
+              onChange={(e) => { handleChange('reg_date', e) }}
+            />
 
-                <TextField
-                label="DCLDP Code"
-                value={formValue.dcldp}
-                onChange={(e) => {handleChange('dcldp', e)}}
-                />
+            <TextField
+              label="DCLDP Code"
+              value={formValue.dcldp}
+              onChange={(e) => { handleChange('dcldp', e) }}
+            />
 
-                <TextField
-                label="Voucher Purchased Date"
-                value={formValue.voucher_purchase_date}
-                onChange={(e) => {handleChange('voucher_purchase_date', e)}}
-                />
+            <TextField
+              label="Voucher Purchased Date"
+              value={formValue.voucher_purchase_date}
+              onChange={(e) => { handleChange('voucher_purchase_date', e) }}
+            />
 
-                <TextField
-                label="Voucher Use By"
-                value={formValue.voucher_use_by}
-                onChange={(e) => {handleChange('voucher_use_by', e)}}
-                />
-                <div></div>
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={handleClose}>Close</Button>
-                  <Button variant="contained" onClick={handleSubmit}>Submit</Button>
-                </Stack> 
-            </div>
-            </Box>        
+            <TextField
+              label="Voucher Use By"
+              value={formValue.voucher_use_by}
+              onChange={(e) => { handleChange('voucher_use_by', e) }}
+            />
+            <div></div>
+            <Stack direction="row" spacing={2}>
+              <Button variant="contained" onClick={handleClose}>Close</Button>
+              <Button variant="contained" onClick={handleSubmit} id="form_submit">Submit</Button>
+            </Stack>
+          </div>
+        </Box>
       </Modal>
       {loading == true ? (
         <div className="spinner-container">
