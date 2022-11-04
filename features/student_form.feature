@@ -6,17 +6,10 @@ Feature: Sidebar
     When user clicks sidebar logo
     Then user should see student panel in sidebar
 
-  Scenario: User clicks on Sidebar, click on Student panel, redirected to student page
-    Given user is on dashboard page with data uploaded
-    When user clicks sidebar logo
-    When user clicks student panel
-    Then user should be redirected to student page
-
   Scenario: User clicks on Sidebar, click on Student panel, redirected to student page, and see student data
     Given user is on dashboard page with data uploaded
     When user clicks sidebar logo
     When user clicks student panel
-    Then user should be redirected to student page
     Then user should see student data
 
   Scenario: User is on student profile page and submits a form

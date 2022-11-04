@@ -8,7 +8,7 @@ Given("user is on student profile page") do
     sleep(1) #wait for data upload to finish in backend
     visit current_path #remove upload box
     page.find("body > div > nav > div > button > span").click
-    page.find("#student_button").click
+    page.find("#students_nav").click
     visit current_path 
 end
 
@@ -17,7 +17,7 @@ When("user clicks sidebar logo") do
 end
 
 When("user clicks student panel") do 
-    page.find("#student_button").click
+    page.find("#students_nav").click
 end
 
 When("user clicks add student button") do 
@@ -38,11 +38,7 @@ When("user submits the form") do
 end
 
 Then("user should see student panel in sidebar") do
-    expect(find("#student_button > span").text).to eq 'Students'
-end
-
-Then("user should be redirected to student page") do
-    expect(page.current_path).to eq($student_sidebar_path)
+    expect(find("#students_nav > span").text).to eq 'Students'
 end
 
 Then("user should see student data") do
