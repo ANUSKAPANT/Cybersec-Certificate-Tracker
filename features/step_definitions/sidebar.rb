@@ -13,3 +13,8 @@ end
 Then("user should be redirected to student page") do
     expect(page.current_path).to eq($student_sidebar_path)
 end
+
+Then("user should see student data") do
+    expect(page).to have_content("dummy@tamu.edu")
+end
+
