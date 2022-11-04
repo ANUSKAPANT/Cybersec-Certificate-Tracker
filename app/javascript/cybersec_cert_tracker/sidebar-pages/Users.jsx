@@ -43,42 +43,17 @@ function Users({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((response) => {
-        // const data = dataFormatter.deserialize(response.data);
-
-        console.log(response);
-
-        // const userData = data.map((user) => {
-        //   return {
-        //     id: user.id,
-
-        //     full_name: user.full_comma_separated_name,
-
-        //     first_name: user.first_name,
-
-        //     last_name: user.last_name,
-
-        //     email_id: user.email_id,
-
-        //     canvas_id: user.canvas_id,
-
-        //     company: user.company,
-
-        //     courses: user.user_courses.map((sc) => {
-        //       return {
-        //         id: sc.course.id,
-        //         name: sc.course.name,
-        //       };
-        //     }),
-        //   };
-        // });
-
-        // setLoading(false);
-        // setUsers(userData);
-
-        // console.log(userData);
-      })
-
-      .catch((error) => {
+        const data = dataFormatter.deserialize(response.data);
+        const userData = data.map((user) => {
+          return {
+            id: user.id,
+            email: user.email,
+            role: user.role
+          };
+        });
+        setLoading(false);
+        setUsers(userData);
+      }).catch((error) => {
         console.log(error);
         toast.error("Error in fetching records", {
           position: "bottom-center",

@@ -1,10 +1,9 @@
-import React, { useEffect, useState, CSSProperties } from "react";
+import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
 import { Button } from "reactstrap";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,15 +43,10 @@ function Vendors({ userData }) {
       })
       .then((response) => {
         const data = dataFormatter.deserialize(response.data);
-
-        console.log(data);
-
         const vendorsData = data.map((vendor) => {
           return {
             id: vendor.id,
-
             name: vendor.name,
-
             courses: vendor.courses.map((course) => {
               return {
                 id: course.id,

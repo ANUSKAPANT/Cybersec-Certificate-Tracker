@@ -3,13 +3,9 @@ import PropTypes from "prop-types";
 import { useStoreContext } from "./Store";
 import { setUserData } from "./Actions";
 import {
-  Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
 } from "reactstrap";
 import axios from "axios";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
@@ -55,6 +51,9 @@ function CybersecCertTrackerInit({ userData, children }) {
       <div className="sidebar">
         <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
           <Menu>
+            <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
+              Dashboard
+            </MenuItem>
             <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
               Students
             </MenuItem>

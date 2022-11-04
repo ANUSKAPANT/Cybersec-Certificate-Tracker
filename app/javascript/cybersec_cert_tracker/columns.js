@@ -92,6 +92,42 @@ export default function Columns(table) {
         },
       ];
 
+    case "User":
+      return [
+        {
+          Header: "Email",
+          accessor: "email",
+        },
+        {
+          Header: "Role",
+          accessor: "role",
+        },
+      ];
+
+    case "Exam":
+      return [
+        {
+          Header: "Certification Name",
+          accessor: "certification_name",
+        },
+        {
+          Header: "Exam Code",
+          accessor: "exam_code",
+        },
+        {
+          Header: "Exam Date",
+          accessor: "exam_date",
+        },
+        {
+          Header: "Exam Grade",
+          accessor: "grade",
+        },
+        {
+          Header: "Certificate Voucher",
+          accessor: "cert_voucher",
+        },
+      ];
+
     case "Vendor":
       return [
         {
@@ -117,53 +153,32 @@ export default function Columns(table) {
           },
         },
       ];
+
+    case "Certificate_Voucher":
+      return[
+        {
+          Header: "Cert Name",
+          accessor: "cert_name",
+        },
+        {
+          Header: "Course",
+          accessor: "course",
+        },
+        {
+          Header: "Full Name",
+          accessor: "full_name",
+        },
+        {
+          Header: "Created Date",
+          accessor: "created_date",
+        },
+        {
+          Header: "Expiry Date",
+          accessor: "expiry_date",
+        },
+      ];
+
     default:
       break;
   }
 }
-// [
-//       {
-//         Header: "Cert Name",
-//         accessor: "cert_name",
-//       },
-//       {
-//         Header: "Full Name",
-//         accessor: "full_name",
-//       },
-//       {
-//         Header: "Email Address",
-//         accessor: "email_address",
-//       },
-//       {
-//         Header: "Company Name",
-//         accessor: "company_name",
-//       },
-//       {
-//         Header: "Registration Date",
-//         accessor: "registration_date",
-//       },
-//       // {
-//       //   Header: "Age",
-//       //   accessor: "age",
-//       //   Filter: SliderColumnFilter,
-//       //   filter: "equals",
-//       // },
-//       // {
-//       //   Header: "Visits",
-//       //   accessor: "visits",
-//       //   Filter: NumberRangeColumnFilter,
-//       //   filter: "between",
-//       // },
-//       // {
-//       //   Header: "Status",
-//       //   accessor: "status",
-//       //   Filter: SelectColumnFilter,
-//       //   filter: "includes",
-//       // },
-//       // {
-//       //   Header: "Profile Progress",
-//       //   accessor: "progress",
-//       //   Filter: SliderColumnFilter,
-//       //   filter: filterGreaterThan,
-//       // },
-//     ],
