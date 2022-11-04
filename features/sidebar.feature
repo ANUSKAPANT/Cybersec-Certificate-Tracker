@@ -18,3 +18,10 @@ Feature: Sidebar
     When user clicks student panel
     Then user should be redirected to student page
     Then user should see student data
+
+  Scenario: User is on student profile page and submits a form
+    Given user is on student profile page
+    When user clicks add student button
+    When user fills the form
+    When user submits the form
+    Then user should see filled form data
