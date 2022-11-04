@@ -62,6 +62,7 @@ end
 $test_email = "test@gmail.com"
 $test_password = "test777"
 $dashboard_path = "/dashboard"
+$student_sidebar_path = "/dashboard/students"
 $sign_in_path = "/users/sign_in"
 $student_profile_path = "/student/profile"
 
