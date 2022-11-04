@@ -66,6 +66,7 @@ end
 
 group :test do
   gem 'cucumber-rails'
+  gem 'cucumber-expressions'
   gem 'rspec-rails'
   gem 'simplecov'
   gem 'database_cleaner'

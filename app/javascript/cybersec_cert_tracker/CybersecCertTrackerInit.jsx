@@ -55,25 +55,25 @@ function CybersecCertTrackerInit({ userData, children }) {
       <div className="sidebar">
         <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
           <Menu>
-            <MenuItem routerLink={<Link to="/dashboard/students" />}>
+            <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
               Students
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/courses" />}>
+            <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
               Courses
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/companies" />}>
+            <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
               Companies
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />}>
+            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
               Certificate Vouchers
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/exams" />}>
+            <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
               Exams
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/vendors" />}>
+            <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
               Vendors
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/users" />}>
+            <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
               Users
             </MenuItem>
             <MenuItem onClick={() => logout()} id="logout_button">
