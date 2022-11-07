@@ -49,7 +49,7 @@ function StudentProfile({ userData }) {
     return (
         <>
             <Col sm={12} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                <h4 className="heading">Student Info</h4>
+                <h4 className="heading">Overview</h4>
                 <Form>
                     <Card>
                         <CardBody>
@@ -85,12 +85,6 @@ function StudentProfile({ userData }) {
                         </CardBody>
                     </Card>
                     <StudentCourseTable coursesInfo={coursesInfo} />
-                    {readOnly ? <></> :
-                        <FormGroup check row>
-                            <Col sm={{ size: 10, offset: 2 }}>
-                                <Button>Submit</Button>
-                            </Col>
-                        </FormGroup>}
                 </Form>
             </Col>
         </>

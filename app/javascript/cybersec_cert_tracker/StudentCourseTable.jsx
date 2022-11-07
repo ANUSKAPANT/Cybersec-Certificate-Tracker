@@ -42,40 +42,43 @@ export default function StudentCourseTable({ coursesInfo }) {
     }, [coursesInfo])
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {cols.map((column) => (
-                                <TableCell
-                                    key={column.name}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {formatString(column.name)}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {coursesInfo
-                            .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row['canvas_course']}>
-                                        {cols.map((column) => {
-                                            const value = row[column.name];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {value}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Paper>
+        <div className="student_courses">
+            <div className="heading"><h4 style={{ display: "inline" }}>Courses</h4> <p style={{ display: "inline", color: "#9F9998" }}>{coursesInfo.length} items</p></div>
+            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                {cols.map((column) => (
+                                    <TableCell
+                                        key={column.name}
+                                        style={{ minWidth: column.minWidth }}
+                                    >
+                                        {formatString(column.name)}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {coursesInfo
+                                .map((row) => {
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row['canvas_course']}>
+                                            {cols.map((column) => {
+                                                const value = row[column.name];
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {value}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    );
+                                })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        </div>
     );
 }
