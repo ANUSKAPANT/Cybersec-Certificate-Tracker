@@ -1,4 +1,8 @@
-.heading{
-    text-align: center;
+.heading {
+    text-align: left;
     padding: 5px;
+}
+
+.student_courses {
+    margin-top: 10px;
 }
