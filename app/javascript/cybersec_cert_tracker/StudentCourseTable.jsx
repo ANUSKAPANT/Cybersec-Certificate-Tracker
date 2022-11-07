@@ -5,30 +5,24 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 export default function StudentCourseTable({ coursesInfo }) {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [cols, setCols] = useState([]);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    const formatString = (str) => {
+        let temp = str.split('_');
+        temp = temp.map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
+        return temp.reduce((previousValue, currentValue) => previousValue + " " + currentValue);
+    }
 
     useEffect(() => {
         if (coursesInfo[0]) {
             let columns = Object.keys(coursesInfo[0]);
             columns = columns.map((col) => {
                 let minWidth = 170;
-                if (col == 'canvas_course') minWidth = 300;
+                if (col == 'canvas_course') minWidth = 400;
                 return {
                     name: col,
                     minWidth
@@ -58,14 +52,13 @@ export default function StudentCourseTable({ coursesInfo }) {
                                     key={column.name}
                                     style={{ minWidth: column.minWidth }}
                                 >
-                                    {column.name}
+                                    {formatString(column.name)}
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {coursesInfo
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row['canvas_course']}>
@@ -83,15 +76,6 @@ export default function StudentCourseTable({ coursesInfo }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
         </Paper>
     );
 }
