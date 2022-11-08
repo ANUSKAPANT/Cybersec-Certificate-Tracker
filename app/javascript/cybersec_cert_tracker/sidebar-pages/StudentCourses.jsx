@@ -57,7 +57,7 @@ function StudentCourses({ userData }) {
     setOpen(false);
   }
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/student_courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -90,7 +90,7 @@ function StudentCourses({ userData }) {
       });
   };
 
-  const fetchStudents = async () => {
+  const fetchStudents = () => {
     axios
       .get(`/students`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -116,7 +116,7 @@ function StudentCourses({ userData }) {
       });
   };
 
-  const fetchStudentCourse = async (id) => {
+  const fetchStudentCourse = (id) => {
     axios
       .get(`/student_courses/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -146,7 +146,7 @@ function StudentCourses({ userData }) {
       });
   };
 
-  const fetchCourses = async () => {
+  const fetchCourses = () => {
     axios
       .get(`/courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -176,7 +176,7 @@ function StudentCourses({ userData }) {
     fetchCourses();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/students/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -266,7 +266,6 @@ function StudentCourses({ userData }) {
         });
     });
   }
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

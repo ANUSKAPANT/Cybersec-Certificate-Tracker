@@ -38,7 +38,7 @@ function Vendors({ userData }) {
   const [courseOptions, setCourseOptions] = useState([]);
   const [vendorInfo, setVendorInfo] = useState({id: null});
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/vendors`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -74,7 +74,7 @@ function Vendors({ userData }) {
     fetchCourses();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/vendors/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -97,7 +97,7 @@ function Vendors({ userData }) {
       });
   };
 
-  const fetchCourses = async () => {
+  const fetchCourses = () => {
     axios
       .get(`/courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -122,7 +122,7 @@ function Vendors({ userData }) {
       });
   };
 
-  const fetchVendor = async (id) => {
+  const fetchVendor = (id) => {
     axios
       .get(`/vendors/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },

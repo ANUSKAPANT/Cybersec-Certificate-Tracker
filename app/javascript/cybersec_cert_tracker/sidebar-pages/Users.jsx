@@ -37,7 +37,7 @@ function Users({ userData }) {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = React.useState(false);
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/users.json`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -68,7 +68,7 @@ function Users({ userData }) {
     fetchRecords();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/users/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
