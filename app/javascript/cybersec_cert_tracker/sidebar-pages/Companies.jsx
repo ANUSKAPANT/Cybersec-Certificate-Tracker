@@ -40,10 +40,9 @@ function Companies({ userData }) {
   const [companies, setCompanies] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [companyInfo, setCompanyInfo] = useState({id: null});
-  const [companyOptions, setCompanyOptions] = useState([]);
 
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/companies`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -77,13 +76,12 @@ function Companies({ userData }) {
     fetchRecords();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/companies/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         toast.success("Successfully Deleted", {
           position: "bottom-center",
           autoClose: 3000,
@@ -91,8 +89,7 @@ function Companies({ userData }) {
           closeOnClick: true,
         });
       })
-      .catch((err) => {
-        console.log(err.response.data);
+      .catch(() => {
         toast.error("Error in deletingrecords", {
           position: "bottom-center",
           autoClose: 3000,
@@ -110,23 +107,20 @@ function Companies({ userData }) {
     });
   };
 
-  const fetchCompanies = async () => {
+  const fetchCompany = (id) => {
     axios
-      .get(`/companies`, {
+      .get(`/companies/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((response) => {
         const data = dataFormatter.deserialize(response.data);
-        const companiesData = data.map((company) => {
-          return {
-            id: company.id,
-            label: company.name,
-            value: company.id,
-          };
-        });
-        setCompanies(companiesData);
-      }).catch((error) => {
-        console.log(error);
+        const companyData = {
+          id: data.id,
+          name: data.name,
+          smc: data.smc
+        };
+        setCompanyInfo(companyData);
+      }).catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -135,6 +129,11 @@ function Companies({ userData }) {
         });
       });
   };
+
+  const editItem = (id) => {
+    setOpen(true);
+    fetchCompany(id);
+  }
 
   const handleClose = () => {
     setCompanyInfo({ id: null });
@@ -206,49 +205,22 @@ function Companies({ userData }) {
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
-        + Add Companies
+        + Add Company
       </Button>
       <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '700px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add Companies</ModalHeader>
+        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add Company</ModalHeader>
         <ModalBody>
           <Form>
             <Card>
               <CardBody>
-                {/* <FormGroup row>
-                  <Col sm={6}>
-                    <Label for="name" sm={5}>Company Name</Label>
-                    <Input name="name" id="name" defaultValue={companyInfo.name}  onChange={handleInputChange}/>
-                  </Col>
-                  <Col sm={6}>
-                    <Label for="last_name" sm={5}>Last Name</Label>
-                    <Input name="last_name" id="last_name" defaultValue={studentInfo.last_name} onChange={handleInputChange} />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col sm={6}>
-                    <Label for="email_id" sm={5}>Email</Label>
-                    <Input name="email_id" id="email_id" defaultValue={studentInfo.email_id}  onChange={handleInputChange} />
-                  </Col>
-                  <Col sm={6}>
-                    <Label for="canvas_id" sm={5}>Canvas Id</Label>
-                    <Input name="canvas_id" id="canvas_id" defaultValue={studentInfo.canvas_id}  onChange={handleInputChange} />
-                  </Col>
-                </FormGroup> */}
-
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="company_name" sm={5}>Company</Label>
-                    <Select
-                      name="company_id"
-                      onChange={(value) => handleSelectChange(value, "company_id")}
-                      options={companyOptions}
-                      value={companyOptions.filter((option) => (companyInfo.company_id == option.value))}
-                      placeholder="Select Company"
-                    />
+                    <Label for="name" sm={5}>Company</Label>
+                    <Input name="name" id="name" defaultValue={companyInfo.name} onChange={handleInputChange} />
                   </Col>
                 </FormGroup>
-                  <FormGroup row>
-                  <Col sm={6}>
+                <FormGroup row>
+                  <Col sm={12}>
                     <Label for="smc" sm={5}>SMC</Label>
                     <Select
                       name="smc"
@@ -259,13 +231,6 @@ function Companies({ userData }) {
                     />
                   </Col>
                 </FormGroup>
-
-                  {/* <FormGroup row>
-                  <Col sm={6}>
-                    <Label for="smc" sm={5}>SMC</Label>
-                    <Input name="smc" id="smc" defaultValue={companyInfo.smc}  onChange={handleInputChange} />
-                  </Col>
-                </FormGroup> */}
               </CardBody>
             </Card>
           </Form>
@@ -289,6 +254,7 @@ function Companies({ userData }) {
           data={companies}
           type="Company"
           deleteItem={deleteItem}
+          editItem={editItem}
         />
       )}
     </>
