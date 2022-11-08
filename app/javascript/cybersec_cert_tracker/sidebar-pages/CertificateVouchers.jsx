@@ -36,17 +36,15 @@ function CertificateVouchers({ userData }) {
   const [loading, setLoading] = useState(true);
   const [certificateVouchers, setCertificateVouchers] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [courseOptions, setCourseOptions] = useState([]);
-  const [studentOptions, setStudentOptions] = useState([]);
-  const [certificateOptions, setCertificateOptions] = useState([]);
+  const [studentCourseOptions, setStudentCourseOptions] = useState([]);
   const [certificateVouchersInfo, setCertificateVouchersInfo] = useState({id: null});
 
   const handleClose = () => {
-    setCertificateVouchersInfo({});
+    setCertificateVouchersInfo({ id: null });
     setOpen(false);
   }
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/cert_vouchers`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -76,22 +74,20 @@ function CertificateVouchers({ userData }) {
       });
   };
 
-  const fetchCertificateVouchers = async (id) => {
+  const fetchCertificateVoucher = (id) => {
     axios
       .get(`/cert_vouchers/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((response) => {
         const data = dataFormatter.deserialize(response.data);
-        const certificateVouchersData = data.map((cert_voucher) => {
-          return {
-            id: cert_voucher.id,
-            cert_name: cert_voucher.certification_name,
-            course: cert_voucher.student_course.course.name,
-            created_date: cert_voucher.created_date,
-            expiry_date: cert_voucher.expiry_date,
-          };
-        });
+        const certificateVouchersData = {
+          id: data.id,
+          certification_name: data.certification_name,
+          student_course_id: data.student_course_id,
+          created_date: data.created_date,
+          expiry_date: data.expiry_date,
+        };
         setCertificateVouchersInfo(certificateVouchersData);
       }).catch(() => {
         toast.error("Error in fetching records", {
@@ -103,20 +99,21 @@ function CertificateVouchers({ userData }) {
       });
   };
 
-  const fetchCourses = async () => {
+  const fetchStudentCourses = () => {
     axios
-      .get(`/courses`, {
+      .get(`/student_courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((response) => {
         const data = dataFormatter.deserialize(response.data);
-        const coursesData = data.map((course) => {
+        const studentCourseData = data.map((data) => {
           return {
-            value: course.id,
-            label: course.name,
+            student_course_id: data.id,
+            value: data.id,
+            label: `${data.student.full_comma_separated_name} (${data.course.name})`
           };
         });
-        setCourseOptions(coursesData);
+        setStudentCourseOptions(studentCourseData);
       }).catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
@@ -129,10 +126,10 @@ function CertificateVouchers({ userData }) {
 
   useEffect(() => {
     fetchRecords();
-    fetchCourses();
+    fetchStudentCourses();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/cert_vouchers/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -165,9 +162,8 @@ function CertificateVouchers({ userData }) {
 
   const editItem = (id) => {
     setOpen(true);
-    fetchCertificateVouchers(id);
+    fetchCertificateVoucher(id);
   }
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -177,23 +173,19 @@ function CertificateVouchers({ userData }) {
       csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
       const {
         id,
-        student_id,
-        course_id,
-        cert_name,
+        certification_name,
         created_date,
         expiry_date,
-        course
+        student_course_id
       } = certificateVouchersInfo;
       const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/student_courses' : `/student_courses/${id}`;
+      const url = id == null ? '/cert_vouchers' : `/cert_vouchers/${id}`;
       const message = id !== null ? 'Updated' : 'Created';
       const data = {
-        student_id,
-        course_id,
-        cert_name,
+        certification_name,
         created_date,
         expiry_date,
-        course
+        student_course_id,
       };
       axios.request({
         method,
@@ -249,88 +241,34 @@ function CertificateVouchers({ userData }) {
           <Form>
             <Card>
               <CardBody>
-              <FormGroup row>
+                <FormGroup row>
                   <Col sm={12}>
-                    <Label for="student" sm={10}>Student</Label>
+                    <Label for="student_course" sm={10}>Student Course</Label>
                     <Select
-                      name="student"
-                      onChange={(value) => handleSelectChange(value, "student_id")}
-                      options={studentOptions}
-                      value={studentOptions.filter((option) => certificateVouchersInfo.student_id == option.value)}
-                      placeholder="Select Student"
+                      name="student_course"
+                      onChange={(value) => handleSelectChange(value, "student_course_id")}
+                      options={studentCourseOptions}
+                      value={studentCourseOptions.filter((option) => certificateVouchersInfo.student_course_id == option.value)}
+                      placeholder="Select Student Course"
                     />
                   </Col>
                 </FormGroup>
-
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="courses" sm={10}>Courses</Label>
-                    <Select
-                      name="courses"
-                      onChange={(value) => handleSelectChange(value, "course_id")}
-                      options={courseOptions}
-                      value={courseOptions.filter((option) => certificateVouchersInfo.course_id == option.value)}
-                      placeholder="Select Course"
-                    />
+                    <Label for="certification_name" sm={6}>Certification Name</Label>
+                    <Input name="certification_name" id="certification_name" defaultValue={certificateVouchersInfo.certification_name}  onChange={handleInputChange} />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="create_date" sm={6}>Create Date</Label>
-                    <Input name="create_date" id="create_date" defaultValue={certificateVouchersInfo.create_date}  onChange={handleInputChange} />
+                    <Label for="created_date" sm={6}>Created Date</Label>
+                    <Input name="created_date" id="created_date" defaultValue={certificateVouchersInfo.created_date}  onChange={handleInputChange} />
                   </Col>
-
                   <Col sm={6}>
                     <Label for="expiry_date" sm={6}>Expiry Date</Label>
                     <Input name="expiry_date" id="expiry_date" defaultValue={certificateVouchersInfo.expiry_date}  onChange={handleInputChange} />
                   </Col>
                 </FormGroup>
-
-                <FormGroup row>
-                  <Col sm={12}>
-                    <Label for="cert_name" sm={10}>Certificate Name</Label>
-                    <Select
-                      name="cert_name"
-                      onChange={(value) => handleSelectChange(value, "cert_name")}
-                      options={certificateOptions}
-                      value={certificateOptions.filter((option) => certificateVouchersInfo.cert_name == option.value)}
-                      placeholder="Select Certificate"
-                    />
-                  </Col>
-                </FormGroup>
-
-                {/* <FormGroup row>
-                  <Col sm={6}>
-                    <Label for="voucher_purchased" sm={6}>Voucher Purchased</Label>
-                    <Select
-                      name="voucher_purchased"
-                      onChange={(value) => handleSelectChange(value, "voucher_purchased")}
-                      options={voucherOptions}
-                      value={voucherOptions.filter((option) => studentCourseInfo.voucher_purchased == option.value)}
-                      placeholder="Select Voucher Purchased"
-                    />
-                  </Col>
-                  <Col sm={6}>
-                    <Label for="test_result" sm={6}>Test Result</Label>
-                    <Input name="test_result" id="test_result" defaultValue={studentCourseInfo.test_result} onChange={handleInputChange} />
-                  </Col>
-                </FormGroup> */}
-                {/* <FormGroup row>
-                  <Col sm={6}>
-                    <Label for="dcldp_code" sm={5}>Dcldp Code</Label>
-                    <Input name="dcldp_code" id="dcldp_code" defaultValue={studentCourseInfo.dcldp_code}  onChange={handleInputChange} />
-                  </Col>
-                  <Col sm={6}>
-                    <Label for="canvas_course_completion" sm={5}>Canvas Course Completed</Label>
-                    <Select
-                      name="canvas_course_completion"
-                      onChange={(value) => handleSelectChange(value, "canvas_course_completion")}
-                      options={completionOptions}
-                      value={completionOptions.filter((option) => studentCourseInfo.canvas_course_completion == option.value)}
-                      placeholder="Select Canvas Course Completion"
-                    />
-                  </Col>
-                </FormGroup> */}
               </CardBody>
             </Card>
           </Form>
@@ -354,6 +292,7 @@ function CertificateVouchers({ userData }) {
           data={certificateVouchers}
           type="Certificate_Voucher"
           deleteItem={deleteItem}
+          editItem={editItem}
         />
       )}
     </>
