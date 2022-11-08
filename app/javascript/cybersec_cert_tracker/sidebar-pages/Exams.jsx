@@ -43,7 +43,7 @@ function Exams({ userData }) {
   const [examInfo, setExamInfo] = useState({ id: null });
   const [certificateVouchers, setCertificateVouchers] = useState([]);
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/exams`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -74,7 +74,7 @@ function Exams({ userData }) {
   };
 
 
-  const fetchCertVouchers = async () => {
+  const fetchCertVouchers = () => {
     axios
       .get(`/cert_vouchers`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -99,7 +99,7 @@ function Exams({ userData }) {
       });
   };
 
-  const fetchExam = async (id) => {
+  const fetchExam = (id) => {
     axios
       .get(`/exams/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -132,7 +132,7 @@ function Exams({ userData }) {
     fetchCertVouchers();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios.delete(`/exams/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })

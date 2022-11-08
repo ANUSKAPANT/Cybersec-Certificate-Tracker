@@ -39,7 +39,7 @@ function Students({ userData }) {
   const [studentInfo, setStudentInfo] = useState({ id: null });
   const [companies, setCompanies] = useState([]);
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/students`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -80,7 +80,7 @@ function Students({ userData }) {
     fetchCompanies();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/students/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -116,7 +116,7 @@ function Students({ userData }) {
     fetchStudent(id);
   }
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = () => {
     axios
       .get(`/companies`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -142,7 +142,7 @@ function Students({ userData }) {
       });
   };
 
-  const fetchStudent = async (id) => {
+  const fetchStudent = (id) => {
     axios
       .get(`/students/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },

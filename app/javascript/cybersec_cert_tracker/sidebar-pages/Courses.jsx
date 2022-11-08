@@ -38,7 +38,7 @@ function Courses({ userData }) {
   const [courseInfo, setCourseInfo] = useState({id: null});
   const [vendorOptions, setVendorOptions] = useState([]);
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -69,7 +69,7 @@ function Courses({ userData }) {
     fetchVendors();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/courses/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -81,8 +81,7 @@ function Courses({ userData }) {
           hideProgressBar: false,
           closeOnClick: true,
         });
-      })
-      .catch(() => {
+      }).catch(() => {
         toast.error("Error in deletingrecords", {
           position: "bottom-center",
           autoClose: 3000,
@@ -100,7 +99,7 @@ function Courses({ userData }) {
     });
   };
 
-  const fetchCourse = async (id) => {
+  const fetchCourse = (id) => {
     axios
       .get(`/courses/${id}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -123,7 +122,7 @@ function Courses({ userData }) {
       });
   };
 
-  const fetchVendors = async () => {
+  const fetchVendors = () => {
     axios
       .get(`/vendors`, {
         headers: { Authorization: `Bearer ${userData.token}` },
