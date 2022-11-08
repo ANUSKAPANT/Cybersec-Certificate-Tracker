@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { useStoreContext } from "./Store";
 import { setUserData } from "./Actions";
 import {
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
+  Navbar, NavbarToggler, NavbarBrand, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle
 } from "reactstrap";
 import axios from "axios";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
@@ -43,47 +41,54 @@ function CybersecCertTrackerInit({ userData, children }) {
   return (
     <>
       <Navbar color="black" dark style={{ marginBottom: "20px" }}>
+        <NavbarToggler onClick={() => toggleSidebar()} className="me-2" />
         <NavbarBrand href="/" className="me-auto">
           CyberSec
         </NavbarBrand>
-        <NavbarToggler onClick={() => toggleSidebar()} className="me-2" />
+        <UncontrolledDropdown setActiveFromChild>
+          <DropdownToggle tag="a" className="nav-link text-light" caret>
+            {userData.first_name || "User"}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem onClick={() => logout()} id="logout_button" className="bg-secondary" active>Logout</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       </Navbar>
-      <div className="sidebar">
-        <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
-          <Menu>
-            <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
-              Dashboard
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
-              Students
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
-              Courses
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/student_courses" />} id="student_courses_nav">
-              Student Courses
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
-              Companies
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
-              Certificate Vouchers
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
-              Exams
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
-              Vendors
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
-              Users
-            </MenuItem>
-            <MenuItem onClick={() => logout()} id="logout_button">
-              Logout
-            </MenuItem>
-          </Menu>
-        </Sidebar>
-      </div>
+      {userData.role == "admin" && (
+        <div className="sidebar">
+          <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
+            <Menu>
+              <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
+                Dashboard
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
+                Students
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
+                Courses
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/student_courses" />} id="student_courses_nav">
+                Student Courses
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
+                Companies
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
+                Certificate Vouchers
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
+                Exams
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
+                Vendors
+              </MenuItem>
+              <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
+                Users
+              </MenuItem>
+            </Menu>
+          </Sidebar>
+        </div>
+      )}
       {children}
     </>
   );

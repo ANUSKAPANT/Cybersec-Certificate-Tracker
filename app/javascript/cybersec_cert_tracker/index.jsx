@@ -31,20 +31,24 @@ export default function CybersecCertTrackerApp({ data }) {
             <Routes>
               <Route path="/dashboard">
                 <Route index element={<Dashboard userData={data} />} />
-                <Route path="students" element={<Students userData={data} />} />
-                <Route path="courses" element={<Courses userData={data} />} />
-                <Route path="student_courses" element={<StudentCourses userData={data} />} />
-                <Route
-                  path="companies"
-                  element={<Companies userData={data} />}
-                />
-                <Route
-                  path="cert_vouchers"
-                  element={<CertificateVouchers userData={data} />}
-                />
-                <Route path="exams" element={<Exams userData={data} />} />
-                <Route path="vendors" element={<Vendors userData={data} />} />
-                <Route path="users" element={<Users userData={data} />} />
+                {data.role == "admin" && (
+                  <>
+                    <Route path="students" element={<Students userData={data} />} />
+                    <Route path="courses" element={<Courses userData={data} />} />
+                    <Route path="student_courses" element={<StudentCourses userData={data} />} />
+                    <Route
+                      path="companies"
+                      element={<Companies userData={data} />}
+                    />
+                    <Route
+                      path="cert_vouchers"
+                      element={<CertificateVouchers userData={data} />}
+                    />
+                    <Route path="exams" element={<Exams userData={data} />} />
+                    <Route path="vendors" element={<Vendors userData={data} />} />
+                    <Route path="users" element={<Users userData={data} />} />
+                  </>
+                )}
               </Route>
               <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route
