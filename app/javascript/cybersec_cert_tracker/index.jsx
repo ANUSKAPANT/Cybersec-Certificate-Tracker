@@ -14,6 +14,7 @@ import history from "./history";
 import Dashboard from "./Dashboard";
 import Students from "./sidebar-pages/Students";
 import Courses from "./sidebar-pages/Courses";
+import StudentCourses from "./sidebar-pages/StudentCourses";
 import Companies from "./sidebar-pages/Companies";
 import CertificateVouchers from "./sidebar-pages/CertificateVouchers";
 import Exams from "./sidebar-pages/Exams";
@@ -32,6 +33,7 @@ export default function CybersecCertTrackerApp({ data }) {
                 <Route index element={<Dashboard userData={data} />} />
                 <Route path="students" element={<Students userData={data} />} />
                 <Route path="courses" element={<Courses userData={data} />} />
+                <Route path="student_courses" element={<StudentCourses userData={data} />} />
                 <Route
                   path="companies"
                   element={<Companies userData={data} />}
