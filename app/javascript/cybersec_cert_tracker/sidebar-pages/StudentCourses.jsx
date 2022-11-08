@@ -36,7 +36,7 @@ function StudentCourses({ userData }) {
   const [open, setOpen] = React.useState(false);
   const [studentCourses, setStudentCourses] = useState([]);
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/student_courses`, {
         headers: { Authorization: `Bearer ${userData.token}` },
