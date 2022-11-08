@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import "../Dashboard.css";
 import Jsona from "jsona";
-import Select from "react-select";
 
 const override = {
   display: "block",
