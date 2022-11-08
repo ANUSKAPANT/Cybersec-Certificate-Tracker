@@ -129,7 +129,6 @@ function StudentCourses({ userData }) {
           data={studentCourses}
           type="Student Course"
           deleteItem={deleteItem}
-          editItem={editItem}
         />
       )}
     </>
