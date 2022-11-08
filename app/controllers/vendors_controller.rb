@@ -39,6 +39,6 @@ class VendorsController < ApplicationController
   end
 
   def vendor_params
-    params.permit(:name)
+    params.permit(:name, course_ids: [])
   end
 end

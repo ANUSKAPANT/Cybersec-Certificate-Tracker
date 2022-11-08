@@ -9,13 +9,9 @@ class StudentCoursesController < ApplicationController
   def create
     @student_course = StudentCourse.new(student_course_params)
     if @student_course.save
-      respond_to do |format|
-        format.json  { render json: @student_course, status: :created }
-      end
+      render json: @student_course, status: :created  
     else
-      respond_to do |format|
-        format.json { render json: @student_course.errors, status: :unprocessable_entity }
-      end
+      render json: @student_course.errors, status: :unprocessable_entity
     end
   end
 
@@ -30,13 +26,9 @@ class StudentCoursesController < ApplicationController
 
   def update
     if @student_course.update(student_course_params)
-      respond_to do |format|
-        format.json  { render json: @student_course, status: :created }
-      end
+      render json: @student_course, status: :created
     else
-      respond_to do |format|
-        format.json { render json: @student_course.errors, status: :unprocessable_entity }
-      end
+      render json: @student_course.errors, status: :unprocessable_entity
     end
   end
 
@@ -51,6 +43,6 @@ class StudentCoursesController < ApplicationController
   private
 
   def student_course_params
-    params = params.permit(:student_id, :course_id, :registration_date, :canvas_course_completion, :dcldp_code, :voucher_purchased, :test_result)
+    params.permit(:student_id, :course_id, :registration_date, :canvas_course_completion, :dcldp_code, :voucher_purchased, :test_result)
   end
 end

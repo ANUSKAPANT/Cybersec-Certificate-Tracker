@@ -6,6 +6,6 @@ class Student < ApplicationRecord
   validates :last_name, presence: true
 
   def full_comma_separated_name
-    "#{last_name}, #{first_name}"
+    "#{first_name} #{last_name}"
   end
 end
