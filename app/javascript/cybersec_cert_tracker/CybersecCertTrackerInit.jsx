@@ -60,6 +60,9 @@ function CybersecCertTrackerInit({ userData, children }) {
             <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
               Courses
             </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/student_courses" />} id="student_courses_nav">
+              Student Courses
+            </MenuItem>
             <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
               Companies
             </MenuItem>

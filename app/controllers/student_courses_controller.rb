@@ -2,7 +2,8 @@ class StudentCoursesController < ApplicationController
   before_action :set_student_course, only: %i[update destroy show]
 
   def index
-    render json: StudentCourseSerializer.new(StudentCourse.all).serialized_json
+    options = { include: [:course, :student] }
+    render json: StudentCourseSerializer.new(StudentCourse.all, options).serialized_json
   end
 
   def create
@@ -20,7 +21,8 @@ class StudentCoursesController < ApplicationController
 
   def show
     if @student_course.present?
-      render json: StudentCourseSerializer.new(@student_course).serialized_json, status: :ok
+      options = { include: [:course, :student] }
+      render json: StudentCourseSerializer.new(@student_course, options).serialized_json, status: :ok
     else
       render status: :unprocessable_entity
     end

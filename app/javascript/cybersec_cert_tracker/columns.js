@@ -80,6 +80,37 @@ export default function Columns(table) {
         },
       ];
 
+      case "Student Course":
+        return [
+          {
+            Header: "Student",
+            accessor: "student_name",
+          },
+          {
+            Header: "Course",
+            accessor: "course_name",
+          },
+          {
+            Header: "Registration Date",
+            accessor: "registration_date",
+          },
+          {
+            Header: "Canvas Course Completion",
+            accessor: "canvas_course_completion",
+          },
+          {
+            Header: "Dcldp Code",
+            accessor: "dcldp_code",
+          },
+          {
+            Header: "Voucher Purchased",
+            accessor: "voucher_purchased",
+          },
+          {
+            Header: "Test Result",
+            accessor: "test_result",
+          },
+        ];
     case "Company":
       return [
         {
@@ -94,6 +125,14 @@ export default function Columns(table) {
 
     case "User":
       return [
+        {
+          Header: "First Name",
+          accessor: "first_name",
+        },
+        {
+          Header: "Last Name",
+          accessor: "last_name",
+        },
         {
           Header: "Email",
           accessor: "email",
