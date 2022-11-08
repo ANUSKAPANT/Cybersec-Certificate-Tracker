@@ -16,7 +16,8 @@ class ExamsController < ApplicationController
   end
 
   def show
-    render json: ExamSerializer.new(@exam).serialized_json, status: :ok
+    options = { include: [:cert_voucher] }
+    render json: ExamSerializer.new(@exam, options).serialized_json, status: :ok
   end
 
   def update
