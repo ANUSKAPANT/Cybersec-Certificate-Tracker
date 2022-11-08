@@ -209,7 +209,7 @@ function StudentCourses({ userData }) {
 
   const editItem = (id) => {
     setOpen(true);
-    fetchStudentCourse(id);
+    fetchCertificateVouchers(id);
   }
 
   const handleSubmit = (event) => {
