@@ -25,7 +25,6 @@ const dataFormatter = new Jsona();
 
 function StudentCourses({ userData }) {
   const [loading, setLoading] = useState(true);
-  const [students, setStudents] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [courseOptions, setCourseOptions] = useState([]);
   const [studentOptions, setStudentOptions] = useState([]);
@@ -162,13 +161,14 @@ function StudentCourses({ userData }) {
       .delete(`/student_courses/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
-      .then((res) => {
+      .then(() => {
         toast.success("Successfully Deleted", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
         });
+        fetchRecords();
       })
       .catch((err) => {
         toast.error("Error in deletingrecords", {
@@ -182,7 +182,7 @@ function StudentCourses({ userData }) {
 
   const deleteItem = (idx) => {
     deleteRecords(idx);
-    setStudents((prev) => {
+    setStudentCourses((prev) => {
       const tempArray = prev.slice();
       return tempArray.filter((item) => item.id !== idx);
     });
