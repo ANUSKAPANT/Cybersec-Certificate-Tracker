@@ -1,4 +1,4 @@
-class VendorsController < ApplicationController
+class VendorsController < BaseController
   before_action :set_vendor, only: %i[update destroy show]
 
   def index

@@ -17,6 +17,7 @@ class BaseController < ActionController::Base
   end
 
   def set_current_user
+    
     authenticate_with_http_token do |token, _options|
       @current_user = User.find_by(token: token)
     end

@@ -1,4 +1,4 @@
-class StudentsController < ApplicationController
+class StudentsController < BaseController
   before_action :set_student, only: %i[update destroy show]
 
   def index

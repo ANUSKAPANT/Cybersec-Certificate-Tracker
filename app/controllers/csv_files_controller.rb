@@ -1,4 +1,4 @@
-class CsvFilesController < ApplicationController
+class CsvFilesController < BaseController
   before_action :authenticate_user!
 
   def create
