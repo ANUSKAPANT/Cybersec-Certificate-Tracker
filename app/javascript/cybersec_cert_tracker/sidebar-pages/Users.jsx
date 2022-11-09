@@ -130,10 +130,6 @@ function Users({ userData }) {
     setOpen(false);
   }
 
-  const handleInputChange = (value, name) => {
-    setUserInfo({...userInfo, [name]: value});
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     let csrf = "";
@@ -143,7 +139,7 @@ function Users({ userData }) {
       const { id, first_name, last_name, email, password, role } = userInfo;
   
       const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/users' : `/users/${id}`;
+      const url = id == null ? '/create_user' : `/users/${id}`;
       const message = id !== null ? 'Updated' : 'Created';
       const data = { first_name, last_name, email, password, role }
       axios.request({
@@ -175,6 +171,11 @@ function Users({ userData }) {
         });
     });
   }
+
+  const handleInputChange = (event) => {
+    const {name, value} = event.target;
+    setUserInfo({...userInfo, [name]: value});
+  };
 
   const handleSelectChange = (value, name) => {
     setUserInfo({...userInfo, [name]: value.value});
@@ -210,11 +211,11 @@ function Users({ userData }) {
                 <FormGroup row>
                   <Col sm={6}>
                     <Label for="email" sm={5}>Email</Label>
-                    <Input name="email" id="email" defaultValue={userInfo.email} onChange={handleInputChange}/>
+                    <Input name="email" id="email" type="email" defaultValue={userInfo.email} onChange={handleInputChange}/>
                   </Col>
                   <Col sm={6}>
                     <Label for="password" sm={5}>Password</Label>
-                    <Input name="password" id="password" defaultValue={userInfo.password} onChange={handleInputChange}/>
+                    <Input name="password" id="password" type="password" defaultValue={userInfo.password} onChange={handleInputChange}/>
                   </Col>
                   <Col sm={6}>
                     <Label for="role" sm={6}>Role</Label>
