@@ -2,6 +2,7 @@ class BaseController < ActionController::Base
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionView::Helpers::SanitizeHelper
 
+  protect_from_forgery with: :null_session
   before_action :authenticate, :authorize_admin
   helper_method :current_user
   serialization_scope :current_user
