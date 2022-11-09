@@ -1,5 +1,4 @@
 class CsvFilesController < BaseController
-  before_action :authenticate_user!
   skip_before_action :authorize_admin
 
   def create
