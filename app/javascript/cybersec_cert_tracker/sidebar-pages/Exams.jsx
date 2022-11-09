@@ -11,24 +11,6 @@ import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
-const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 const passedOptions = [
   { label: "Passed", value: true },
   { label: "Failed", value: false }
@@ -207,6 +189,7 @@ function Exams({ userData }) {
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
+          "Authorization": `Bearer ${userData.token}`,
         },
         data
       }).then(() => {
