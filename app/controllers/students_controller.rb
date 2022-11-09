@@ -1,6 +1,6 @@
 class StudentsController < BaseController
   before_action :set_student, only: %i[update destroy show]
-  skip_before_action :authorize_admin, only: %i[index]
+  skip_before_action :authorize_admin, only: %i[index show]
 
   def index
     options = { include: [:company, :student_courses, "student_courses.cert_vouchers", "student_courses.cert_vouchers.exam", "student_courses.course.vendor"] }
