@@ -210,7 +210,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
       Cell: ({ row }) => {
         return (
           <div>
-            <EditOutlinedIcon 
+            <EditOutlinedIcon
               onClick={() => editItem(row.original.id)}
             />
             <RemoveCircleOutlineOutlinedIcon
@@ -233,8 +233,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -323,11 +323,11 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
                   <div>
                     {column.canFilter
                       ? DefaultColumnFilter(
-                          column.filterValue,
-                          column.preFilteredRows,
-                          column.setFilter,
-                          rows.length
-                        )
+                        column.filterValue,
+                        column.preFilteredRows,
+                        column.setFilter,
+                        rows.length
+                      )
                       : null}
                   </div>
                 </th>

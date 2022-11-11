@@ -5,11 +5,14 @@ import { useLocation } from "react-router-dom";
 import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody } from 'reactstrap';
 import "./StudentProfile.css";
 import StudentCourseTable from './StudentCourseTable';
+import StudentForm from './StudentForm'
+import Grid from '@mui/material/Grid';
 
 function StudentProfile({ userData }) {
     const dataFormatter = new Jsona();
     const [studentInfo, setStudentInfo] = useState({});
     const [coursesInfo, setCoursesInfo] = useState([]);
+    const [open, setOpen] = useState(false);
 
     const [readOnly, setReadOnly] = useState(true);
 
@@ -47,47 +50,70 @@ function StudentProfile({ userData }) {
     }, []);
 
     return (
-        <>
-            <Col sm={12} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                <h4 className="heading">Overview</h4>
+        <Grid container spacing={2} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+            <Grid item xs={12}>
+                <h3 style={{ display: "inline" }}>Overview</h3>
+                {userData.role == "admin" && <Button
+                    color="success"
+                    className="csv-button"
+                    onClick={() => setOpen(true)}
+                    id="add_student_button"
+                    style={{ float: "right", display: "inline" }}
+                >
+                    Update Profile
+                </Button>}
+            </Grid>
+            <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} afterSubmit={fetchProfile} />
+            <Grid item xs={12}>
                 <Form>
                     <Card>
                         <CardBody>
                             <FormGroup row>
-                                <Label for="first_name" sm={2}>First Name</Label>
-                                <Col sm={10}>
+                                <Grid item xs={2}>
+                                    <Label for="first_name">First Name</Label>
+                                </Grid>
+                                <Grid item xs={10}>
                                     <Input name="first_name" id="first_name" defaultValue={studentInfo.first_name} readOnly={readOnly} />
-                                </Col>
+                                </Grid>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="last_name" sm={2}>Last Name</Label>
-                                <Col sm={10}>
+                                <Grid item xs={2}>
+                                    <Label for="last_name">Last Name</Label>
+                                </Grid>
+                                <Grid item xs={10}>
                                     <Input name="last_name" id="last_name" defaultValue={studentInfo.last_name} readOnly={readOnly} />
-                                </Col>
+                                </Grid>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="email_id" sm={2}>Email</Label>
-                                <Col sm={10}>
+                                <Grid item xs={2}>
+                                    <Label for="email_id">Email</Label>
+                                </Grid>
+                                <Grid item xs={10}>
                                     <Input name="email_id" id="email_id" defaultValue={studentInfo.email_id} readOnly={readOnly} />
-                                </Col>
+                                </Grid>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="company_name" sm={2}>Company</Label><Col sm={10}>
+                                <Grid item xs={2}>
+                                    <Label for="company_name">Company</Label>
+                                </Grid>
+                                <Grid item xs={10}>
                                     <Input name="company_name" id="company_name" defaultValue={studentInfo.company_name} readOnly={readOnly} />
-                                </Col>
+                                </Grid>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="canvas_id" sm={2}>Canvas Id</Label>
-                                <Col sm={10}>
+                                <Grid item xs={2}>
+                                    <Label for="canvas_id">Canvas Id</Label>
+                                </Grid>
+                                <Grid item xs={10}>
                                     <Input name="canvas_id" id="canvas_id" defaultValue={studentInfo.canvas_id} readOnly={readOnly} />
-                                </Col>
+                                </Grid>
                             </FormGroup>
                         </CardBody>
                     </Card>
                     <StudentCourseTable coursesInfo={coursesInfo} />
                 </Form>
-            </Col>
-        </>
+            </Grid>
+        </Grid>
     )
 }
 
