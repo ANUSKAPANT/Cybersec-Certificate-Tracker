@@ -41,6 +41,7 @@ Feature: User signs in
     When user clicks get started button
     Then user should login successful
 
+  @wip
   Scenario: User enters valid email, password and click sign in. Then logs out successful
     Given user is on sign in page
     When user enter valid email
