@@ -43,7 +43,6 @@ export default function StudentCourseTable({ coursesInfo }) {
 
     return (
         <div className="student_courses">
-            <div className="heading"><h4 style={{ display: "inline" }}>Courses</h4> <p style={{ display: "inline", color: "#9F9998" }}>{coursesInfo.length} {coursesInfo.length < 2 ? "item" : "items"}</p></div>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">

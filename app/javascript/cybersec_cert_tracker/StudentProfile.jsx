@@ -51,17 +51,21 @@ function StudentProfile({ userData }) {
 
     return (
         <Grid container spacing={2} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-            <Grid item xs={12}>
-                <h3 style={{ display: "inline" }}>Overview</h3>
-                {userData.role == "admin" && <Button
-                    color="success"
-                    className="csv-button"
-                    onClick={() => setOpen(true)}
-                    id="add_student_button"
-                    style={{ float: "right", display: "inline" }}
-                >
-                    Update Profile
-                </Button>}
+            <Grid container style={{ marginLeft: "15px" }}>
+                <Grid item xs={4} style={{ margin: "auto" }}>
+                    <h3 style={{ display: "inline" }}>Overview</h3>
+                </Grid>
+                <Grid item xs={8}>
+                    {userData.role == "admin" && <Button
+                        color="success"
+                        className="csv-button"
+                        onClick={() => setOpen(true)}
+                        id="add_student_button"
+                        style={{ float: "right", display: "inline" }}
+                    >
+                        Update Profile
+                    </Button>}
+                </Grid>
             </Grid>
             <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} afterSubmit={fetchProfile} />
             <Grid item xs={12}>
@@ -110,6 +114,22 @@ function StudentProfile({ userData }) {
                             </FormGroup>
                         </CardBody>
                     </Card>
+                    <Grid container>
+                        <Grid item xs={4} style={{ margin: "auto" }}>
+                            <h4 style={{ display: "inline" }}>Courses</h4> <p style={{ display: "inline", color: "#9F9998" }}>{coursesInfo.length} {coursesInfo.length < 2 ? "item" : "items"}</p>
+                        </Grid>
+                        <Grid item xs={8}>
+                            {userData.role == "admin" && <Button
+                                color="success"
+                                className="csv-button"
+                                onClick={() => setOpen(true)}
+                                id="add_student_button"
+                                style={{ float: "right", display: "inline" }}
+                            >
+                                Add Course
+                            </Button>}
+                        </Grid>
+                    </Grid>
                     <StudentCourseTable coursesInfo={coursesInfo} />
                 </Form>
             </Grid>
