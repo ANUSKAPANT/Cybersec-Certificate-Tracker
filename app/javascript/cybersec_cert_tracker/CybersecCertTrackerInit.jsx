@@ -41,7 +41,7 @@ function CybersecCertTrackerInit({ userData, children }) {
   return (
     <>
       <Navbar color="black" dark style={{ marginBottom: "20px" }}>
-        <NavbarToggler onClick={() => toggleSidebar()} className="me-2" />
+        {userData.role == "admin" && (<NavbarToggler onClick={() => toggleSidebar()} className="me-2" />)}
         <NavbarBrand href="/" className="me-auto">
           CyberSec
         </NavbarBrand>
@@ -54,41 +54,39 @@ function CybersecCertTrackerInit({ userData, children }) {
           </DropdownMenu>
         </UncontrolledDropdown>
       </Navbar>
-      {userData.role == "admin" && (
-        <div className="sidebar">
-          <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
-            <Menu>
-              <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
-                Dashboard
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
-                Students
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
-                Courses
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/student_courses" />} id="student_courses_nav">
-                Student Courses
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
-                Companies
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
-                Certificate Vouchers
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
-                Exams
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
-                Vendors
-              </MenuItem>
-              <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
-                Users
-              </MenuItem>
-            </Menu>
-          </Sidebar>
-        </div>
-      )}
+      <div className="sidebar">
+        <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
+          <Menu>
+            <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
+              Dashboard
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
+              Students
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
+              Courses
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/student_courses" />} id="student_courses_nav">
+              Student Courses
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
+              Companies
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
+              Certificate Vouchers
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
+              Exams
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
+              Vendors
+            </MenuItem>
+            <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
+              Users
+            </MenuItem>
+          </Menu>
+        </Sidebar>
+      </div>
       {children}
     </>
   );
