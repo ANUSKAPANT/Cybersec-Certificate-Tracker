@@ -16,7 +16,7 @@ function Students({ userData }) {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [studentInfo, setStudentInfo] = useState({ id: null });
+  const [studentId, setStudentId] = useState(null);
 
   const fetchRecords = () => {
     axios
@@ -91,102 +91,8 @@ function Students({ userData }) {
 
   const editItem = (id) => {
     setOpen(true);
-    fetchStudent(id);
+    setStudentId(id);
   }
-
-  const fetchStudent = (id) => {
-    axios
-      .get(`/students/${id}`, {
-        headers: { Authorization: `Bearer ${userData.token}` },
-      })
-      .then((response) => {
-        const data = dataFormatter.deserialize(response.data);
-        const studentData = {
-          id: data.id,
-          first_name: data.first_name,
-          last_name: data.last_name,
-          email_id: data.email_id,
-          canvas_id: data.canvas_id,
-          company_id: data.company.id,
-        };
-        setStudentInfo(studentData);
-      }).catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
-      });
-  };
-
-  const handleClose = () => {
-    setStudentInfo({ id: null });
-    setOpen(false);
-  }
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setStudentInfo({ ...studentInfo, [name]: value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let csrf = "";
-    //Not present always
-    if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-    const {
-      id,
-      first_name,
-      last_name,
-      email_id,
-      canvas_id,
-      company_id
-    } = studentInfo;
-
-    const method = id !== null ? 'patch' : 'post';
-    const url = id == null ? '/students' : `/students/${id}`;
-    const message = id !== null ? 'Updated' : 'Created';
-    const data = {
-      first_name,
-      last_name,
-      email_id,
-      canvas_id,
-      company_id,
-    };
-    axios.request({
-      method,
-      url,
-      headers: {
-        "Content-type": "application/json",
-        "X-CSRF-Token": csrf,
-        "Authorization": `Bearer ${userData.token}`,
-      },
-      data
-    }).then(() => {
-      setLoading(true);
-      toast.success(`Successfully ${message}`, {
-        position: "bottom-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
-      fetchRecords();
-      handleClose();
-    }).catch(() => {
-      toast.error("Error Occured", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
-    });
-  }
-
-  const handleSelectChange = (value, name) => {
-    setStudentInfo({ ...studentInfo, [name]: value.value });
-  };
 
   return (
     <>
@@ -199,7 +105,7 @@ function Students({ userData }) {
       >
         + Add Student
       </Button>
-      <StudentForm userData={userData} studentInfo={studentInfo} open={open} handleClose={handleClose} handleSubmit={handleSubmit} handleSelectChange={handleSelectChange} handleInputChange={handleInputChange} />
+      <StudentForm userData={userData} studentId={studentId} open={open} setOpen={setOpen} />
       {loading == true ? (
         <div className="spinner-container">
           <div className="spinner">
