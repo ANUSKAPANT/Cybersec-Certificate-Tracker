@@ -7,12 +7,14 @@ import "./StudentProfile.css";
 import StudentCourseTable from './StudentCourseTable';
 import StudentForm from './StudentForm'
 import Grid from '@mui/material/Grid';
+import StudentCourseForm from './StudentCourseForm';
 
 function StudentProfile({ userData }) {
     const dataFormatter = new Jsona();
     const [studentInfo, setStudentInfo] = useState({});
     const [coursesInfo, setCoursesInfo] = useState([]);
     const [open, setOpen] = useState(false);
+    const [courseSelectionOpen, setCourseSelectionOpen] = useState(false);
 
     const [readOnly, setReadOnly] = useState(true);
 
@@ -122,14 +124,15 @@ function StudentProfile({ userData }) {
                             {userData.role == "admin" && <Button
                                 color="success"
                                 className="csv-button"
-                                onClick={() => setOpen(true)}
-                                id="add_student_button"
+                                onClick={() => setCourseSelectionOpen(true)}
+                                id="add_student_course_button"
                                 style={{ float: "right", display: "inline" }}
                             >
                                 Add Course
                             </Button>}
                         </Grid>
                     </Grid>
+                    <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} />
                     <StudentCourseTable coursesInfo={coursesInfo} />
                 </Form>
             </Grid>
