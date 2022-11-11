@@ -15,6 +15,7 @@ function StudentProfile({ userData }) {
     const [coursesInfo, setCoursesInfo] = useState([]);
     const [open, setOpen] = useState(false);
     const [courseSelectionOpen, setCourseSelectionOpen] = useState(false);
+    const [studentCourseId, setStudentCourseId] = useState(null);
 
     const [readOnly, setReadOnly] = useState(true);
 
@@ -30,8 +31,9 @@ function StudentProfile({ userData }) {
         setStudentInfo({ canvas_id, company_name: company.name, email_id, first_name, last_name });
         const courses = student_courses.map((student_course) => {
             return ({
+                student_course_id: student_course.id,
                 canvas_course: student_course.course.name,
-                course_progress: student_course.canvas_course_completion,
+                course_completed: student_course.canvas_course_completion,
                 cert_name: student_course.cert_vouchers.map((cv) => cv.certification_name),
                 registration_date: student_course.registration_date,
                 voucher_purchased: student_course.voucher_purchased || false,
@@ -46,6 +48,11 @@ function StudentProfile({ userData }) {
         });
         setCoursesInfo(courses);
     }
+
+    const onCourseEdit = ((id) => {
+        setCourseSelectionOpen(true);
+        setStudentCourseId(id);
+    })
 
     useEffect(() => {
         fetchProfile();
@@ -124,7 +131,7 @@ function StudentProfile({ userData }) {
                             {userData.role == "admin" && <Button
                                 color="success"
                                 className="csv-button"
-                                onClick={() => setCourseSelectionOpen(true)}
+                                onClick={() => { setStudentCourseId(null); setCourseSelectionOpen(true); }}
                                 id="add_student_course_button"
                                 style={{ float: "right", display: "inline" }}
                             >
@@ -132,11 +139,11 @@ function StudentProfile({ userData }) {
                             </Button>}
                         </Grid>
                     </Grid>
-                    <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} />
-                    <StudentCourseTable coursesInfo={coursesInfo} />
+                    <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} studentCourseId={studentCourseId} />
+                    <StudentCourseTable coursesInfo={coursesInfo} onEdit={onCourseEdit} />
                 </Form>
-            </Grid>
-        </Grid>
+            </Grid >
+        </Grid >
     )
 }
 

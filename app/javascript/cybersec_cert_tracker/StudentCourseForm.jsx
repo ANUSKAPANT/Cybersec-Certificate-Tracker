@@ -21,10 +21,11 @@ const completionOptions = [
 ]
 
 
-function StudentCourseForm({ userData, open, studentId, setOpen, courseId, afterSubmit = () => { } }) {
+function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId, afterSubmit = () => { } }) {
 
     const [courseOptions, setCourseOptions] = useState([]);
     const [studentCourseInfo, setStudentCourseInfo] = useState({ id: null });
+    const [courseSelectDisabled, setCourseSelectDisabled] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
@@ -85,6 +86,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, courseId, after
                 closeOnClick: true,
             });
             afterSubmit();
+            setCourseSelectDisabled(false);
             handleClose();
         } catch (error) {
             toast.error("Error Occured", {
@@ -120,13 +122,48 @@ function StudentCourseForm({ userData, open, studentId, setOpen, courseId, after
         }
     };
 
+    const fetchStudentCourse = async (id) => {
+        try {
+            const response = await axios
+                .get(`/student_courses/${id}`, {
+                    headers: { Authorization: `Bearer ${userData.token}` },
+                })
+
+            const data = dataFormatter.deserialize(response.data);
+            const studentData = {
+                id: data.id,
+                student: data.student,
+                course: data.course,
+                registration_date: data.registration_date,
+                voucher_purchased: data.voucher_purchased,
+                test_result: data.test_result,
+                canvas_course_completion: data.canvas_course_completion,
+                dcldp_code: data.dcldp_code,
+                student_id: data.student.id,
+                course_id: data.course.id,
+            };
+            setStudentCourseInfo(studentData);
+        } catch (error) {
+            toast.error("Error in fetching records", {
+                position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+            });
+        }
+    };
+
     useEffect(() => {
         fetchCourses();
     }, [])
 
     useEffect(() => {
         setStudentCourseInfo({ student_id: studentId })
-    }, [studentId])
+        if (studentCourseId) {
+            setCourseSelectDisabled(true);
+            fetchStudentCourse(studentCourseId);
+        } else setCourseSelectDisabled(false);
+    }, [studentId, studentCourseId])
 
     return (
         <>
@@ -146,6 +183,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, courseId, after
                                             options={courseOptions}
                                             value={courseOptions.filter((option) => studentCourseInfo.course_id == option.value)}
                                             placeholder="Select Course"
+                                            isDisabled={courseSelectDisabled}
                                         />
                                     </Col>
                                 </FormGroup>

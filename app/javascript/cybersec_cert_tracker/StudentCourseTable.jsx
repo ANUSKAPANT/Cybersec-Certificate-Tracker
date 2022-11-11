@@ -6,8 +6,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-export default function StudentCourseTable({ coursesInfo }) {
+const blacklistedColumns = ['student_course_id'];
+
+export default function StudentCourseTable({ coursesInfo, onEdit }) {
 
     const [cols, setCols] = useState([]);
 
@@ -28,6 +31,8 @@ export default function StudentCourseTable({ coursesInfo }) {
                     minWidth
                 }
             })
+
+            columns = columns.filter(col => !blacklistedColumns.includes(col.name));
             setCols(columns);
 
             //Change boolean values to yes or no
@@ -48,6 +53,11 @@ export default function StudentCourseTable({ coursesInfo }) {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
+                                <TableCell
+                                    key="edit_option"
+                                    style={{ minWidth: 10 }}
+                                >
+                                </TableCell>
                                 {cols.map((column) => (
                                     <TableCell
                                         key={column.name}
@@ -62,11 +72,16 @@ export default function StudentCourseTable({ coursesInfo }) {
                             {coursesInfo
                                 .map((row) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row['canvas_course']}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.student_course_id}>
+                                            <TableCell>
+                                                <EditOutlinedIcon
+                                                    onClick={() => { onEdit(row.student_course_id) }}
+                                                />
+                                            </TableCell>
                                             {cols.map((column) => {
                                                 const value = row[column.name];
                                                 return (
-                                                    <TableCell key={column.id} align={column.align}>
+                                                    <TableCell align={column.align}>
                                                         {value}
                                                     </TableCell>
                                                 );
