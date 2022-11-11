@@ -18,40 +18,40 @@ function Students({ userData }) {
   const [open, setOpen] = React.useState(false);
   const [studentId, setStudentId] = useState(null);
 
-  const fetchRecords = () => {
-    axios
-      .get(`/students`, {
-        headers: { Authorization: `Bearer ${userData.token}` },
-      })
-      .then((response) => {
-        const data = dataFormatter.deserialize(response.data);
-        const studentData = data.map((student) => {
-          return {
-            id: student.id,
-            full_name: student.full_comma_separated_name,
-            first_name: student.first_name,
-            last_name: student.last_name,
-            email_id: student.email_id,
-            canvas_id: student.canvas_id,
-            company: student.company,
-            courses: student.student_courses.map((sc) => {
-              return {
-                id: sc.course.id,
-                name: sc.course.name,
-              };
-            }),
-          };
-        });
-        setLoading(false);
-        setStudents(studentData);
-      }).catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+  const fetchRecords = async () => {
+    try {
+      const response = await axios
+        .get(`/students`, {
+          headers: { Authorization: `Bearer ${userData.token}` },
+        })
+      const data = dataFormatter.deserialize(response.data);
+      const studentData = data.map((student) => {
+        return {
+          id: student.id,
+          full_name: student.full_comma_separated_name,
+          first_name: student.first_name,
+          last_name: student.last_name,
+          email_id: student.email_id,
+          canvas_id: student.canvas_id,
+          company: student.company,
+          courses: student.student_courses.map((sc) => {
+            return {
+              id: sc.course.id,
+              name: sc.course.name,
+            };
+          }),
+        };
       });
+      setLoading(false);
+      setStudents(studentData);
+    } catch (error) {
+      toast.error("Error in fetching records", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -94,6 +94,12 @@ function Students({ userData }) {
     setStudentId(id);
   }
 
+  const onFormSubmission = async () => {
+    setLoading(true);
+    await fetchRecords();
+    setLoading(false);
+  }
+
   return (
     <>
       <ToastContainer />
@@ -105,7 +111,7 @@ function Students({ userData }) {
       >
         + Add Student
       </Button>
-      <StudentForm userData={userData} studentId={studentId} open={open} setOpen={setOpen} />
+      <StudentForm userData={userData} studentId={studentId} open={open} setOpen={setOpen} afterSubmit={onFormSubmission} />
       {loading == true ? (
         <div className="spinner-container">
           <div className="spinner">

@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Jsona from "jsona";
 const dataFormatter = new Jsona();
 
-function StudentForm({ userData, open, studentId, setOpen }) {
+function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => { } }) {
 
     const [companies, setCompanies] = useState([]);
     const [studentFormInfo, setStudentFormInfo] = useState({});
@@ -68,6 +68,7 @@ function StudentForm({ userData, open, studentId, setOpen }) {
                 closeOnClick: true,
             });
             if (!id) setStudentFormInfo({}); // Means add student is used
+            afterSubmit();
             handleClose();
         } catch (error) {
             toast.error("Error Occured", {

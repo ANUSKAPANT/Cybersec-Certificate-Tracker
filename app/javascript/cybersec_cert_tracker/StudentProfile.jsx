@@ -50,7 +50,6 @@ function StudentProfile({ userData }) {
     }, []);
 
     return (
-
         <Grid container spacing={2} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
             <Grid item xs={12}>
                 <h3 style={{ display: "inline" }}>Overview</h3>
@@ -64,7 +63,7 @@ function StudentProfile({ userData }) {
                     Update Profile
                 </Button>}
             </Grid>
-            <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} />
+            <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} afterSubmit={fetchProfile} />
             <Grid item xs={12}>
                 <Form>
                     <Card>
