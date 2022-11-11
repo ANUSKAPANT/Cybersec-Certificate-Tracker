@@ -5,11 +5,13 @@ import { useLocation } from "react-router-dom";
 import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody } from 'reactstrap';
 import "./StudentProfile.css";
 import StudentCourseTable from './StudentCourseTable';
+import StudentForm from './StudentForm'
 
 function StudentProfile({ userData }) {
     const dataFormatter = new Jsona();
     const [studentInfo, setStudentInfo] = useState({});
     const [coursesInfo, setCoursesInfo] = useState([]);
+    const [open, setOpen] = useState(false);
 
     const [readOnly, setReadOnly] = useState(true);
 
@@ -50,6 +52,16 @@ function StudentProfile({ userData }) {
         <>
             <Col sm={12} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                 <h4 className="heading">Overview</h4>
+                <Button
+                    color="success"
+                    className="csv-button"
+                    onClick={() => setOpen(true)}
+                    id="add_student_button"
+                    style={{ align: "right" }}
+                >
+                    Update Student Profile
+                </Button>
+                <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} />
                 <Form>
                     <Card>
                         <CardBody>

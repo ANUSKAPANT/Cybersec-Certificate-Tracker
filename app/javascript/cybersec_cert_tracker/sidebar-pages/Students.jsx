@@ -100,7 +100,7 @@ function Students({ userData }) {
       <Button
         color="success"
         className="csv-button"
-        onClick={() => setOpen(true)}
+        onClick={() => { setStudentId(null); setOpen(true) }}
         id="add_student_button"
       >
         + Add Student

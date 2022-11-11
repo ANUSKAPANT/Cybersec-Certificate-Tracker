@@ -5,7 +5,8 @@ import {
 } from 'reactstrap';
 import Select from "react-select";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Jsona from "jsona";
 const dataFormatter = new Jsona();
 
@@ -15,7 +16,6 @@ function StudentForm({ userData, open, studentId, setOpen }) {
     const [studentFormInfo, setStudentFormInfo] = useState({});
 
     const handleClose = () => {
-        setStudentFormInfo({});
         setOpen(false);
     }
 
@@ -67,6 +67,7 @@ function StudentForm({ userData, open, studentId, setOpen }) {
                 hideProgressBar: false,
                 closeOnClick: true,
             });
+            if (!id) setStudentFormInfo({}); // Means add student is used
             handleClose();
         } catch (error) {
             toast.error("Error Occured", {
@@ -138,60 +139,63 @@ function StudentForm({ userData, open, studentId, setOpen }) {
     }, [])
 
     useEffect(() => {
+        setStudentFormInfo({});
         if (studentId) {
-            console.log(studentId);
             fetchStudent(studentId);
         }
     }, [studentId])
 
     return (
-        <Modal isOpen={open} toggle={handleClose} size="lg" style={{ maxWidth: '700px', width: '100%' }}>
-            <ModalHeader toggle={handleClose} style={{ border: "none" }}>Add Students</ModalHeader>
-            <ModalBody>
-                <Form>
-                    <Card>
-                        <CardBody>
-                            <FormGroup row>
-                                <Col sm={6}>
-                                    <Label for="first_name" sm={5}>First Name</Label>
-                                    <Input name="first_name" id="first_name" defaultValue={studentFormInfo.first_name} onChange={handleInputChange} />
-                                </Col>
-                                <Col sm={6}>
-                                    <Label for="last_name" sm={5}>Last Name</Label>
-                                    <Input name="last_name" id="last_name" defaultValue={studentFormInfo.last_name} onChange={handleInputChange} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Col sm={6}>
-                                    <Label for="email_id" sm={5}>Email</Label>
-                                    <Input name="email_id" id="email_id" defaultValue={studentFormInfo.email_id} onChange={handleInputChange} />
-                                </Col>
-                                <Col sm={6}>
-                                    <Label for="canvas_id" sm={5}>Canvas Id</Label>
-                                    <Input name="canvas_id" id="canvas_id" defaultValue={studentFormInfo.canvas_id} onChange={handleInputChange} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Col sm={6}>
-                                    <Label for="company_name" sm={5}>Company</Label>
-                                    <Select
-                                        name="company_id"
-                                        onChange={(value) => handleSelectChange(value, "company_id")}
-                                        options={companies}
-                                        value={companies.filter((option) => (studentFormInfo.company_id == option.value))}
-                                        placeholder="Select Passed"
-                                    />
-                                </Col>
-                            </FormGroup>
-                        </CardBody>
-                    </Card>
-                </Form>
-            </ModalBody>
-            <ModalFooter style={{ border: "none" }}>
-                <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
-                <Button color="secondary" onClick={handleClose}>Cancel</Button>
-            </ModalFooter>
-        </Modal>
+        <>
+            <ToastContainer />
+            <Modal isOpen={open} toggle={handleClose} size="lg" style={{ maxWidth: '700px', width: '100%' }}>
+                <ModalHeader toggle={handleClose} style={{ border: "none" }}>Add Students</ModalHeader>
+                <ModalBody>
+                    <Form>
+                        <Card>
+                            <CardBody>
+                                <FormGroup row>
+                                    <Col sm={6}>
+                                        <Label for="first_name" sm={5}>First Name</Label>
+                                        <Input name="first_name" id="first_name" defaultValue={studentFormInfo.first_name} onChange={handleInputChange} />
+                                    </Col>
+                                    <Col sm={6}>
+                                        <Label for="last_name" sm={5}>Last Name</Label>
+                                        <Input name="last_name" id="last_name" defaultValue={studentFormInfo.last_name} onChange={handleInputChange} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={6}>
+                                        <Label for="email_id" sm={5}>Email</Label>
+                                        <Input name="email_id" id="email_id" defaultValue={studentFormInfo.email_id} onChange={handleInputChange} />
+                                    </Col>
+                                    <Col sm={6}>
+                                        <Label for="canvas_id" sm={5}>Canvas Id</Label>
+                                        <Input name="canvas_id" id="canvas_id" defaultValue={studentFormInfo.canvas_id} onChange={handleInputChange} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={6}>
+                                        <Label for="company_name" sm={5}>Company</Label>
+                                        <Select
+                                            name="company_id"
+                                            onChange={(value) => handleSelectChange(value, "company_id")}
+                                            options={companies}
+                                            value={companies.filter((option) => (studentFormInfo.company_id == option.value))}
+                                            placeholder="Select Passed"
+                                        />
+                                    </Col>
+                                </FormGroup>
+                            </CardBody>
+                        </Card>
+                    </Form>
+                </ModalBody>
+                <ModalFooter style={{ border: "none" }}>
+                    <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
+                    <Button color="secondary" onClick={handleClose}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+        </>
     );
 }
 
