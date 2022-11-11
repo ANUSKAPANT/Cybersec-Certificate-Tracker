@@ -43,7 +43,7 @@ export default function StudentCourseTable({ coursesInfo }) {
 
     return (
         <div className="student_courses">
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <Paper sx={{ width: '100%', overflow: 'hidden', marginBottom: "20px" }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -53,7 +53,7 @@ export default function StudentCourseTable({ coursesInfo }) {
                                         key={column.name}
                                         style={{ minWidth: column.minWidth }}
                                     >
-                                        {formatString(column.name)}
+                                        <b>{formatString(column.name)}</b>
                                     </TableCell>
                                 ))}
                             </TableRow>
