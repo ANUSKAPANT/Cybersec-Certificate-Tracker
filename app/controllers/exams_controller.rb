@@ -1,4 +1,4 @@
-class ExamsController < ApplicationController
+class ExamsController < BaseController
   before_action :set_exam, only: %i[update destroy show]
 
   def index

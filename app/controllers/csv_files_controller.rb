@@ -1,5 +1,5 @@
-class CsvFilesController < ApplicationController
-  before_action :authenticate_user!
+class CsvFilesController < BaseController
+  skip_before_action :authorize_admin
 
   def create
     @file = CsvFile.new(file_params)

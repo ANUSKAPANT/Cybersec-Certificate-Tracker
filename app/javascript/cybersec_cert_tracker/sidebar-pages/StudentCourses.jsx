@@ -11,24 +11,6 @@ import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
-const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 const voucherOptions = [
   {label: "Purchased", value: true},
   {label: "Not Purchased", value: false}
@@ -43,9 +25,7 @@ const dataFormatter = new Jsona();
 
 function StudentCourses({ userData }) {
   const [loading, setLoading] = useState(true);
-  const [students, setStudents] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [show, setShow] = useState(false);
   const [courseOptions, setCourseOptions] = useState([]);
   const [studentOptions, setStudentOptions] = useState([]);
   const [studentCourseInfo, setStudentCourseInfo] = useState({id: null});
@@ -178,16 +158,17 @@ function StudentCourses({ userData }) {
 
   const deleteRecords = (idx) => {
     axios
-      .delete(`/students/${idx}`, {
+      .delete(`/student_courses/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
-      .then((res) => {
+      .then(() => {
         toast.success("Successfully Deleted", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
         });
+        fetchRecords();
       })
       .catch((err) => {
         toast.error("Error in deletingrecords", {
@@ -201,7 +182,7 @@ function StudentCourses({ userData }) {
 
   const deleteItem = (idx) => {
     deleteRecords(idx);
-    setStudents((prev) => {
+    setStudentCourses((prev) => {
       const tempArray = prev.slice();
       return tempArray.filter((item) => item.id !== idx);
     });
@@ -246,6 +227,7 @@ function StudentCourses({ userData }) {
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
+          "Authorization": `Bearer ${userData.token}`,
         },
         data
       }).then(() => {

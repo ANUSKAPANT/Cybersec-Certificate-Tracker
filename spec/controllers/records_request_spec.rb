@@ -1,11 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Records', type: :request do
+
+  before (:each) do
+    create(:user)
+  end
+
   let!(:records) { create_list(:student_course, 5) }
 
   describe 'GET /records' do
     before do
-      create(:user)
       records.first(3).each do |student_course|
         cert_voucher = create(:cert_voucher, student_course: student_course)
         create(:exam, cert_voucher: cert_voucher)

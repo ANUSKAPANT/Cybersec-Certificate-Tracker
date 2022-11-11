@@ -7,11 +7,13 @@ end
 
 When("user uploads a empty csv") do
     page.find("#uploadCSVButton").click
+    sleep(1)
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
 end
 
 When("user uploads a canvas csv") do
     page.find("#uploadCSVButton").click
+    sleep(1)
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
     sleep(1) #wait for data upload to finish in backend
     expect(page).to have_content("Success")
@@ -19,6 +21,7 @@ end
 
 When("user uploads a tees csv") do
     page.find("#uploadCSVButton").click
+    sleep(1)
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
     sleep(1) #wait for data upload to finish in backend
     expect(page).to have_content("Success")
@@ -26,6 +29,7 @@ end
 
 When("user uploads a corrupt csv") do
     page.find("#uploadCSVButton").click
+    sleep(1)
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
 end
 

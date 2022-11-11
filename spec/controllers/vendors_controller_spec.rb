@@ -1,5 +1,9 @@
 require 'rails_helper'
 RSpec.describe VendorsController, type: :controller do
+  before (:each) do
+    create(:user)
+    request.headers.merge!({ "Authorization": "Bearer #{User.first.token}" })
+  end
   describe "GET index" do
     it "returns a successful response" do
       get :index

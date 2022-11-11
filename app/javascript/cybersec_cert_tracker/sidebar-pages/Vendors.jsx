@@ -186,6 +186,7 @@ function Vendors({ userData }) {
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
+          "Authorization": `Bearer ${userData.token}`
         },
         data
       }).then(() => {
