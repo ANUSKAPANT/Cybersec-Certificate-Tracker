@@ -12,6 +12,7 @@ Feature: Sidebar
     When user clicks student panel
     Then user should see student data
 
+  @wip
   Scenario: User is on student profile page and submits a form
     Given user is on student profile page
     When user clicks add student button

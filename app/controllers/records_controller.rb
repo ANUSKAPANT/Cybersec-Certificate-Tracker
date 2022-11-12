@@ -1,4 +1,5 @@
 class RecordsController < BaseController
+  skip_before_action :authorize_admin
   def index
     all_records = {}
     all_record_rows = []

@@ -198,7 +198,7 @@ function filterGreaterThan(rows, id, filterValue) {
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
-function DashboardTable({ data, type, deleteItem }) {
+function DashboardTable({ data, type, deleteItem, editItem }) {
   let col = Columns(type);
 
   const navigate = useNavigate();
@@ -210,12 +210,11 @@ function DashboardTable({ data, type, deleteItem }) {
       Cell: ({ row }) => {
         return (
           <div>
-            <EditOutlinedIcon />
+            <EditOutlinedIcon
+              onClick={() => editItem(row.original.id)}
+            />
             <RemoveCircleOutlineOutlinedIcon
-              onClick={() => {
-                console.log(row.original.id);
-                deleteItem(row.original.id);
-              }}
+              onClick={() => deleteItem(row.original.id)}
             />
           </div>
         );
@@ -234,8 +233,8 @@ function DashboardTable({ data, type, deleteItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -324,11 +323,11 @@ function DashboardTable({ data, type, deleteItem }) {
                   <div>
                     {column.canFilter
                       ? DefaultColumnFilter(
-                          column.filterValue,
-                          column.preFilteredRows,
-                          column.setFilter,
-                          rows.length
-                        )
+                        column.filterValue,
+                        column.preFilteredRows,
+                        column.setFilter,
+                        rows.length
+                      )
                       : null}
                   </div>
                 </th>

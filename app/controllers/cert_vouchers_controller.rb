@@ -1,4 +1,4 @@
-class CertVouchersController < ApplicationController
+class CertVouchersController < BaseController
   before_action :set_cert_voucher, only: %i[update destroy show]
 
   def index

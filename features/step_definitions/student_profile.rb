@@ -4,6 +4,7 @@ Given("user is on dashboard page with data uploaded") do
     fill_in 'password', :with => $test_password
     page.find("#login_button").click
     page.find("#uploadCSVButton").click
+    sleep(1)
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
     sleep(1) #wait for data upload to finish in backend
     visit current_path #remove upload box
