@@ -195,7 +195,6 @@ function Students({ userData }) {
         color="success"
         className="csv-button"
         style={{ margin: "10px" }}
-        onClick={() => setOpen(true)}
         onClick={() => {
           setStudentId(null);
           setOpen(true);
