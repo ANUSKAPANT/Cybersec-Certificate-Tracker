@@ -1,4 +1,4 @@
-class VendorsController < ApplicationController
+class VendorsController < BaseController
   before_action :set_vendor, only: %i[update destroy show]
 
   def index
@@ -39,6 +39,6 @@ class VendorsController < ApplicationController
   end
 
   def vendor_params
-    params.permit(:name)
+    params.permit(:name, course_ids: [])
   end
 end

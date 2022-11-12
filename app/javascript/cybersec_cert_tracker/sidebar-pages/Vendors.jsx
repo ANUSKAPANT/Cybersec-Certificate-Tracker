@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
-import { Button } from "reactstrap";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
+import Select from "react-select";
 
 const override = {
   display: "block",
@@ -34,8 +46,10 @@ function Vendors({ userData }) {
   const [loading, setLoading] = useState(true);
   const [vendors, setVendors] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const [courseOptions, setCourseOptions] = useState([]);
+  const [vendorInfo, setVendorInfo] = useState({ id: null });
 
-  const fetchRecords = async () => {
+  const fetchRecords = () => {
     axios
       .get(`/vendors`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -54,13 +68,10 @@ function Vendors({ userData }) {
             }),
           };
         });
-
         setLoading(false);
         setVendors(vendorsData);
       })
-
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -72,9 +83,10 @@ function Vendors({ userData }) {
 
   useEffect(() => {
     fetchRecords();
+    fetchCourses();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/vendors/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -89,6 +101,56 @@ function Vendors({ userData }) {
       })
       .catch((err) => {
         toast.error("Error in deletingrecords", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      });
+  };
+
+  const fetchCourses = () => {
+    axios
+      .get(`/courses`, {
+        headers: { Authorization: `Bearer ${userData.token}` },
+      })
+      .then((response) => {
+        const data = dataFormatter.deserialize(response.data);
+        const coursesData = data.map((course) => {
+          return {
+            id: course.id,
+            value: course.id,
+            label: course.name,
+          };
+        });
+        setCourseOptions(coursesData);
+      })
+      .catch(() => {
+        toast.error("Error in fetching records", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      });
+  };
+
+  const fetchVendor = (id) => {
+    axios
+      .get(`/vendors/${id}`, {
+        headers: { Authorization: `Bearer ${userData.token}` },
+      })
+      .then((response) => {
+        const vendor = dataFormatter.deserialize(response.data);
+        const vendorData = {
+          id: vendor.id,
+          name: vendor.name,
+          course_ids: vendor.courses.map((el) => el.id),
+        };
+        setVendorInfo(vendorData);
+      })
+      .catch((error) => {
+        toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -115,6 +177,70 @@ function Vendors({ userData }) {
     justifyContent: "center",
     marginBottom: "20px",
   };
+  const editItem = (id) => {
+    setOpen(true);
+    fetchVendor(id);
+  };
+
+  const handleClose = () => {
+    setVendorInfo({ id: null });
+    setOpen(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setVendorInfo({ ...vendorInfo, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let csrf = "";
+    //Not present always
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+    const { id, name, course_ids } = vendorInfo;
+
+    const method = id !== null ? "patch" : "post";
+    const url = id == null ? "/vendors" : `/vendors/${id}`;
+    const message = id !== null ? "Updated" : "Created";
+    const data = { name, course_ids };
+    axios
+      .request({
+        method,
+        url,
+        headers: {
+          "Content-type": "application/json",
+          "X-CSRF-Token": csrf,
+          Authorization: `Bearer ${userData.token}`,
+        },
+        data,
+      })
+      .then(() => {
+        toast.success(`Successfully ${message}`, {
+          position: "bottom-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+        fetchRecords();
+        handleClose();
+      })
+      .catch(() => {
+        toast.error("Error Occured", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      });
+  };
+
+  const handleCoursesChange = (value) => {
+    const data = value.map((el) => el.value);
+    setVendorInfo({ ...vendorInfo, course_ids: data });
+  };
 
   return (
     <>
@@ -126,15 +252,66 @@ function Vendors({ userData }) {
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
-        + Add Vendors
+        + Add Vendor
       </Button>
       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "700px", width: "100%" }}
       >
-        <Box sx={style}></Box>
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          Add Vendor
+        </ModalHeader>
+        <ModalBody>
+          <Form>
+            <Card>
+              <CardBody>
+                <FormGroup row>
+                  <Col sm={12}>
+                    <Label for="name" sm={6}>
+                      Name
+                    </Label>
+                    <Input
+                      name="name"
+                      id="name"
+                      defaultValue={vendorInfo.name}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                </FormGroup>
+                {vendorInfo.id && (
+                  <FormGroup row>
+                    <Col sm={12}>
+                      <Label for="courses" sm={10}>
+                        Courses
+                      </Label>
+                      <Select
+                        isMulti
+                        name="courses"
+                        onChange={(value) => handleCoursesChange(value)}
+                        options={courseOptions}
+                        value={courseOptions.filter((option) =>
+                          (vendorInfo.course_ids || []).includes(option.value)
+                        )}
+                        placeholder="Select Courses"
+                        isDisabled
+                      />
+                    </Col>
+                  </FormGroup>
+                )}
+              </CardBody>
+            </Card>
+          </Form>
+        </ModalBody>
+        <ModalFooter style={{ border: "none" }}>
+          <Button color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>{" "}
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </ModalFooter>
       </Modal>
       {loading == true ? (
         <div style={spinnerContainer}>
@@ -146,7 +323,12 @@ function Vendors({ userData }) {
       ) : vendors.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
-        <DashboardTable data={vendors} type="Vendor" deleteItem={deleteItem} />
+        <DashboardTable
+          data={vendors}
+          type="Vendor"
+          deleteItem={deleteItem}
+          editItem={editItem}
+        />
       )}
     </>
   );

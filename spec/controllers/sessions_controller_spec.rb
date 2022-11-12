@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Devise::SessionsController, type: :controller do
+
+  before (:each) do
+    create(:user)
+    request.headers.merge!({ "Authorization": "Bearer #{User.first.token}" })
+  end
+
   describe "Destroy user session" do
     it "logs user out" do
       @controller = HomesController.new

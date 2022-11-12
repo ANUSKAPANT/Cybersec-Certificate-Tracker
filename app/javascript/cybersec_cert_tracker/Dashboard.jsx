@@ -1,39 +1,23 @@
-import React, { useEffect, useState, CSSProperties } from "react";
+import React, { useEffect, useState } from "react";
 import "./table.css";
 import DashboardTable from "./DashboardTable";
 import { Button } from "reactstrap";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 const fileTypes = ["csv"];
 
 function Dashboard({ userData }) {
   const [loading, setLoading] = useState(true);
   const [tableData, setTableData] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const fetchRecords = async () => {
     try {
@@ -59,8 +43,8 @@ function Dashboard({ userData }) {
   }, []);
 
   const fileUpload = async (event) => {
+    setUploading(true);
     let csrf;
-
     if (document.querySelector("meta[name='csrf-token']"))
       csrf = document
         .querySelector("meta[name='csrf-token']")
@@ -69,7 +53,6 @@ function Dashboard({ userData }) {
     if (Object.entries(event).length == 0) {
       return;
     }
-
     const formData = new FormData();
     Object.entries(event).forEach(([key, file]) => {
       formData.append("file_name", file.name);
@@ -84,10 +67,12 @@ function Dashboard({ userData }) {
         headers: {
           "Content-type": "multipart/form-data",
           "X-CSRF-Token": csrf,
+          Authorization: `Bearer ${userData.token}`,
         },
         data: formData,
       });
-      toast.success("Success!", {
+      setUploading(false);
+      toast.success("Successfully Uploaded!", {
         position: "bottom-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -115,6 +100,10 @@ function Dashboard({ userData }) {
     marginBottom: "20px",
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <ToastContainer />
@@ -127,12 +116,21 @@ function Dashboard({ userData }) {
         + Upload CSV
       </Button>
       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "500px", width: "100%" }}
       >
-        <Box sx={style}>
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          <span>CSV Upload </span>
+          {uploading == true ? (
+            <span
+              className="spinner-border spinner-border-sm text-primary"
+              role="status"
+            />
+          ) : null}
+        </ModalHeader>
+        <ModalBody className="mb-5">
           <FileUploader
             multiple={true}
             name="csvFile"
@@ -140,7 +138,7 @@ function Dashboard({ userData }) {
             handleChange={fileUpload}
             id="csvFile"
           />
-        </Box>
+        </ModalBody>
       </Modal>
       {loading == true ? (
         <div style={spinnerContainer}>

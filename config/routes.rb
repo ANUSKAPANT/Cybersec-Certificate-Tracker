@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     sessions: 'users/sessions'
   }
   resources :users, except: %i[edit new]
+  post 'create_user' => 'users#create', as: :create_user
   root "homes#index"
   match '*path', to: 'homes#index', via: :all
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

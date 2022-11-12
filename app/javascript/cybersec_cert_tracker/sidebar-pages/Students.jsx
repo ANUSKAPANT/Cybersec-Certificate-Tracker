@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
-import { Button } from "reactstrap";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { Button } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
@@ -33,6 +31,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+import StudentForm from "../StudentForm";
 
 const dataFormatter = new Jsona();
 
@@ -96,60 +95,48 @@ function Students({ userData }) {
     px: 4,
     pb: 3,
   };
+  const [studentId, setStudentId] = useState(null);
 
   const fetchRecords = async () => {
-    axios
-      .get(`/students`, {
+    try {
+      const response = await axios.get(`/students`, {
         headers: { Authorization: `Bearer ${userData.token}` },
-      })
-      .then((response) => {
-        const data = dataFormatter.deserialize(response.data);
-
-        const studentData = data.map((student) => {
-          return {
-            id: student.id,
-
-            full_name: student.full_comma_separated_name,
-
-            first_name: student.first_name,
-
-            last_name: student.last_name,
-
-            email_id: student.email_id,
-
-            canvas_id: student.canvas_id,
-
-            company: student.company,
-
-            courses: student.student_courses.map((sc) => {
-              return {
-                id: sc.course.id,
-                name: sc.course.name,
-              };
-            }),
-          };
-        });
-
-        setLoading(false);
-        setStudents(studentData);
-      })
-
-      .catch((error) => {
-        console.log(error);
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
       });
+      const data = dataFormatter.deserialize(response.data);
+      const studentData = data.map((student) => {
+        return {
+          id: student.id,
+          full_name: student.full_comma_separated_name,
+          first_name: student.first_name,
+          last_name: student.last_name,
+          email_id: student.email_id,
+          canvas_id: student.canvas_id,
+          company: student.company,
+          courses: student.student_courses.map((sc) => {
+            return {
+              id: sc.course.id,
+              name: sc.course.name,
+            };
+          }),
+        };
+      });
+      setLoading(false);
+      setStudents(studentData);
+    } catch (error) {
+      toast.error("Error in fetching records", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
   };
 
   useEffect(() => {
     fetchRecords();
   }, []);
 
-  const deleteRecords = async (idx) => {
+  const deleteRecords = (idx) => {
     axios
       .delete(`/students/${idx}`, {
         headers: { Authorization: `Bearer ${userData.token}` },
@@ -190,6 +177,16 @@ function Students({ userData }) {
     justifyContent: "center",
     marginBottom: "20px",
   };
+  const editItem = (id) => {
+    setOpen(true);
+    setStudentId(id);
+  };
+
+  const onFormSubmission = async () => {
+    setLoading(true);
+    await fetchRecords();
+    setLoading(false);
+  };
 
   return (
     <>
@@ -199,9 +196,13 @@ function Students({ userData }) {
         className="csv-button"
         style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
+        onClick={() => {
+          setStudentId(null);
+          setOpen(true);
+        }}
         id="add_student_button"
       >
-        + Add Students
+        + Add Student
       </Button>
       <Modal
         open={open}
@@ -375,6 +376,13 @@ function Students({ userData }) {
           </div>
         </Box>
       </Modal>
+      <StudentForm
+        userData={userData}
+        studentId={studentId}
+        open={open}
+        setOpen={setOpen}
+        afterSubmit={onFormSubmission}
+      />
       {loading == true ? (
         <div style={spinnerContainer}>
           <div style={spinner}>
@@ -389,6 +397,7 @@ function Students({ userData }) {
           data={students}
           type="Student"
           deleteItem={deleteItem}
+          editItem={editItem}
         />
       )}
     </>

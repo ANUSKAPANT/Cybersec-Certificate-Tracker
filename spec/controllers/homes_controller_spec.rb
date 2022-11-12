@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe HomesController, type: :controller do
   include_context 'login user'
 
+  before (:each) do
+    create(:user)
+    request.headers.merge!({ "Authorization": "Bearer #{User.first.token}" })
+  end
+
   describe "GET #index" do
     it "redirects to user sign in for non signed in user" do
       get :index

@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useStoreContext } from "./Store";
 import { setUserData } from "./Actions";
-import { Navbar, NavbarToggler, NavbarBrand } from "reactstrap";
+import {
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+} from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -79,99 +87,61 @@ function CybersecCertTrackerInit({ userData, children }) {
   return (
     <>
       <Navbar color="black" dark style={{ marginBottom: "20px" }}>
+        {userData.role == "admin" && (
+          <NavbarToggler onClick={() => setOpen(!open)} className="me-2" />
+        )}
         <NavbarBrand href="/" className="me-auto">
           CyberSec
         </NavbarBrand>
-        <NavbarToggler onClick={() => setOpen(!open)} className="me-2" />
+        <UncontrolledDropdown setActiveFromChild>
+          <DropdownToggle tag="a" className="nav-link text-light" caret>
+            {userData.first_name || "User"}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem
+              onClick={() => logout()}
+              id="logout_button"
+              className="bg-secondary"
+              active
+            >
+              Logout
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       </Navbar>
-      <div id="mySidenav" style={sideNav}>
-        <div>
-          <Link style={linkStyle} to="/dashboard" id="dashboard_nav">
-            Dashboard <KeyboardArrowRightIcon />
-          </Link>
-          <Link
-            style={linkStyle}
-            to="/dashboard/students"
-            id="students_nav"
-            onMouseEnter={() => console.log("lol")}
-          >
-            Students <KeyboardArrowRightIcon />
-          </Link>
-          <Link style={linkStyle} to="/dashboard/courses" id="courses_nav">
-            Courses <KeyboardArrowRightIcon />
-          </Link>
-          <Link style={linkStyle} to="/dashboard/companies" id="companies_nav">
-            Companies <KeyboardArrowRightIcon />
-          </Link>
-          <Link
-            style={linkStyle}
-            to="/dashboard/cert_vouchers"
-            id="cert_vouchers_nav"
-          >
-            Certificate Vouchers <KeyboardArrowRightIcon />
-          </Link>
-          <Link style={linkStyle} to="/dashboard/exams" id="exams_nav">
-            Exams <KeyboardArrowRightIcon />
-          </Link>
-          <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
-            Vendors <KeyboardArrowRightIcon />
-          </Link>
-        </div>
-        <div>
-          <Link style={logoutStyle} to="/dashboard/users" id="logout_button">
-            Logout
-          </Link>
-        </div>
+      <div id="mySidenav">
+        <Link style={linkStyle} to="/dashboard" id="dashboard_nav">
+          Dashboard <KeyboardArrowRightIcon />
+        </Link>
+        <Link
+          style={linkStyle}
+          to="/dashboard/students"
+          id="students_nav"
+          onMouseEnter={() => console.log("lol")}
+        >
+          Students <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/courses" id="courses_nav">
+          Courses <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/companies" id="companies_nav">
+          Companies <KeyboardArrowRightIcon />
+        </Link>
+        <Link
+          style={linkStyle}
+          to="/dashboard/cert_vouchers"
+          id="cert_vouchers_nav"
+        >
+          Certificate Vouchers <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/exams" id="exams_nav">
+          Exams <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
+          Vendors <KeyboardArrowRightIcon />
+        </Link>
       </div>
 
-      {/* <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
-              Dashboard
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/students" />}
-              id="students_nav"
-            >
-              Students
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/courses" />}
-              id="courses_nav"
-            >
-              Courses
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/companies" />}
-              id="companies_nav"
-            >
-              Companies
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/cert_vouchers" />}
-              id="cert_vouchers_nav"
-            >
-              Certificate Vouchers
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/exams" />}
-              id="exams_nav"
-            >
-              Exams
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/vendors" />}
-              id="vendors_nav"
-            >
-              Vendors
-            </MenuItem>
-            <MenuItem
-              routerLink={<Link to="/dashboard/users" />}
-              id="users_nav"
-            >
-              Users
-            </MenuItem>
-            <MenuItem onClick={() => logout()} id="logout_button">
-              Logout
-            </MenuItem> */}
       <div style={mainStyle}>{children}</div>
     </>
   );
