@@ -8,14 +8,13 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
+import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
 
 const override = {
   display: "block",
@@ -44,7 +43,6 @@ function Students({ userData }) {
   const [show, setShow] = useState(false);
   const [formValue, setFormValue] = useState({});
 
-
   const handleClose = () => setOpen(false);
 
   const submitData = async () => {
@@ -67,34 +65,32 @@ function Students({ userData }) {
     });
 
     console.log(response);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     setOpen(false);
     console.log(event);
-    console.log(formValue)
+    console.log(formValue);
     submitData();
-  }
+  };
 
   const handleChange = (field, event) => {
     const temp = formValue;
-    temp[field] = event.target.value
+    temp[field] = event.target.value;
     setFormValue(temp);
   };
 
-
-
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 900,
     height: 700,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -184,12 +180,24 @@ function Students({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   return (
     <>
       <ToastContainer />
       <Button
         color="success"
         className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="add_student_button"
       >
@@ -205,7 +213,9 @@ function Students({ userData }) {
           component="form"
           sx={{
             ...style,
-            '& .MuiTextField-root': { m: 1, width: '40ch' }, display: 'flex', flexWrap: 'wrap'
+            "& .MuiTextField-root": { m: 1, width: "40ch" },
+            display: "flex",
+            flexWrap: "wrap",
           }}
           noValidate
           autoComplete="off"
@@ -216,42 +226,58 @@ function Students({ userData }) {
               label="First Name"
               value={formValue.first_name}
               id="first_name"
-              onChange={(e) => { handleChange('first_name', e) }}
+              onChange={(e) => {
+                handleChange("first_name", e);
+              }}
             />
             <TextField
               label="Last Name"
               value={formValue.last_name}
               id="last_name"
-              onChange={(e) => { handleChange('last_name', e) }}
+              onChange={(e) => {
+                handleChange("last_name", e);
+              }}
             />
 
             <TextField
               label="Email Address"
               value={formValue.email}
               id="email"
-              onChange={(e) => { handleChange('email', e) }}
+              onChange={(e) => {
+                handleChange("email", e);
+              }}
             />
 
             <TextField
               label="Company ID"
               value={formValue.company_id}
               id="company_id"
-              onChange={(e) => { handleChange('company_id', e) }}
+              onChange={(e) => {
+                handleChange("company_id", e);
+              }}
             />
 
             <div></div>
 
-            <FormControl fullWidth sx={{ m: 1, width: '50ch' }}>
-              <InputLabel id="demo-simple-select-label">Canvas Course Enrollment</InputLabel>
+            <FormControl fullWidth sx={{ m: 1, width: "50ch" }}>
+              <InputLabel id="demo-simple-select-label">
+                Canvas Course Enrollment
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={formValue.canvas_course}
-                onChange={(e) => { handleChange('canvas_course', e) }}
+                onChange={(e) => {
+                  handleChange("canvas_course", e);
+                }}
                 label="Canvas Course Enrollment"
               >
-                <MenuItem value={10}>CYBER: CompTIA Network+ Certificate Prep Course</MenuItem>
-                <MenuItem value={20}>CYBER: CompTIA Security+ Certificate Prep Course</MenuItem>
+                <MenuItem value={10}>
+                  CYBER: CompTIA Network+ Certificate Prep Course
+                </MenuItem>
+                <MenuItem value={20}>
+                  CYBER: CompTIA Security+ Certificate Prep Course
+                </MenuItem>
               </Select>
             </FormControl>
 
@@ -260,24 +286,32 @@ function Students({ userData }) {
               label="Title"
               value={formValue.title}
               id="title"
-              onChange={(e) => { handleChange('title', e) }}
+              onChange={(e) => {
+                handleChange("title", e);
+              }}
             />
 
             <TextField
               label="Canvas ID"
               value={formValue.canvas_id}
               id="canvas_id"
-              onChange={(e) => { handleChange('canvas_id', e) }}
+              onChange={(e) => {
+                handleChange("canvas_id", e);
+              }}
             />
 
             <div></div>
-            <FormControl fullWidth sx={{ m: 1, width: '50ch' }}>
-              <InputLabel id="demo-simple-select-label">Canvas Course Progress</InputLabel>
+            <FormControl fullWidth sx={{ m: 1, width: "50ch" }}>
+              <InputLabel id="demo-simple-select-label">
+                Canvas Course Progress
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={formValue.course_progress}
-                onChange={(e) => { handleChange('course_progress', e) }}
+                onChange={(e) => {
+                  handleChange("course_progress", e);
+                }}
                 label="Canvas Course Progress"
               >
                 <MenuItem value={10}>Completed</MenuItem>
@@ -289,43 +323,61 @@ function Students({ userData }) {
               label="SMC"
               value={formValue.smc}
               id="smc"
-              onChange={(e) => { handleChange('smc', e) }}
+              onChange={(e) => {
+                handleChange("smc", e);
+              }}
             />
 
             <TextField
               label="Registration Date"
               value={formValue.reg_date}
-              onChange={(e) => { handleChange('reg_date', e) }}
+              onChange={(e) => {
+                handleChange("reg_date", e);
+              }}
             />
 
             <TextField
               label="DCLDP Code"
               value={formValue.dcldp}
-              onChange={(e) => { handleChange('dcldp', e) }}
+              onChange={(e) => {
+                handleChange("dcldp", e);
+              }}
             />
 
             <TextField
               label="Voucher Purchased Date"
               value={formValue.voucher_purchase_date}
-              onChange={(e) => { handleChange('voucher_purchase_date', e) }}
+              onChange={(e) => {
+                handleChange("voucher_purchase_date", e);
+              }}
             />
 
             <TextField
               label="Voucher Use By"
               value={formValue.voucher_use_by}
-              onChange={(e) => { handleChange('voucher_use_by', e) }}
+              onChange={(e) => {
+                handleChange("voucher_use_by", e);
+              }}
             />
             <div></div>
             <Stack direction="row" spacing={2}>
-              <Button variant="contained" onClick={handleClose}>Close</Button>
-              <Button variant="contained" onClick={handleSubmit} id="form_submit">Submit</Button>
+              <Button variant="contained" onClick={handleClose}>
+                Close
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleSubmit}
+                id="form_submit"
+              >
+                Submit
+              </Button>
             </Stack>
           </div>
         </Box>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>

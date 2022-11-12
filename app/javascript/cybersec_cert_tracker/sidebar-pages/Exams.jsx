@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
 import { Button } from "reactstrap";
@@ -8,7 +8,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 
 const override = {
@@ -47,7 +46,7 @@ function Exams({ userData }) {
           return {
             id: exam.id,
             exam_code: exam.exam_code,
-            certification_name: exam.cert_voucher.certification_name, 
+            certification_name: exam.cert_voucher.certification_name,
             exam_date: exam.exam_date,
             grade: exam.exam_grade,
             passed: String(exam.passed),
@@ -105,12 +104,24 @@ function Exams({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   return (
     <>
       <ToastContainer />
       <Button
         color="success"
         className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
@@ -125,8 +136,8 @@ function Exams({ userData }) {
         <Box sx={style}></Box>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>

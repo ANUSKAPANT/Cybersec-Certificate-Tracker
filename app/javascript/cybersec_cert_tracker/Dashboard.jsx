@@ -1,8 +1,7 @@
 import React, { useEffect, useState, CSSProperties } from "react";
 import "./table.css";
 import DashboardTable from "./DashboardTable";
-import makeData from "./makeData";
-import { Label, Input, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { FileUploader } from "react-drag-drop-files";
@@ -10,7 +9,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "./Dashboard.css";
 
 const override = {
   display: "block",
@@ -106,12 +104,23 @@ function Dashboard({ userData }) {
     }
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   return (
     <>
       <ToastContainer />
       <Button
         color="success"
-        className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
@@ -134,8 +143,8 @@ function Dashboard({ userData }) {
         </Box>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>

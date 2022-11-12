@@ -4,9 +4,7 @@ import { useStoreContext } from "./Store";
 import { setUserData } from "./Actions";
 import { Navbar, NavbarToggler, NavbarBrand } from "reactstrap";
 import axios from "axios";
-import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-import "./CybersecCertTrackerInit.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 function CybersecCertTrackerInit({ userData, children }) {
@@ -74,7 +72,8 @@ function CybersecCertTrackerInit({ userData, children }) {
 
   const mainStyle = {
     transition: "margin-left .5s",
-    marginLeft: open == true ? "250px" : "0px",
+    marginLeft: open == true ? "270px" : "20px",
+    marginRight: "20px",
   };
 
   return (
@@ -115,7 +114,7 @@ function CybersecCertTrackerInit({ userData, children }) {
             Exams <KeyboardArrowRightIcon />
           </Link>
           <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
-            Exams <KeyboardArrowRightIcon />
+            Vendors <KeyboardArrowRightIcon />
           </Link>
         </div>
         <div>

@@ -6,13 +6,16 @@ import {
   useAsyncDebounce,
   useSortBy,
 } from "react-table";
-import { Table } from "reactstrap";
+import { Table, Card } from "reactstrap";
 import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
 import Columns from "./columns";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { useNavigate } from "react-router-dom";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { Button } from "reactstrap";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -205,6 +208,9 @@ filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
 function DashboardTable({ data, type, deleteItem }) {
+  const [open, setOpen] = useState(false);
+  const [currentRowId, setCurrentRowId] = useState(null);
+
   let col = Columns(type);
 
   const navigate = useNavigate();
@@ -219,8 +225,8 @@ function DashboardTable({ data, type, deleteItem }) {
             <EditOutlinedIcon />
             <RemoveCircleOutlineOutlinedIcon
               onClick={() => {
-                console.log(row.original.id);
-                deleteItem(row.original.id);
+                setCurrentRowId(row.original.id);
+                setOpen(true);
               }}
             />
           </div>
@@ -310,58 +316,118 @@ function DashboardTable({ data, type, deleteItem }) {
     justifyContent: "center",
   };
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const buttonContainer = {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    marginTop: "20px",
+  };
+
+  const cardTableContainer = {
+    padding: "20px",
+    marginTop: "20px",
+    marginBottom: "20px",
+  };
+
   return (
     <>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          Are you sure you want to delete?
+          <div style={buttonContainer}>
+            <Button
+              color="success"
+              id="uploadCSVButton"
+              onClick={() => {
+                setOpen(false);
+                deleteItem(currentRowId);
+                setCurrentRowId(null);
+              }}
+            >
+              Yes
+            </Button>
+            <Button
+              color="danger"
+              id="uploadCSVButton"
+              onClick={() => {
+                setOpen(false);
+                setCurrentRowId(null);
+              }}
+            >
+              No
+            </Button>
+          </div>
+        </Box>
+      </Modal>
       <GlobalFilter
         numRows={rows.length}
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table striped hover {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                  {/* Render the columns filter UI */}
-                  <div>
-                    {column.canFilter
-                      ? DefaultColumnFilter(
-                          column.filterValue,
-                          column.preFilteredRows,
-                          column.setFilter,
-                          rows.length
-                        )
-                      : null}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {currentItems.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+      <Card style={cardTableContainer}>
+        <Table striped hover responsive {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                    {/* Render the columns filter UI */}
+                    <div>
+                      {column.canFilter
+                        ? DefaultColumnFilter(
+                            column.filterValue,
+                            column.preFilteredRows,
+                            column.setFilter,
+                            rows.length
+                          )
+                        : null}
+                    </div>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {currentItems.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Card>
       <div style={paginationContainer}>
         <ReactPaginate
           nextLabel="next >"

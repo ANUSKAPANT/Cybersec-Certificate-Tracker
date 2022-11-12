@@ -9,7 +9,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 
 const override = {
@@ -48,12 +47,13 @@ function Users({ userData }) {
           return {
             id: user.id,
             email: user.email,
-            role: user.role
+            role: user.role,
           };
         });
         setLoading(false);
         setUsers(userData);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         toast.error("Error in fetching records", {
           position: "bottom-center",
@@ -99,12 +99,24 @@ function Users({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   return (
     <>
       <ToastContainer />
       <Button
         color="success"
         className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
@@ -119,8 +131,8 @@ function Users({ userData }) {
         <Box sx={style}></Box>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>
