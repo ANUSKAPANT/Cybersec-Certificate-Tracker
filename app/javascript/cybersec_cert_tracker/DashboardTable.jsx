@@ -6,7 +6,6 @@ import {
   useAsyncDebounce,
   useSortBy,
 } from "react-table";
-import "./DashboardTable.css";
 import { Table } from "reactstrap";
 import TextField from "@mui/material/TextField";
 import ReactPaginate from "react-paginate";
@@ -22,8 +21,15 @@ function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
     setGlobalFilter(value || undefined);
   }, 200);
 
+  const superContainer = {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    marginLeft: "10px",
+  };
+
   return (
-    <div className="super-search-container">
+    <div style={superContainer}>
       <div>Search:</div>
       <TextField
         id="outlined-basic"
@@ -299,6 +305,11 @@ function DashboardTable({ data, type, deleteItem }) {
     setItemOffset(newOffset);
   };
 
+  const paginationContainer = {
+    display: "flex",
+    justifyContent: "center",
+  };
+
   return (
     <>
       <GlobalFilter
@@ -351,7 +362,7 @@ function DashboardTable({ data, type, deleteItem }) {
           })}
         </tbody>
       </Table>
-      <div className="pagination-container">
+      <div style={paginationContainer}>
         <ReactPaginate
           nextLabel="next >"
           onPageChange={handlePageClick}
