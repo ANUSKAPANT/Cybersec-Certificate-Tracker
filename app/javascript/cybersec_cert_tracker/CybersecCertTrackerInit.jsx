@@ -14,6 +14,8 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import CloseIcon from "@mui/icons-material/Close";
+import { white } from "@mui/material/colors";
 
 function CybersecCertTrackerInit({ userData, children }) {
   const { dispatch } = useStoreContext();
@@ -55,9 +57,6 @@ function CybersecCertTrackerInit({ userData, children }) {
     overflowX: "hidden",
     transition: "0.5s",
     paddingTop: "10px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
   };
 
   const linkStyle = {
@@ -82,6 +81,12 @@ function CybersecCertTrackerInit({ userData, children }) {
     transition: "margin-left .5s",
     marginLeft: open == true ? "270px" : "20px",
     marginRight: "20px",
+  };
+
+  const crossContainer = {
+    display: "flex",
+    justifyContent: "end",
+    marginRight: "10px",
   };
 
   return (
@@ -109,7 +114,13 @@ function CybersecCertTrackerInit({ userData, children }) {
           </DropdownMenu>
         </UncontrolledDropdown>
       </Navbar>
-      <div id="mySidenav">
+      <div id="mySidenav" style={sideNav}>
+        <div style={crossContainer}>
+          <CloseIcon
+            style={{ color: "white" }}
+            onClick={() => setOpen(!open)}
+          />
+        </div>
         <Link style={linkStyle} to="/dashboard" id="dashboard_nav">
           Dashboard <KeyboardArrowRightIcon />
         </Link>

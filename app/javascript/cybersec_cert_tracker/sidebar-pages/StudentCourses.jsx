@@ -3,23 +3,34 @@ import "../table.css";
 import DashboardTable from "../DashboardTable";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody, Modal,
-  ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
 const voucherOptions = [
-  {label: "Purchased", value: true},
-  {label: "Not Purchased", value: false}
-]
+  { label: "Purchased", value: true },
+  { label: "Not Purchased", value: false },
+];
 
 const completionOptions = [
-  {label: "Completed", value: true},
-  {label: "Incomplete", value: false}
-]
+  { label: "Completed", value: true },
+  { label: "Incomplete", value: false },
+];
 
 const dataFormatter = new Jsona();
 
@@ -28,14 +39,13 @@ function StudentCourses({ userData }) {
   const [open, setOpen] = React.useState(false);
   const [courseOptions, setCourseOptions] = useState([]);
   const [studentOptions, setStudentOptions] = useState([]);
-  const [studentCourseInfo, setStudentCourseInfo] = useState({id: null});
+  const [studentCourseInfo, setStudentCourseInfo] = useState({ id: null });
   const [studentCourses, setStudentCourses] = useState([]);
-
 
   const handleClose = () => {
     setStudentCourseInfo({});
     setOpen(false);
-  }
+  };
 
   const fetchRecords = () => {
     axios
@@ -55,12 +65,13 @@ function StudentCourses({ userData }) {
             voucher_purchased: String(s.voucher_purchased),
             test_result: s.test_result,
             canvas_course_completion: String(s.canvas_course_completion),
-            dcldp_code: s.dcldp_code, 
+            dcldp_code: s.dcldp_code,
           };
         });
         setLoading(false);
         setStudentCourses(studentCourseData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -86,7 +97,8 @@ function StudentCourses({ userData }) {
           };
         });
         setStudentOptions(studentData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -111,12 +123,13 @@ function StudentCourses({ userData }) {
           voucher_purchased: data.voucher_purchased,
           test_result: data.test_result,
           canvas_course_completion: data.canvas_course_completion,
-          dcldp_code: data.dcldp_code, 
+          dcldp_code: data.dcldp_code,
           student_id: data.student.id,
           course_id: data.course.id,
         };
         setStudentCourseInfo(studentData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -140,7 +153,8 @@ function StudentCourses({ userData }) {
           };
         });
         setCourseOptions(coursesData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -191,46 +205,50 @@ function StudentCourses({ userData }) {
   const editItem = (id) => {
     setOpen(true);
     fetchStudentCourse(id);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let csrf = "";
     //Not present always
     if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-      const {
-        id,
-        registration_date,
-        voucher_purchased,
-        test_result,
-        canvas_course_completion,
-        dcldp_code,
-        student_id,
-        course_id,
-      } = studentCourseInfo;
-      const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/student_courses' : `/student_courses/${id}`;
-      const message = id !== null ? 'Updated' : 'Created';
-      const data = {
-        registration_date,
-        voucher_purchased,
-        test_result,
-        canvas_course_completion,
-        dcldp_code,
-        student_id,
-        course_id,
-      };
-      axios.request({
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+    const {
+      id,
+      registration_date,
+      voucher_purchased,
+      test_result,
+      canvas_course_completion,
+      dcldp_code,
+      student_id,
+      course_id,
+    } = studentCourseInfo;
+    const method = id !== null ? "patch" : "post";
+    const url = id == null ? "/student_courses" : `/student_courses/${id}`;
+    const message = id !== null ? "Updated" : "Created";
+    const data = {
+      registration_date,
+      voucher_purchased,
+      test_result,
+      canvas_course_completion,
+      dcldp_code,
+      student_id,
+      course_id,
+    };
+    axios
+      .request({
         method,
         url,
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
-          "Authorization": `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userData.token}`,
         },
-        data
-      }).then(() => {
+        data,
+      })
+      .then(() => {
         toast.success(`Successfully ${message}`, {
           position: "bottom-center",
           autoClose: 1500,
@@ -239,23 +257,24 @@ function StudentCourses({ userData }) {
         });
         fetchRecords();
         handleClose();
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error Occured", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
         });
-    });
-  }
+      });
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setStudentCourseInfo({...studentCourseInfo, [name]: value});
+    setStudentCourseInfo({ ...studentCourseInfo, [name]: value });
   };
 
   const handleSelectChange = (value, name) => {
-    setStudentCourseInfo({...studentCourseInfo, [name]: value.value});
+    setStudentCourseInfo({ ...studentCourseInfo, [name]: value.value });
   };
 
   return (
@@ -269,70 +288,125 @@ function StudentCourses({ userData }) {
       >
         + Add Student Course
       </Button>
-      <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '700px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add Student Course</ModalHeader>
+      <Modal
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "700px", width: "100%" }}
+      >
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          Add Student Course
+        </ModalHeader>
         <ModalBody>
           <Form>
             <Card>
               <CardBody>
-              <FormGroup row>
+                <FormGroup row>
                   <Col sm={12}>
-                    <Label for="student" sm={10}>Student</Label>
+                    <Label for="student" sm={10}>
+                      Student
+                    </Label>
                     <Select
                       name="student"
-                      onChange={(value) => handleSelectChange(value, "student_id")}
+                      onChange={(value) =>
+                        handleSelectChange(value, "student_id")
+                      }
                       options={studentOptions}
-                      value={studentOptions.filter((option) => studentCourseInfo.student_id == option.value)}
+                      value={studentOptions.filter(
+                        (option) => studentCourseInfo.student_id == option.value
+                      )}
                       placeholder="Select Student"
                     />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="courses" sm={10}>Courses</Label>
+                    <Label for="courses" sm={10}>
+                      Courses
+                    </Label>
                     <Select
                       name="courses"
-                      onChange={(value) => handleSelectChange(value, "course_id")}
+                      onChange={(value) =>
+                        handleSelectChange(value, "course_id")
+                      }
                       options={courseOptions}
-                      value={courseOptions.filter((option) => studentCourseInfo.course_id == option.value)}
+                      value={courseOptions.filter(
+                        (option) => studentCourseInfo.course_id == option.value
+                      )}
                       placeholder="Select Course"
                     />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="registration_date" sm={6}>Registration Date</Label>
-                    <Input name="registration_date" id="registration_date" defaultValue={studentCourseInfo.registration_date}  onChange={handleInputChange} />
+                    <Label for="registration_date" sm={6}>
+                      Registration Date
+                    </Label>
+                    <Input
+                      name="registration_date"
+                      id="registration_date"
+                      defaultValue={studentCourseInfo.registration_date}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="voucher_purchased" sm={6}>Voucher Purchased</Label>
+                    <Label for="voucher_purchased" sm={6}>
+                      Voucher Purchased
+                    </Label>
                     <Select
                       name="voucher_purchased"
-                      onChange={(value) => handleSelectChange(value, "voucher_purchased")}
+                      onChange={(value) =>
+                        handleSelectChange(value, "voucher_purchased")
+                      }
                       options={voucherOptions}
-                      value={voucherOptions.filter((option) => studentCourseInfo.voucher_purchased == option.value)}
+                      value={voucherOptions.filter(
+                        (option) =>
+                          studentCourseInfo.voucher_purchased == option.value
+                      )}
                       placeholder="Select Voucher Purchased"
                     />
                   </Col>
                   <Col sm={6}>
-                    <Label for="test_result" sm={6}>Test Result</Label>
-                    <Input name="test_result" id="test_result" defaultValue={studentCourseInfo.test_result} onChange={handleInputChange} />
+                    <Label for="test_result" sm={6}>
+                      Test Result
+                    </Label>
+                    <Input
+                      name="test_result"
+                      id="test_result"
+                      defaultValue={studentCourseInfo.test_result}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="dcldp_code" sm={5}>Dcldp Code</Label>
-                    <Input name="dcldp_code" id="dcldp_code" defaultValue={studentCourseInfo.dcldp_code}  onChange={handleInputChange} />
+                    <Label for="dcldp_code" sm={5}>
+                      Dcldp Code
+                    </Label>
+                    <Input
+                      name="dcldp_code"
+                      id="dcldp_code"
+                      defaultValue={studentCourseInfo.dcldp_code}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                   <Col sm={6}>
-                    <Label for="canvas_course_completion" sm={5}>Canvas Course Completed</Label>
+                    <Label for="canvas_course_completion" sm={5}>
+                      Canvas Course Completed
+                    </Label>
                     <Select
                       name="canvas_course_completion"
-                      onChange={(value) => handleSelectChange(value, "canvas_course_completion")}
+                      onChange={(value) =>
+                        handleSelectChange(value, "canvas_course_completion")
+                      }
                       options={completionOptions}
-                      value={completionOptions.filter((option) => studentCourseInfo.canvas_course_completion == option.value)}
+                      value={completionOptions.filter(
+                        (option) =>
+                          studentCourseInfo.canvas_course_completion ==
+                          option.value
+                      )}
                       placeholder="Select Canvas Course Completion"
                     />
                   </Col>
@@ -341,9 +415,13 @@ function StudentCourses({ userData }) {
             </Card>
           </Form>
         </ModalBody>
-        <ModalFooter style={{border: "none"}}>
-          <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
-          <Button color="secondary" onClick={handleClose}>Cancel</Button>
+        <ModalFooter style={{ border: "none" }}>
+          <Button color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>{" "}
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
       {loading == true ? (

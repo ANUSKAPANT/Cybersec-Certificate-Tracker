@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./table.css";
 import DashboardTable from "./DashboardTable";
-import { Button } from "reactstrap";
-import Modal from "@mui/material/Modal";
+// import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { FileUploader } from "react-drag-drop-files";

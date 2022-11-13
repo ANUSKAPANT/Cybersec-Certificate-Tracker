@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Button } from "reactstrap";

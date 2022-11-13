@@ -208,7 +208,7 @@ filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 // Our table component
 function DashboardTable({ data, type, deleteItem, editItem }) {
-     const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [currentRowId, setCurrentRowId] = useState(null);
   let col = Columns(type);
 
@@ -221,18 +221,12 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
       Cell: ({ row }) => {
         return (
           <div>
-            <EditOutlinedIcon
-              onClick={() => editItem(row.original.id)}
-            />
+            <EditOutlinedIcon onClick={() => editItem(row.original.id)} />
             <RemoveCircleOutlineOutlinedIcon
-<<<<<<< HEAD
               onClick={() => {
                 setCurrentRowId(row.original.id);
                 setOpen(true);
               }}
-=======
-              onClick={() => deleteItem(row.original.id)}
->>>>>>> main
             />
           </div>
         );
@@ -251,8 +245,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-              .toLowerCase()
-              .startsWith(String(filterValue).toLowerCase())
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -386,7 +380,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-<<<<<<< HEAD
       <Card style={cardTableContainer}>
         <Table striped hover responsive {...getTableProps()}>
           <thead>
@@ -415,48 +408,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
                     </div>
                   </th>
                 ))}
-=======
-      <Table striped hover {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                  {/* Render the columns filter UI */}
-                  <div>
-                    {column.canFilter
-                      ? DefaultColumnFilter(
-                        column.filterValue,
-                        column.preFilteredRows,
-                        column.setFilter,
-                        rows.length
-                      )
-                      : null}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {currentItems.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
->>>>>>> main
               </tr>
             ))}
           </thead>
