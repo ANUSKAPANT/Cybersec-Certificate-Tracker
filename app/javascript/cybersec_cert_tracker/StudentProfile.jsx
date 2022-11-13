@@ -7,12 +7,15 @@ import "./StudentProfile.css";
 import StudentCourseTable from './StudentCourseTable';
 import StudentForm from './StudentForm'
 import Grid from '@mui/material/Grid';
+import StudentCourseForm from './StudentCourseForm';
 
 function StudentProfile({ userData }) {
     const dataFormatter = new Jsona();
     const [studentInfo, setStudentInfo] = useState({});
     const [coursesInfo, setCoursesInfo] = useState([]);
     const [open, setOpen] = useState(false);
+    const [courseSelectionOpen, setCourseSelectionOpen] = useState(false);
+    const [studentCourseId, setStudentCourseId] = useState(null);
 
     const [readOnly, setReadOnly] = useState(true);
 
@@ -28,8 +31,9 @@ function StudentProfile({ userData }) {
         setStudentInfo({ canvas_id, company_name: company.name, email_id, first_name, last_name });
         const courses = student_courses.map((student_course) => {
             return ({
+                student_course_id: student_course.id,
                 canvas_course: student_course.course.name,
-                course_progress: student_course.canvas_course_completion,
+                course_completed: student_course.canvas_course_completion,
                 cert_name: student_course.cert_vouchers.map((cv) => cv.certification_name),
                 registration_date: student_course.registration_date,
                 voucher_purchased: student_course.voucher_purchased || false,
@@ -45,23 +49,32 @@ function StudentProfile({ userData }) {
         setCoursesInfo(courses);
     }
 
+    const onCourseEdit = ((id) => {
+        setCourseSelectionOpen(true);
+        setStudentCourseId(id);
+    })
+
     useEffect(() => {
         fetchProfile();
     }, []);
 
     return (
         <Grid container spacing={2} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-            <Grid item xs={12}>
-                <h3 style={{ display: "inline" }}>Overview</h3>
-                {userData.role == "admin" && <Button
-                    color="success"
-                    className="csv-button"
-                    onClick={() => setOpen(true)}
-                    id="add_student_button"
-                    style={{ float: "right", display: "inline" }}
-                >
-                    Update Profile
-                </Button>}
+            <Grid container style={{ marginLeft: "15px" }}>
+                <Grid item xs={4} style={{ margin: "auto" }}>
+                    <h3 style={{ display: "inline" }}>Overview</h3>
+                </Grid>
+                <Grid item xs={8}>
+                    {userData.role == "admin" && <Button
+                        color="success"
+                        className="csv-button"
+                        onClick={() => setOpen(true)}
+                        id="add_student_button"
+                        style={{ float: "right", display: "inline" }}
+                    >
+                        Update Profile
+                    </Button>}
+                </Grid>
             </Grid>
             <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} afterSubmit={fetchProfile} />
             <Grid item xs={12}>
@@ -110,10 +123,27 @@ function StudentProfile({ userData }) {
                             </FormGroup>
                         </CardBody>
                     </Card>
-                    <StudentCourseTable coursesInfo={coursesInfo} />
+                    <Grid container>
+                        <Grid item xs={4} style={{ margin: "auto" }}>
+                            <h4 style={{ display: "inline" }}>Courses</h4> <p style={{ display: "inline", color: "#9F9998" }}>{coursesInfo.length} {coursesInfo.length < 2 ? "item" : "items"}</p>
+                        </Grid>
+                        <Grid item xs={8}>
+                            {userData.role == "admin" && <Button
+                                color="success"
+                                className="csv-button"
+                                onClick={() => { setStudentCourseId(null); setCourseSelectionOpen(true); }}
+                                id="add_student_course_button"
+                                style={{ float: "right", display: "inline" }}
+                            >
+                                Add Course
+                            </Button>}
+                        </Grid>
+                    </Grid>
+                    <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} studentCourseId={studentCourseId} />
+                    <StudentCourseTable coursesInfo={coursesInfo} onEdit={onCourseEdit} />
                 </Form>
-            </Grid>
-        </Grid>
+            </Grid >
+        </Grid >
     )
 }
 
