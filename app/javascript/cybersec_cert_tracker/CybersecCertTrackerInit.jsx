@@ -8,6 +8,29 @@ import {
 import axios from "axios";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
+import {
+  FaUserGraduate,
+  FaUserAlt,
+  FaRegChartBar,
+}from "react-icons/fa";
+
+import { 
+  IoBusinessSharp,
+  IoBookSharp
+} from "react-icons/io5";
+
+import { 
+  TiVendorMicrosoft 
+} from "react-icons/ti";
+
+import { 
+  MdDashboard 
+} from "react-icons/md";
+
+import{
+  TbCertificate
+} from "react-icons/tb";
+
 import "./CybersecCertTrackerInit.css";
 
 function CybersecCertTrackerInit({ userData, children }) {
@@ -57,28 +80,28 @@ function CybersecCertTrackerInit({ userData, children }) {
       <div className="sidebar">
         <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
           <Menu>
-            <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
+            <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav" icon = {<MdDashboard/>}>
               Dashboard
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
+            <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav" icon = {<FaUserGraduate/>}>
               Students
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
+            <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav" icon = {<IoBookSharp/>}>
               Courses
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
+            <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav" icon = {<IoBusinessSharp/>}>
               Companies
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
+            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav" icon = {<TbCertificate/>}>
               Certificate Vouchers
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
+            <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav" icon = {<FaRegChartBar/>}>
               Exams
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
+            <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav" icon = {<TiVendorMicrosoft/>}>
               Vendors
             </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
+            <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav" icon = { <FaUserAlt/>}>
               Users
             </MenuItem>
           </Menu>
