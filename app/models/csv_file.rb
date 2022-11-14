@@ -75,7 +75,25 @@ class CsvFile < ApplicationRecord
     if not std_course
       course_completion = row['course_completion'] != nil && row['course_completion'] != ""
       registration_date = DateTime.strptime(row["course_registration_date"], "%m/%d/%Y %H:%M")
-      StudentCourse.create(student_id: student.id, course_id: course.id, registration_date: registration_date, canvas_course_completion: course_completion )
+      std_course = StudentCourse.create(student_id: student.id, course_id: course.id, registration_date: registration_date, canvas_course_completion: course_completion )
+    end
+    # add dummy cert voucher information
+    dummy_cert_names = [" Certified Information Systems Security Professional (CISSP)",
+                        "Certified Information Systems Auditor (CISA)",
+                        "Certified Information Security Manager (CISM)",
+                        "CompTIA Security+",
+                        "Certified Ethical Hacker (CEH)",
+                        "GIAC Security Essentials Certification (GSEC)",
+                        "Systems Security Certified Practitioner (SSCP)",
+                        "CompTIA Advanced Security Practitioner (CASP+)",
+                        "GIAC Certified Incident Handler (GCIH)",
+                        "Offensive Security Certified Professional (OSCP)"
+                      ]
+    if row['course_completion']!=nil
+      std_course.update(voucher_purchased: true)
+      created_date = DateTime.strptime(row['course_completion'], "%m/%d/%Y %H:%M")
+      cert_voucher = CertVoucher.create(student_course_id: std_course.id, certification_name: dummy_cert_names.sample(), created_date:created_date, expiry_date: DateTime.now-rand(30))
+      Exam.create(cert_voucher_id: cert_voucher.id, exam_code: 'CODE2022', exam_date: cert_voucher.expiry_date-rand(10), exam_grade: 90.0)
     end
   end
 
