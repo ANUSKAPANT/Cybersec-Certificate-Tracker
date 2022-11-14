@@ -15,7 +15,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import CloseIcon from "@mui/icons-material/Close";
-import { white } from "@mui/material/colors";
 
 function CybersecCertTrackerInit({ userData, children }) {
   const { dispatch } = useStoreContext();

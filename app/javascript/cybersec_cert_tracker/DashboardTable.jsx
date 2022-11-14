@@ -15,6 +15,10 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import { useNavigate } from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { Button } from "reactstrap";
 
 // Define a default UI for filtering
@@ -296,18 +300,27 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 10;
+  const [numRecords, setNumRecords] = React.useState(10);
+  //   const numRecords = 10;
 
   useEffect(() => {
     // Fetch items from another resources.
-    const endOffset = itemOffset + itemsPerPage;
+    const endOffset = itemOffset + numRecords;
     setCurrentItems(rows.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(rows.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, rows]);
+    setPageCount(Math.ceil(rows.length / numRecords));
+  }, [itemOffset, numRecords, rows]);
 
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % rows.length;
+    const newOffset = (event.selected * numRecords) % rows.length;
     setItemOffset(newOffset);
+  };
+
+  const handleChange = (event) => {
+    if (event.target.value === "All") {
+      setNumRecords(rows.length);
+    } else {
+      setNumRecords(event.target.value);
+    }
   };
 
   const paginationContainer = {
@@ -338,6 +351,12 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     padding: "20px",
     marginTop: "20px",
     marginBottom: "20px",
+  };
+
+  const globalContainer = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   };
 
   return (
@@ -375,11 +394,30 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           </div>
         </Box>
       </Modal>
-      <GlobalFilter
-        numRows={rows.length}
-        globalFilter={state.globalFilter}
-        setGlobalFilter={setGlobalFilter}
-      />
+      <div style={globalContainer}>
+        <GlobalFilter
+          numRows={rows.length}
+          globalFilter={state.globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
+        <div>
+          <div>Number of Records Per Page</div>
+
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={numRecords === rows.length ? "All" : numRecords}
+            label="Number of Records Per Page"
+            onChange={handleChange}
+            autoWidth={true}
+          >
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={25}>25</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+            <MenuItem value={"All"}>All</MenuItem>
+          </Select>
+        </div>
+      </div>
       <Card style={cardTableContainer}>
         <Table striped hover responsive {...getTableProps()}>
           <thead>
