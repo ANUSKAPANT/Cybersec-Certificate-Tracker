@@ -5,5 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-usr = User.create(email: 'demo@example.com', password: 'test123', password_confirmation: 'test123')
+usr = User.create(email: 'test@example.com', password: 'test123', password_confirmation: 'test123')
+admin = User.create(email: 'admin@example.com', password: 'test123', password_confirmation: 'test123', role: 'admin')
+vendor = Vendor.create(name: 'CompTier')
 puts usr.attributes
