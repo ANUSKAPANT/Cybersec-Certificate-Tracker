@@ -20,6 +20,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "reactstrap";
+import SortIcon from "@mui/icons-material/Sort";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -268,6 +269,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
 
   const {
     getTableProps,
+    setAllFilters,
     getTableBodyProps,
     headerGroups,
     rows,
@@ -359,6 +361,30 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     alignItems: "center",
   };
 
+  const filterContainer = {
+    display: "flex",
+    gap: "20px",
+    alignItems: "end",
+  };
+
+  const headerLabelContainer = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  };
+
+  const toggleColumnSort = (col) => {
+    if (!col.isSorted) {
+      col.toggleSortBy(false);
+    } else {
+      if (col.isSortedDesc) {
+        col.toggleSortBy(undefined);
+      } else {
+        col.toggleSortBy(true);
+      }
+    }
+  };
+
   return (
     <>
       <Modal
@@ -400,22 +426,32 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-        <div>
-          <div>Number of Records Per Page</div>
-
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={numRecords === rows.length ? "All" : numRecords}
-            label="Number of Records Per Page"
-            onChange={handleChange}
-            autoWidth={true}
+        <div style={filterContainer}>
+          <Button
+            color="danger"
+            onClick={() => {
+              setAllFilters([]);
+              setGlobalFilter([]);
+            }}
           >
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={25}>25</MenuItem>
-            <MenuItem value={50}>50</MenuItem>
-            <MenuItem value={"All"}>All</MenuItem>
-          </Select>
+            Reset Filters
+          </Button>
+          <div>
+            <div>Number of Records Per Page</div>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={numRecords === rows.length ? "All" : numRecords}
+              label="Number of Records Per Page"
+              onChange={handleChange}
+              autoWidth={true}
+            >
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={25}>25</MenuItem>
+              <MenuItem value={50}>50</MenuItem>
+              <MenuItem value={"All"}>All</MenuItem>
+            </Select>
+          </div>
         </div>
       </div>
       <Card style={cardTableContainer}>
@@ -424,16 +460,21 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render("Header")}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span>
-                    {/* Render the columns filter UI */}
+                  <th {...column.getHeaderProps()}>
+                    <div style={headerLabelContainer}>
+                      {column.render("Header")}
+                      <div onClick={() => toggleColumnSort(column)}>
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            "🔽"
+                          ) : (
+                            "🔼"
+                          )
+                        ) : (
+                          <SortIcon />
+                        )}
+                      </div>
+                    </div>
                     <div>
                       {column.canFilter
                         ? DefaultColumnFilter(
