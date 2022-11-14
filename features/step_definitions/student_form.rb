@@ -3,6 +3,7 @@ Given("user is on student profile page") do
     fill_in 'email', :with => $test_email
     fill_in 'password', :with => $test_password
     page.find("#login_button").click
+    page.should have_selector?("#uploadCSVButton")
     page.find("#uploadCSVButton").click
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
     sleep(1) #wait for data upload to finish in backend
