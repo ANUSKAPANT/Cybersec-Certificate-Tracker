@@ -248,8 +248,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -396,7 +396,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           <div style={buttonContainer}>
             <Button
               color="success"
-              id="uploadCSVButton"
               onClick={() => {
                 setOpen(false);
                 deleteItem(currentRowId);
@@ -407,7 +406,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
             </Button>
             <Button
               color="danger"
-              id="uploadCSVButton"
               onClick={() => {
                 setOpen(false);
                 setCurrentRowId(null);
@@ -478,11 +476,11 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
                     <div>
                       {column.canFilter
                         ? DefaultColumnFilter(
-                            column.filterValue,
-                            column.preFilteredRows,
-                            column.setFilter,
-                            rows.length
-                          )
+                          column.filterValue,
+                          column.preFilteredRows,
+                          column.setFilter,
+                          rows.length
+                        )
                         : null}
                     </div>
                   </th>

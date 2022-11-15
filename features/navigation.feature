@@ -36,6 +36,7 @@ Feature: Navigation
     When user clicks on vendors in the navigation menu
     Then user should be redirected to vendors page
 
+  @wip
   Scenario: User clicks on the users in the navigation menu and is redirected to users page
     Given user is on dashboard page with data uploaded
     When user clicks the hamburger icon

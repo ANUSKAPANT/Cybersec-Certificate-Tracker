@@ -18,6 +18,7 @@ When("user clicks sidebar logo") do
 end
 
 When("user clicks student panel") do 
+    sleep(1)
     page.find("#students_nav").click
 end
 
@@ -39,7 +40,8 @@ When("user submits the form") do
 end
 
 Then("user should see student panel in sidebar") do
-    expect(find("#students_nav > span").text).to eq 'Students'
+    sleep(1)
+    expect(find("#students_nav").text).to eq 'Students'
 end
 
 Then("user should see student data") do
