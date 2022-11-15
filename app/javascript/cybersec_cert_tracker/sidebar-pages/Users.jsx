@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
-import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody, Modal,
-  ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
 const role = [
-  { label: "User", value: "user"},
-  { label: "Admin", value: "admin"}
+  { label: "User", value: "user" },
+  { label: "Admin", value: "admin" },
 ];
 
 const dataFormatter = new Jsona();
@@ -36,13 +47,12 @@ function Users({ userData }) {
             id: user.id,
             email: user.email,
             role: user.role,
-            first_name: user.first_name,
-            last_name: user.last_name,
           };
         });
         setLoading(false);
         setUsers(userData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -59,11 +69,13 @@ function Users({ userData }) {
   const deleteRecords = (idx) => {
     let csrf = "";
     if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
     axios
       .delete(`/users/${idx}`, {
         headers: {
-          "Authorization": `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userData.token}`,
           "X-CSRF-Token": csrf,
         },
       })
@@ -93,6 +105,17 @@ function Users({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   const fetchUser = async (id) => {
     axios
       .get(`/users/${id}`, {
@@ -105,11 +128,12 @@ function Users({ userData }) {
           first_name: user.first_name,
           last_name: user.last_name,
           email: user.email,
-          role: user.role
+          role: user.role,
         };
         console.log(userData);
         setUserInfo(userData);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         toast.error("Error in fetching records", {
           position: "bottom-center",
@@ -123,35 +147,39 @@ function Users({ userData }) {
   const editItem = (id) => {
     setOpen(true);
     fetchUser(id);
-  }
+  };
 
   const handleClose = () => {
     setUserInfo({ id: null });
     setOpen(false);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let csrf = "";
     //Not present always
     if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-      const { id, first_name, last_name, email, password, role } = userInfo;
-  
-      const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/create_user' : `/users/${id}`;
-      const message = id !== null ? 'Updated' : 'Created';
-      const data = { first_name, last_name, email, password, role }
-      axios.request({
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+    const { id, first_name, last_name, email, password, role } = userInfo;
+
+    const method = id !== null ? "patch" : "post";
+    const url = id == null ? "/create_user" : `/users/${id}`;
+    const message = id !== null ? "Updated" : "Created";
+    const data = { first_name, last_name, email, password, role };
+    axios
+      .request({
         method,
         url,
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
-          "Authorization": `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userData.token}`,
         },
-        data
-      }).then((res) => {
+        data,
+      })
+      .then((res) => {
         console.log(res);
         toast.success(`Successfully ${message}`, {
           position: "bottom-center",
@@ -161,7 +189,8 @@ function Users({ userData }) {
         });
         fetchRecords();
         handleClose();
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         toast.error("Error Occured", {
           position: "bottom-center",
@@ -169,17 +198,17 @@ function Users({ userData }) {
           hideProgressBar: false,
           closeOnClick: true,
         });
-    });
-  }
+      });
+  };
 
   const handleInputChange = (event) => {
-    const {name, value} = event.target;
-    setUserInfo({...userInfo, [name]: value});
+    const { name, value } = event.target;
+    setUserInfo({ ...userInfo, [name]: value });
   };
 
   const handleSelectChange = (value, name) => {
-    setUserInfo({...userInfo, [name]: value.value});
-  }
+    setUserInfo({ ...userInfo, [name]: value.value });
+  };
 
   return (
     <>
@@ -187,43 +216,85 @@ function Users({ userData }) {
       <Button
         color="success"
         className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
         + Add User
       </Button>
-      <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '700px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add User</ModalHeader>
+      <Modal
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "700px", width: "100%" }}
+      >
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          Add User
+        </ModalHeader>
         <ModalBody>
           <Form>
             <Card>
               <CardBody>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="first_name" sm={5}>First Name</Label>
-                    <Input name="first_name" id="first_name" defaultValue={userInfo.first_name} onChange={handleInputChange}/>
+                    <Label for="first_name" sm={5}>
+                      First Name
+                    </Label>
+                    <Input
+                      name="first_name"
+                      id="first_name"
+                      defaultValue={userInfo.first_name}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                   <Col sm={6}>
-                    <Label for="last_name" sm={5}>Last Name</Label>
-                    <Input name="last_name" id="last_name" defaultValue={userInfo.last_name} onChange={handleInputChange}/>
+                    <Label for="last_name" sm={5}>
+                      Last Name
+                    </Label>
+                    <Input
+                      name="last_name"
+                      id="last_name"
+                      defaultValue={userInfo.last_name}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="email" sm={5}>Email</Label>
-                    <Input name="email" id="email" type="email" defaultValue={userInfo.email} onChange={handleInputChange}/>
+                    <Label for="email" sm={5}>
+                      Email
+                    </Label>
+                    <Input
+                      name="email"
+                      id="email"
+                      type="email"
+                      defaultValue={userInfo.email}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                   <Col sm={6}>
-                    <Label for="password" sm={5}>Password</Label>
-                    <Input name="password" id="password" type="password" defaultValue={userInfo.password} onChange={handleInputChange}/>
+                    <Label for="password" sm={5}>
+                      Password
+                    </Label>
+                    <Input
+                      name="password"
+                      id="password"
+                      type="password"
+                      defaultValue={userInfo.password}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                   <Col sm={6}>
-                    <Label for="role" sm={6}>Role</Label>
+                    <Label for="role" sm={6}>
+                      Role
+                    </Label>
                     <Select
                       name="role"
                       onChange={(value) => handleSelectChange(value, "role")}
                       options={role}
-                      value={role.filter((option) => (userInfo.role == option.value))}
+                      value={role.filter(
+                        (option) => userInfo.role == option.value
+                      )}
                       placeholder="Select Role"
                     />
                   </Col>
@@ -232,14 +303,18 @@ function Users({ userData }) {
             </Card>
           </Form>
         </ModalBody>
-        <ModalFooter style={{border: "none"}}>
-          <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
-          <Button color="secondary" onClick={handleClose}>Cancel</Button>
+        <ModalFooter style={{ border: "none" }}>
+          <Button color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>{" "}
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>
@@ -247,7 +322,12 @@ function Users({ userData }) {
       ) : users.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
-        <DashboardTable data={users} type="User" deleteItem={deleteItem} editItem={editItem} />
+        <DashboardTable
+          data={users}
+          type="User"
+          deleteItem={deleteItem}
+          editItem={editItem}
+        />
       )}
     </>
   );

@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
-import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody, Modal,
-  ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
@@ -36,7 +47,7 @@ function Vendors({ userData }) {
   const [vendors, setVendors] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [courseOptions, setCourseOptions] = useState([]);
-  const [vendorInfo, setVendorInfo] = useState({id: null});
+  const [vendorInfo, setVendorInfo] = useState({ id: null });
 
   const fetchRecords = () => {
     axios
@@ -59,7 +70,8 @@ function Vendors({ userData }) {
         });
         setLoading(false);
         setVendors(vendorsData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -112,7 +124,8 @@ function Vendors({ userData }) {
           };
         });
         setCourseOptions(coursesData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -135,7 +148,8 @@ function Vendors({ userData }) {
           course_ids: vendor.courses.map((el) => el.id),
         };
         setVendorInfo(vendorData);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -153,19 +167,29 @@ function Vendors({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
   const editItem = (id) => {
     setOpen(true);
     fetchVendor(id);
-  }
+  };
 
   const handleClose = () => {
     setVendorInfo({ id: null });
     setOpen(false);
-  }
+  };
 
   const handleInputChange = (event) => {
-    const {name, value} = event.target;
-    setVendorInfo({...vendorInfo, [name]: value});
+    const { name, value } = event.target;
+    setVendorInfo({ ...vendorInfo, [name]: value });
   };
 
   const handleSubmit = (event) => {
@@ -173,23 +197,27 @@ function Vendors({ userData }) {
     let csrf = "";
     //Not present always
     if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-      const { id, name, course_ids } = vendorInfo;
-  
-      const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/vendors' : `/vendors/${id}`;
-      const message = id !== null ? 'Updated' : 'Created';
-      const data = { name, course_ids };
-      axios.request({
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+    const { id, name, course_ids } = vendorInfo;
+
+    const method = id !== null ? "patch" : "post";
+    const url = id == null ? "/vendors" : `/vendors/${id}`;
+    const message = id !== null ? "Updated" : "Created";
+    const data = { name, course_ids };
+    axios
+      .request({
         method,
         url,
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
-          "Authorization": `Bearer ${userData.token}`
+          Authorization: `Bearer ${userData.token}`,
         },
-        data
-      }).then(() => {
+        data,
+      })
+      .then(() => {
         toast.success(`Successfully ${message}`, {
           position: "bottom-center",
           autoClose: 1500,
@@ -198,54 +226,74 @@ function Vendors({ userData }) {
         });
         fetchRecords();
         handleClose();
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error Occured", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
         });
-    });
-  }
+      });
+  };
 
   const handleCoursesChange = (value) => {
     const data = value.map((el) => el.value);
-    setVendorInfo({...vendorInfo, course_ids: data});
-  }
+    setVendorInfo({ ...vendorInfo, course_ids: data });
+  };
 
   return (
     <>
       <ToastContainer />
       <Button
         color="success"
+        style={{ margin: "10px" }}
         className="csv-button"
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
         + Add Vendor
       </Button>
-      <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '700px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add Vendor</ModalHeader>
+      <Modal
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "700px", width: "100%" }}
+      >
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          Add Vendor
+        </ModalHeader>
         <ModalBody>
           <Form>
             <Card>
               <CardBody>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="name" sm={6}>Name</Label>
-                    <Input name="name" id="name" defaultValue={vendorInfo.name} onChange={handleInputChange}/>
+                    <Label for="name" sm={6}>
+                      Name
+                    </Label>
+                    <Input
+                      name="name"
+                      id="name"
+                      defaultValue={vendorInfo.name}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
                 {vendorInfo.id && (
                   <FormGroup row>
                     <Col sm={12}>
-                      <Label for="courses" sm={10}>Courses</Label>
+                      <Label for="courses" sm={10}>
+                        Courses
+                      </Label>
                       <Select
                         isMulti
                         name="courses"
                         onChange={(value) => handleCoursesChange(value)}
                         options={courseOptions}
-                        value={courseOptions.filter((option) => (vendorInfo.course_ids || []).includes(option.value))}
+                        value={courseOptions.filter((option) =>
+                          (vendorInfo.course_ids || []).includes(option.value)
+                        )}
                         placeholder="Select Courses"
                         isDisabled
                       />
@@ -256,14 +304,18 @@ function Vendors({ userData }) {
             </Card>
           </Form>
         </ModalBody>
-        <ModalFooter style={{border: "none"}}>
-          <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
-          <Button color="secondary" onClick={handleClose}>Cancel</Button>
+        <ModalFooter style={{ border: "none" }}>
+          <Button color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>{" "}
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>
@@ -271,7 +323,12 @@ function Vendors({ userData }) {
       ) : vendors.length === 0 ? (
         <div className="">No Table Records to Show</div>
       ) : (
-        <DashboardTable data={vendors} type="Vendor" deleteItem={deleteItem} editItem={editItem}/>
+        <DashboardTable
+          data={vendors}
+          type="Vendor"
+          deleteItem={deleteItem}
+          editItem={editItem}
+        />
       )}
     </>
   );

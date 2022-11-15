@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
-import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
@@ -14,15 +26,14 @@ const dataFormatter = new Jsona();
 
 const smcOptions = [
   { label: "Yes", value: true },
-  { label: "No", value: false }
+  { label: "No", value: false },
 ];
 
 function Companies({ userData }) {
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [companyInfo, setCompanyInfo] = useState({id: null});
-
+  const [companyInfo, setCompanyInfo] = useState({ id: null });
 
   const fetchRecords = () => {
     axios
@@ -89,6 +100,17 @@ function Companies({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   const fetchCompany = (id) => {
     axios
       .get(`/companies/${id}`, {
@@ -99,10 +121,11 @@ function Companies({ userData }) {
         const companyData = {
           id: data.id,
           name: data.name,
-          smc: data.smc
+          smc: data.smc,
         };
         setCompanyInfo(companyData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -115,20 +138,20 @@ function Companies({ userData }) {
   const editItem = (id) => {
     setOpen(true);
     fetchCompany(id);
-  }
+  };
 
   const handleClose = () => {
     setCompanyInfo({ id: null });
     setOpen(false);
-  }
+  };
 
   const handleInputChange = (event) => {
-    const {name, value} = event.target;
-    setCompanyInfo({...companyInfo, [name]: value});
+    const { name, value } = event.target;
+    setCompanyInfo({ ...companyInfo, [name]: value });
   };
 
   const handleSelectChange = (value, name) => {
-    setCompanyInfo({...companyInfo, [name]: value.value});
+    setCompanyInfo({ ...companyInfo, [name]: value.value });
   };
 
   const handleSubmit = (event) => {
@@ -136,30 +159,30 @@ function Companies({ userData }) {
     let csrf = "";
     //Not present always
     if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-      const {
-        id,
-        name,
-        smc
-      } = companyInfo;
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+    const { id, name, smc } = companyInfo;
 
-      const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/companies' : `/companies/${id}`;
-      const message = id !== null ? 'Updated' : 'Created';
-      const data = {
-        name,
-        smc
-      };
-      axios.request({
+    const method = id !== null ? "patch" : "post";
+    const url = id == null ? "/companies" : `/companies/${id}`;
+    const message = id !== null ? "Updated" : "Created";
+    const data = {
+      name,
+      smc,
+    };
+    axios
+      .request({
         method,
         url,
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
-          "Authorization": `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userData.token}`,
         },
-        data
-      }).then(() => {
+        data,
+      })
+      .then(() => {
         setLoading(true);
         toast.success(`Successfully ${message}`, {
           position: "bottom-center",
@@ -169,15 +192,16 @@ function Companies({ userData }) {
         });
         fetchRecords();
         handleClose();
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error Occured", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
         });
-    });
-  }
+      });
+  };
 
   return (
     <>
@@ -185,31 +209,50 @@ function Companies({ userData }) {
       <Button
         color="success"
         className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
         + Add Company
       </Button>
-      <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '700px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add Company</ModalHeader>
+      <Modal
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "700px", width: "100%" }}
+      >
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          Add Company
+        </ModalHeader>
         <ModalBody>
           <Form>
             <Card>
               <CardBody>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="name" sm={5}>Company</Label>
-                    <Input name="name" id="name" defaultValue={companyInfo.name} onChange={handleInputChange} />
+                    <Label for="name" sm={5}>
+                      Company
+                    </Label>
+                    <Input
+                      name="name"
+                      id="name"
+                      defaultValue={companyInfo.name}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="smc" sm={5}>SMC</Label>
+                    <Label for="smc" sm={5}>
+                      SMC
+                    </Label>
                     <Select
                       name="smc"
                       onChange={(value) => handleSelectChange(value, "smc")}
                       options={smcOptions}
-                      value={smcOptions.filter((option) => (companyInfo.smc == option.value))}
+                      value={smcOptions.filter(
+                        (option) => companyInfo.smc == option.value
+                      )}
                       placeholder="Select SMC"
                     />
                   </Col>
@@ -218,14 +261,18 @@ function Companies({ userData }) {
             </Card>
           </Form>
         </ModalBody>
-        <ModalFooter style={{border: "none"}}>
-          <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
-          <Button color="secondary" onClick={handleClose}>Cancel</Button>
+        <ModalFooter style={{ border: "none" }}>
+          <Button color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>{" "}
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>

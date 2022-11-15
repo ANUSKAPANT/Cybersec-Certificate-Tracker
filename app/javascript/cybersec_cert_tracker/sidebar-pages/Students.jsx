@@ -1,14 +1,39 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { Button } from 'reactstrap';
+import { Button } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
-import StudentForm from '../StudentForm'
+import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
+
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+import StudentForm from "../StudentForm";
 
 const dataFormatter = new Jsona();
 
@@ -16,14 +41,69 @@ function Students({ userData }) {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const [show, setShow] = useState(false);
+  const [formValue, setFormValue] = useState({});
+
+  const handleClose = () => setOpen(false);
+
+  const submitData = async () => {
+    let csrf = "";
+    //Not present always
+    if (document.querySelector("meta[name='csrf-token']"))
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+
+    //await axios.post(`/students`, { headers: { Authorization: `Bearer ${userData.token}`, "X-CSRF-Token": csrf}, data:{...formValue} });
+    const response = await axios({
+      method: "POST",
+      url: "/students.json",
+      headers: {
+        "Content-type": "application/json",
+        "X-CSRF-Token": csrf,
+      },
+      data: { ...formValue },
+    });
+
+    console.log(response);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    setOpen(false);
+    console.log(event);
+    console.log(formValue);
+    submitData();
+  };
+
+  const handleChange = (field, event) => {
+    const temp = formValue;
+    temp[field] = event.target.value;
+    setFormValue(temp);
+  };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 900,
+    height: 700,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
   const [studentId, setStudentId] = useState(null);
 
   const fetchRecords = async () => {
     try {
-      const response = await axios
-        .get(`/students`, {
-          headers: { Authorization: `Bearer ${userData.token}` },
-        })
+      const response = await axios.get(`/students`, {
+        headers: { Authorization: `Bearer ${userData.token}` },
+      });
       const data = dataFormatter.deserialize(response.data);
       const studentData = data.map((student) => {
         return {
@@ -89,16 +169,26 @@ function Students({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
   const editItem = (id) => {
     setOpen(true);
     setStudentId(id);
-  }
+  };
 
   const onFormSubmission = async () => {
     setLoading(true);
     await fetchRecords();
     setLoading(false);
-  }
+  };
 
   return (
     <>
@@ -106,15 +196,25 @@ function Students({ userData }) {
       <Button
         color="success"
         className="csv-button"
-        onClick={() => { setStudentId(null); setOpen(true) }}
+        style={{ margin: "10px" }}
+        onClick={() => {
+          setStudentId(null);
+          setOpen(true);
+        }}
         id="add_student_button"
       >
         + Add Student
       </Button>
-      <StudentForm userData={userData} studentId={studentId} open={open} setOpen={setOpen} afterSubmit={onFormSubmission} />
+      <StudentForm
+        userData={userData}
+        studentId={studentId}
+        open={open}
+        setOpen={setOpen}
+        afterSubmit={onFormSubmission}
+      />
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>

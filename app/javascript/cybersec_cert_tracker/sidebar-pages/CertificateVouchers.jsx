@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
-import { Col, Button, Form, FormGroup, Label, Input, Card, CardBody, Modal,
-  ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "../Dashboard.css";
 import Jsona from "jsona";
 import Select from "react-select";
 
@@ -18,12 +29,14 @@ function CertificateVouchers({ userData }) {
   const [certificateVouchers, setCertificateVouchers] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [studentCourseOptions, setStudentCourseOptions] = useState([]);
-  const [certificateVouchersInfo, setCertificateVouchersInfo] = useState({id: null});
+  const [certificateVouchersInfo, setCertificateVouchersInfo] = useState({
+    id: null,
+  });
 
   const handleClose = () => {
     setCertificateVouchersInfo({ id: null });
     setOpen(false);
-  }
+  };
 
   const fetchRecords = () => {
     axios
@@ -70,7 +83,8 @@ function CertificateVouchers({ userData }) {
           expiry_date: data.expiry_date,
         };
         setCertificateVouchersInfo(certificateVouchersData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -91,11 +105,12 @@ function CertificateVouchers({ userData }) {
           return {
             student_course_id: data.id,
             value: data.id,
-            label: `${data.student.full_comma_separated_name} (${data.course.name})`
+            label: `${data.student.full_comma_separated_name} (${data.course.name})`,
           };
         });
         setStudentCourseOptions(studentCourseData);
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error in fetching records", {
           position: "bottom-center",
           autoClose: 3000,
@@ -141,43 +156,58 @@ function CertificateVouchers({ userData }) {
     });
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   const editItem = (id) => {
     setOpen(true);
     fetchCertificateVoucher(id);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let csrf = "";
     //Not present always
     if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-      const {
-        id,
-        certification_name,
-        created_date,
-        expiry_date,
-        student_course_id
-      } = certificateVouchersInfo;
-      const method = id !== null ? 'patch' : 'post';
-      const url = id == null ? '/cert_vouchers' : `/cert_vouchers/${id}`;
-      const message = id !== null ? 'Updated' : 'Created';
-      const data = {
-        certification_name,
-        created_date,
-        expiry_date,
-        student_course_id,
-      };
-      axios.request({
+      csrf = document
+        .querySelector("meta[name='csrf-token']")
+        .getAttribute("content");
+    const {
+      id,
+      certification_name,
+      created_date,
+      expiry_date,
+      student_course_id,
+    } = certificateVouchersInfo;
+    const method = id !== null ? "patch" : "post";
+    const url = id == null ? "/cert_vouchers" : `/cert_vouchers/${id}`;
+    const message = id !== null ? "Updated" : "Created";
+    const data = {
+      certification_name,
+      created_date,
+      expiry_date,
+      student_course_id,
+    };
+    axios
+      .request({
         method,
         url,
         headers: {
           "Content-type": "application/json",
           "X-CSRF-Token": csrf,
-          "Authorization": `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userData.token}`,
         },
-        data
-      }).then(() => {
+        data,
+      })
+      .then(() => {
         toast.success(`Successfully ${message}`, {
           position: "bottom-center",
           autoClose: 1500,
@@ -186,25 +216,28 @@ function CertificateVouchers({ userData }) {
         });
         fetchRecords();
         handleClose();
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error("Error Occured", {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
         });
-    });
-  }
+      });
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCertificateVouchersInfo({...certificateVouchersInfo, [name]: value});
+    setCertificateVouchersInfo({ ...certificateVouchersInfo, [name]: value });
   };
 
   const handleSelectChange = (value, name) => {
-    setCertificateVouchersInfo({...certificateVouchersInfo, [name]: value.value});
+    setCertificateVouchersInfo({
+      ...certificateVouchersInfo,
+      [name]: value.value,
+    });
   };
-
 
   return (
     <>
@@ -212,57 +245,98 @@ function CertificateVouchers({ userData }) {
       <Button
         color="success"
         className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
         + Add Certificate Voucher
       </Button>
-      <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '700px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>Add Student Course</ModalHeader>
+      <Modal
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "700px", width: "100%" }}
+      >
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          Add Student Course
+        </ModalHeader>
         <ModalBody>
           <Form>
             <Card>
               <CardBody>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="student_course" sm={10}>Student Course</Label>
+                    <Label for="student_course" sm={10}>
+                      Student Course
+                    </Label>
                     <Select
                       name="student_course"
-                      onChange={(value) => handleSelectChange(value, "student_course_id")}
+                      onChange={(value) =>
+                        handleSelectChange(value, "student_course_id")
+                      }
                       options={studentCourseOptions}
-                      value={studentCourseOptions.filter((option) => certificateVouchersInfo.student_course_id == option.value)}
+                      value={studentCourseOptions.filter(
+                        (option) =>
+                          certificateVouchersInfo.student_course_id ==
+                          option.value
+                      )}
                       placeholder="Select Student Course"
                     />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={12}>
-                    <Label for="certification_name" sm={6}>Certification Name</Label>
-                    <Input name="certification_name" id="certification_name" defaultValue={certificateVouchersInfo.certification_name}  onChange={handleInputChange} />
+                    <Label for="certification_name" sm={6}>
+                      Certification Name
+                    </Label>
+                    <Input
+                      name="certification_name"
+                      id="certification_name"
+                      defaultValue={certificateVouchersInfo.certification_name}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="created_date" sm={6}>Created Date</Label>
-                    <Input name="created_date" id="created_date" defaultValue={certificateVouchersInfo.created_date}  onChange={handleInputChange} />
+                    <Label for="created_date" sm={6}>
+                      Created Date
+                    </Label>
+                    <Input
+                      name="created_date"
+                      id="created_date"
+                      defaultValue={certificateVouchersInfo.created_date}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                   <Col sm={6}>
-                    <Label for="expiry_date" sm={6}>Expiry Date</Label>
-                    <Input name="expiry_date" id="expiry_date" defaultValue={certificateVouchersInfo.expiry_date}  onChange={handleInputChange} />
+                    <Label for="expiry_date" sm={6}>
+                      Expiry Date
+                    </Label>
+                    <Input
+                      name="expiry_date"
+                      id="expiry_date"
+                      defaultValue={certificateVouchersInfo.expiry_date}
+                      onChange={handleInputChange}
+                    />
                   </Col>
                 </FormGroup>
               </CardBody>
             </Card>
           </Form>
         </ModalBody>
-        <ModalFooter style={{border: "none"}}>
-          <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
-          <Button color="secondary" onClick={handleClose}>Cancel</Button>
+        <ModalFooter style={{ border: "none" }}>
+          <Button color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>{" "}
+          <Button color="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>

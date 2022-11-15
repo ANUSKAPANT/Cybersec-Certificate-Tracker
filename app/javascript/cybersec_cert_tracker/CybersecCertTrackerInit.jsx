@@ -3,16 +3,23 @@ import PropTypes from "prop-types";
 import { useStoreContext } from "./Store";
 import { setUserData } from "./Actions";
 import {
-  Navbar, NavbarToggler, NavbarBrand, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
 } from "reactstrap";
 import axios from "axios";
-import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-import "./CybersecCertTrackerInit.css";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import CloseIcon from "@mui/icons-material/Close";
 
 function CybersecCertTrackerInit({ userData, children }) {
   const { dispatch } = useStoreContext();
-  const { toggleSidebar } = useProSidebar();
+  //   const { toggleSidebar } = useProSidebar();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setUserData(dispatch, userData);
@@ -38,10 +45,55 @@ function CybersecCertTrackerInit({ userData, children }) {
     });
   };
 
+  const sideNav = {
+    height: "100%",
+    width: open === false ? "0px" : "250px",
+    position: "fixed",
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    backgroundColor: "#111",
+    overflowX: "hidden",
+    transition: "0.5s",
+    paddingTop: "10px",
+  };
+
+  const linkStyle = {
+    padding: "8px 8px 8px 32px",
+    textDecoration: "none",
+    fontSize: "25px",
+    color: "white",
+    display: "block",
+    transition: "0.3s",
+  };
+
+  const logoutStyle = {
+    padding: "8px 8px 8px 32px",
+    textDecoration: "none",
+    fontSize: "25px",
+    color: "red",
+    display: "block",
+    transition: "0.3s",
+  };
+
+  const mainStyle = {
+    transition: "margin-left .5s",
+    marginLeft: open == true ? "270px" : "20px",
+    marginRight: "20px",
+  };
+
+  const crossContainer = {
+    display: "flex",
+    justifyContent: "end",
+    marginRight: "10px",
+  };
+
   return (
     <>
       <Navbar color="black" dark style={{ marginBottom: "20px" }}>
-        {userData.role == "admin" && (<NavbarToggler onClick={() => toggleSidebar()} className="me-2" />)}
+        {userData.role == "admin" && (
+          <NavbarToggler onClick={() => setOpen(!open)} className="me-2" />
+        )}
         <NavbarBrand href="/" className="me-auto">
           CyberSec
         </NavbarBrand>
@@ -50,41 +102,57 @@ function CybersecCertTrackerInit({ userData, children }) {
             {userData.first_name || "User"}
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem onClick={() => logout()} id="logout_button" className="bg-secondary" active>Logout</DropdownItem>
+            <DropdownItem
+              onClick={() => logout()}
+              id="logout_button"
+              className="bg-secondary"
+              active
+            >
+              Logout
+            </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
       </Navbar>
-      <div className="sidebar">
-        <Sidebar breakPoint="always" backgroundColor="rgb(0, 0, 0, 1)">
-          <Menu>
-            <MenuItem routerLink={<Link to="/dashboard" />} id="dashboard_nav">
-              Dashboard
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/students" />} id="students_nav">
-              Students
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/courses" />} id="courses_nav">
-              Courses
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/companies" />} id="companies_nav">
-              Companies
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/cert_vouchers" />} id="cert_vouchers_nav">
-              Certificate Vouchers
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/exams" />} id="exams_nav">
-              Exams
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/vendors" />} id="vendors_nav">
-              Vendors
-            </MenuItem>
-            <MenuItem routerLink={<Link to="/dashboard/users" />} id="users_nav">
-              Users
-            </MenuItem>
-          </Menu>
-        </Sidebar>
+      <div id="mySidenav" style={sideNav}>
+        <div style={crossContainer}>
+          <CloseIcon
+            style={{ color: "white" }}
+            onClick={() => setOpen(!open)}
+          />
+        </div>
+        <Link style={linkStyle} to="/dashboard" id="dashboard_nav">
+          Dashboard <KeyboardArrowRightIcon />
+        </Link>
+        <Link
+          style={linkStyle}
+          to="/dashboard/students"
+          id="students_nav"
+          onMouseEnter={() => console.log("lol")}
+        >
+          Students <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/courses" id="courses_nav">
+          Courses <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/companies" id="companies_nav">
+          Companies <KeyboardArrowRightIcon />
+        </Link>
+        <Link
+          style={linkStyle}
+          to="/dashboard/cert_vouchers"
+          id="cert_vouchers_nav"
+        >
+          Certificate Vouchers <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/exams" id="exams_nav">
+          Exams <KeyboardArrowRightIcon />
+        </Link>
+        <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
+          Vendors <KeyboardArrowRightIcon />
+        </Link>
       </div>
-      {children}
+
+      <div style={mainStyle}>{children}</div>
     </>
   );
 }

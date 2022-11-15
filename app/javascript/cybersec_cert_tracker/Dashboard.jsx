@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./table.css";
 import DashboardTable from "./DashboardTable";
-import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
+// import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import "./Dashboard.css";
 
 const fileTypes = ["csv"];
 
@@ -65,7 +66,7 @@ function Dashboard({ userData }) {
         headers: {
           "Content-type": "multipart/form-data",
           "X-CSRF-Token": csrf,
-          "Authorization": `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userData.token}`,
         },
         data: formData,
       });
@@ -87,27 +88,46 @@ function Dashboard({ userData }) {
     }
   };
 
+  const spinnerContainer = {
+    textAlign: "center",
+    marginTop: "20px",
+  };
+
+  const spinner = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  };
+
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <>
       <ToastContainer />
       <Button
         color="success"
-        className="csv-button"
+        style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
         id="uploadCSVButton"
       >
         + Upload CSV
       </Button>
-      <Modal isOpen={open} toggle={handleClose} size="lg" style={{maxWidth: '500px', width: '100%'}}>
-        <ModalHeader toggle={handleClose} style={{border: "none"}}>
-          <span>CSV Upload {' '}</span>
+      <Modal
+        isOpen={open}
+        toggle={handleClose}
+        size="lg"
+        style={{ maxWidth: "500px", width: "100%" }}
+      >
+        <ModalHeader toggle={handleClose} style={{ border: "none" }}>
+          <span>CSV Upload </span>
           {uploading == true ? (
-            <span className="spinner-border spinner-border-sm text-primary" role="status" />
-          ) : null }
+            <span
+              className="spinner-border spinner-border-sm text-primary"
+              role="status"
+            />
+          ) : null}
         </ModalHeader>
         <ModalBody className="mb-5">
           <FileUploader
@@ -120,8 +140,8 @@ function Dashboard({ userData }) {
         </ModalBody>
       </Modal>
       {loading == true ? (
-        <div className="spinner-container">
-          <div className="spinner">
+        <div style={spinnerContainer}>
+          <div style={spinner}>
             <ClipLoader color="blue" />
           </div>
           <div>Fetching the data...</div>
