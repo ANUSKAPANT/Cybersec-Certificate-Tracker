@@ -364,7 +364,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
   const filterContainer = {
     display: "flex",
     gap: "20px",
-    alignItems: "end",
+    alignItems: "center",
   };
 
   const headerLabelContainer = {
@@ -421,12 +421,13 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
         </Box>
       </Modal>
       <div style={globalContainer}>
-        <GlobalFilter
-          numRows={rows.length}
-          globalFilter={state.globalFilter}
-          setGlobalFilter={setGlobalFilter}
-        />
         <div style={filterContainer}>
+          <GlobalFilter
+            numRows={rows.length}
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+
           <Button
             color="danger"
             onClick={() => {
@@ -436,22 +437,21 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           >
             Reset Filters
           </Button>
-          <div>
-            <div>Number of Records Per Page</div>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={numRecords === rows.length ? "All" : numRecords}
-              label="Number of Records Per Page"
-              onChange={handleChange}
-              autoWidth={true}
-            >
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={25}>25</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
-              <MenuItem value={"All"}>All</MenuItem>
-            </Select>
-          </div>
+        </div>
+        <div>
+          <Select
+            id="demo-simple-select"
+            value={numRecords === rows.length ? "All" : numRecords}
+            onChange={handleChange}
+            autoWidth={true}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            <MenuItem value={10}>10 rows</MenuItem>
+            <MenuItem value={25}>25 rows</MenuItem>
+            <MenuItem value={50}>50 rows</MenuItem>
+            <MenuItem value={"All"}>All rows</MenuItem>
+          </Select>
         </div>
       </div>
       <Card style={cardTableContainer}>
