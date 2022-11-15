@@ -5,15 +5,17 @@ import {
 } from 'reactstrap';
 import Select from "react-select";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Jsona from "jsona";
+import Snackbar from '@mui/material/Snackbar';
+
 const dataFormatter = new Jsona();
 
 function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => { } }) {
 
     const [companies, setCompanies] = useState([]);
     const [studentFormInfo, setStudentFormInfo] = useState({});
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMsg, setSnackbarMsg] = useState("");
 
     const handleClose = () => {
         setOpen(false);
@@ -61,22 +63,14 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                 },
                 data
             });
-            toast.success(`Successfully ${message}`, {
-                position: "bottom-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-            });
+            setOpenSnackbar(true);
+            setSnackbarMsg(`Successfully ${message}`)
             if (!id) setStudentFormInfo({}); // Means add student is used
             afterSubmit();
             handleClose();
         } catch (error) {
-            toast.error("Error Occured", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-            });
+            setOpenSnackbar(true);
+            setSnackbarMsg("Something went wrong")
         }
     }
 
@@ -101,12 +95,8 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             setCompanies(companiesData);
         } catch (error) {
             console.log(error);
-            toast.error("Error in fetching records", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-            });
+            setOpenSnackbar(true);
+            setSnackbarMsg("Something went wrong")
         }
     };
 
@@ -126,12 +116,8 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             };
             setStudentFormInfo(studentData);
         } catch (error) {
-            toast.error("Error in fetching records", {
-                position: "bottom-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-            });
+            setOpenSnackbar(true);
+            setSnackbarMsg("Something went wrong")
         }
     };
 
@@ -146,9 +132,18 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
         }
     }, [studentId])
 
+    const handleSnackbarClose = () => {
+        setOpenSnackbar(false);
+    }
+
     return (
         <>
-            <ToastContainer />
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                message={snackbarMsg}
+            />
             <Modal isOpen={open} toggle={handleClose} size="lg" style={{ maxWidth: '700px', width: '100%' }}>
                 <ModalHeader toggle={handleClose} style={{ border: "none" }}>Add Students</ModalHeader>
                 <ModalBody>

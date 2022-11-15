@@ -6,9 +6,8 @@ import Box from "@mui/material/Box";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
+import Snackbar from '@mui/material/Snackbar';
 
 const fileTypes = ["csv"];
 
@@ -17,6 +16,8 @@ function Dashboard({ userData }) {
   const [tableData, setTableData] = useState([]);
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const fetchRecords = async () => {
     try {
@@ -28,12 +29,8 @@ function Dashboard({ userData }) {
       setTableData(records);
     } catch (error) {
       console.log(error);
-      toast.error("Error in fetching records", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
+      setOpenSnackbar(true);
+      setSnackbarMsg("Something went wrong")
     }
   };
 
@@ -71,20 +68,12 @@ function Dashboard({ userData }) {
         data: formData,
       });
       setUploading(false);
-      toast.success("Successfully Uploaded!", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
+      setOpenSnackbar(true);
+      setSnackbarMsg("Successfully Uploaded!")
       fetchRecords();
     } catch (error) {
-      toast.error("Something went wrong", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
+      setOpenSnackbar(true);
+      setSnackbarMsg("Something went wrong")
     }
   };
 
@@ -103,9 +92,18 @@ function Dashboard({ userData }) {
     setOpen(false);
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  }
+
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <Button
         color="success"
         style={{ margin: "10px" }}
