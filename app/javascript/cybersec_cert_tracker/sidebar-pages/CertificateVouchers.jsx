@@ -247,7 +247,6 @@ function CertificateVouchers({ userData }) {
         className="csv-button"
         style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
-        id="uploadCSVButton"
       >
         + Add Certificate Voucher
       </Button>

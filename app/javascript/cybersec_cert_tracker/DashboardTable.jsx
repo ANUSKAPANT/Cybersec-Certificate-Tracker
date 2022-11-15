@@ -15,9 +15,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import { useNavigate } from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "reactstrap";
 import SortIcon from "@mui/icons-material/Sort";
@@ -250,8 +248,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -398,7 +396,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           <div style={buttonContainer}>
             <Button
               color="success"
-              id="uploadCSVButton"
               onClick={() => {
                 setOpen(false);
                 deleteItem(currentRowId);
@@ -409,7 +406,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
             </Button>
             <Button
               color="danger"
-              id="uploadCSVButton"
               onClick={() => {
                 setOpen(false);
                 setCurrentRowId(null);
@@ -441,6 +437,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
         <div>
           <Select
             id="demo-simple-select"
+            size='small'
             value={numRecords === rows.length ? "All" : numRecords}
             onChange={handleChange}
             autoWidth={true}
@@ -450,6 +447,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
             <MenuItem value={10}>10 rows</MenuItem>
             <MenuItem value={25}>25 rows</MenuItem>
             <MenuItem value={50}>50 rows</MenuItem>
+            <MenuItem value={50}>100 rows</MenuItem>
             <MenuItem value={"All"}>All rows</MenuItem>
           </Select>
         </div>
@@ -478,11 +476,11 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
                     <div>
                       {column.canFilter
                         ? DefaultColumnFilter(
-                            column.filterValue,
-                            column.preFilteredRows,
-                            column.setFilter,
-                            rows.length
-                          )
+                          column.filterValue,
+                          column.preFilteredRows,
+                          column.setFilter,
+                          rows.length
+                        )
                         : null}
                     </div>
                   </th>

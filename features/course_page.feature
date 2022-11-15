@@ -1,6 +1,8 @@
 @javascript
 
 Feature: Course page
+
+    @wip
     Scenario: User deletes on one of the records and the record is deleted
         Given user is on dashboard page with data uploaded
         When user clicks the hamburger icon

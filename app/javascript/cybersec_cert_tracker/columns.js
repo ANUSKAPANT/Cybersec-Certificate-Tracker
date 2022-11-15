@@ -5,16 +5,20 @@ export default function Columns(table) {
     case "Dashboard":
       return [
         {
-          Header: "Cert Name",
-          accessor: "cert_name",
-        },
-        {
           Header: "Full Name",
           accessor: "full_name",
         },
         {
           Header: "Email Address",
           accessor: "email_address",
+        },
+        {
+          Header: "Course Name",
+          accessor: "canvas_course_enrollment",
+        },
+        {
+          Header: "Cert Name",
+          accessor: "cert_name",
         },
         {
           Header: "Company Name",
@@ -24,6 +28,23 @@ export default function Columns(table) {
           Header: "Registration Date",
           accessor: "registration_date",
         },
+        {
+          Header: "Course Completed",
+          accessor: "canvas_course_progress",
+          Cell: ({ row }) => {
+            const status = row.original.canvas_course_progress ? "Completed" : "InComplete";
+            return status;
+           },
+        },
+        {
+          Header: "Voucher Purchased",
+          accessor: "voucher_purchased",
+          Cell: ({ row }) => {
+            const status = row.original.voucher_purchased ? "Purchased" : "False";
+            return status;
+           },
+        },
+
       ];
 
     case "Student":

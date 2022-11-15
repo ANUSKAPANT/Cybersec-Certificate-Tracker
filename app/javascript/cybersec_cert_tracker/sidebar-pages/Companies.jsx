@@ -211,7 +211,6 @@ function Companies({ userData }) {
         className="csv-button"
         style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
-        id="uploadCSVButton"
       >
         + Add Company
       </Button>
