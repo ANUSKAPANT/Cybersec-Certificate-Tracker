@@ -15,9 +15,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import { useNavigate } from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "reactstrap";
 import SortIcon from "@mui/icons-material/Sort";
@@ -441,6 +439,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
         <div>
           <Select
             id="demo-simple-select"
+            size='small'
             value={numRecords === rows.length ? "All" : numRecords}
             onChange={handleChange}
             autoWidth={true}
@@ -450,6 +449,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
             <MenuItem value={10}>10 rows</MenuItem>
             <MenuItem value={25}>25 rows</MenuItem>
             <MenuItem value={50}>50 rows</MenuItem>
+            <MenuItem value={50}>100 rows</MenuItem>
             <MenuItem value={"All"}>All rows</MenuItem>
           </Select>
         </div>

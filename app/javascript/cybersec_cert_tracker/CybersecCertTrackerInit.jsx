@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import {
+FaUser, FaAddressCard, FaSchool, FaBook, FaDashcube, FaShippingFast, FaFileSignature
+} from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useStoreContext } from "./Store";
 import { setUserData } from "./Actions";
@@ -13,7 +16,6 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import CloseIcon from "@mui/icons-material/Close";
 
 function CybersecCertTrackerInit({ userData, children }) {
@@ -59,9 +61,9 @@ function CybersecCertTrackerInit({ userData, children }) {
   };
 
   const linkStyle = {
-    padding: "8px 8px 8px 32px",
+    padding: "8px 8px 25px 32px",
     textDecoration: "none",
-    fontSize: "25px",
+    fontSize: "17px",
     color: "white",
     display: "block",
     transition: "0.3s",
@@ -121,34 +123,33 @@ function CybersecCertTrackerInit({ userData, children }) {
           />
         </div>
         <Link style={linkStyle} to="/dashboard" id="dashboard_nav">
-          Dashboard <KeyboardArrowRightIcon />
+          <FaDashcube />  {' '} Dashboard
         </Link>
         <Link
           style={linkStyle}
           to="/dashboard/students"
           id="students_nav"
-          onMouseEnter={() => console.log("lol")}
         >
-          Students <KeyboardArrowRightIcon />
+          <FaUser /> {' '} Students
         </Link>
         <Link style={linkStyle} to="/dashboard/courses" id="courses_nav">
-          Courses <KeyboardArrowRightIcon />
+        <FaBook /> {' '} Courses
         </Link>
         <Link style={linkStyle} to="/dashboard/companies" id="companies_nav">
-          Companies <KeyboardArrowRightIcon />
+        <FaSchool /> {' '} Companies
         </Link>
         <Link
           style={linkStyle}
           to="/dashboard/cert_vouchers"
           id="cert_vouchers_nav"
         >
-          Certificate Vouchers <KeyboardArrowRightIcon />
+          <FaAddressCard /> {' '} Certificate Vouchers
         </Link>
         <Link style={linkStyle} to="/dashboard/exams" id="exams_nav">
-          Exams <KeyboardArrowRightIcon />
+        <FaFileSignature /> {' '} Exams
         </Link>
         <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
-          Vendors <KeyboardArrowRightIcon />
+        <FaShippingFast /> {' '} Vendors
         </Link>
       </div>
 
