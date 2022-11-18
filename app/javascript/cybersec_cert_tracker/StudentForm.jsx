@@ -187,7 +187,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                     </Form>
                 </ModalBody>
                 <ModalFooter style={{ border: "none" }}>
-                    <Button color="primary" onClick={handleSubmit}>Submit</Button>{' '}
+                    <Button color="primary" onClick={handleSubmit} id="submit">Submit</Button>{' '}
                     <Button color="secondary" onClick={handleClose}>Cancel</Button>
                 </ModalFooter>
             </Modal>

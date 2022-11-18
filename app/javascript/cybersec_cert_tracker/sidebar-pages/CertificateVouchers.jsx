@@ -325,7 +325,7 @@ function CertificateVouchers({ userData }) {
           </Form>
         </ModalBody>
         <ModalFooter style={{ border: "none" }}>
-          <Button color="primary" onClick={handleSubmit}>
+          <Button color="primary" onClick={handleSubmit} id="submit">
             Submit
           </Button>{" "}
           <Button color="secondary" onClick={handleClose}>
