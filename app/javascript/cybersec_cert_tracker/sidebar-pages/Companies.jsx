@@ -211,6 +211,7 @@ function Companies({ userData }) {
         className="csv-button"
         style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
+        id="add_company_button"
       >
         + Add Company
       </Button>
