@@ -211,6 +211,7 @@ function Companies({ userData }) {
         className="csv-button"
         style={{ margin: "10px" }}
         onClick={() => setOpen(true)}
+        id="add_company_button"
       >
         + Add Company
       </Button>
@@ -261,7 +262,7 @@ function Companies({ userData }) {
           </Form>
         </ModalBody>
         <ModalFooter style={{ border: "none" }}>
-          <Button color="primary" onClick={handleSubmit}>
+          <Button color="primary" onClick={handleSubmit} id="submit">
             Submit
           </Button>{" "}
           <Button color="secondary" onClick={handleClose}>

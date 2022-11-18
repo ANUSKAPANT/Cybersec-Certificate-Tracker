@@ -227,6 +227,7 @@ function Courses({ userData }) {
         style={{ margin: "10px" }}
         className="csv-button"
         onClick={() => setOpen(true)}
+        id = "add_course_button"
       >
         + Add Course
       </Button>
@@ -277,7 +278,7 @@ function Courses({ userData }) {
           </Form>
         </ModalBody>
         <ModalFooter style={{ border: "none" }}>
-          <Button color="primary" onClick={handleSubmit}>
+          <Button color="primary" onClick={handleSubmit} id="submit">
             Submit
           </Button>{" "}
           <Button color="secondary" onClick={handleClose}>

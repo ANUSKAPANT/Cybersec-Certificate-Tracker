@@ -401,6 +401,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
                 deleteItem(currentRowId);
                 setCurrentRowId(null);
               }}
+              id="confirm_delete"
             >
               Yes
             </Button>

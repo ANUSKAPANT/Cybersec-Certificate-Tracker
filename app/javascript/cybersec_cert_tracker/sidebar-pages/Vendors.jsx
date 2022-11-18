@@ -250,6 +250,7 @@ function Vendors({ userData }) {
         style={{ margin: "10px" }}
         className="csv-button"
         onClick={() => setOpen(true)}
+        id="add_vendor_button"
       >
         + Add Vendor
       </Button>
@@ -304,7 +305,7 @@ function Vendors({ userData }) {
           </Form>
         </ModalBody>
         <ModalFooter style={{ border: "none" }}>
-          <Button color="primary" onClick={handleSubmit}>
+          <Button color="primary" onClick={handleSubmit} id="submit">
             Submit
           </Button>{" "}
           <Button color="secondary" onClick={handleClose}>
