@@ -175,10 +175,11 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                                         <Label for="company_name" sm={5}>Company</Label>
                                         <Select
                                             name="company_id"
+                                            id="company_id"
                                             onChange={(value) => handleSelectChange(value, "company_id")}
                                             options={companies}
                                             value={companies.filter((option) => (studentFormInfo.company_id == option.value))}
-                                            placeholder="Select Passed"
+                                            placeholder="Select Company"
                                         />
                                     </Col>
                                 </FormGroup>
