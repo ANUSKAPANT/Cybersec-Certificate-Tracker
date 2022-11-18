@@ -250,6 +250,7 @@ function Vendors({ userData }) {
         style={{ margin: "10px" }}
         className="csv-button"
         onClick={() => setOpen(true)}
+        id="add_vendor_button"
       >
         + Add Vendor
       </Button>

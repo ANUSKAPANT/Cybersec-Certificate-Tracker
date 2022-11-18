@@ -227,6 +227,7 @@ function Courses({ userData }) {
         style={{ margin: "10px" }}
         className="csv-button"
         onClick={() => setOpen(true)}
+        id = "add_course_button"
       >
         + Add Course
       </Button>
