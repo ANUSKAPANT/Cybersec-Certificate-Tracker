@@ -21,6 +21,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const passedOptions = [
   { label: "Passed", value: true },
@@ -103,7 +105,7 @@ function Exams({ userData }) {
           id: exam.id,
           exam_code: exam.exam_code,
           certification_name: exam.cert_voucher.certification_name,
-          exam_date: exam.exam_date,
+          exam_date: exam.exam_date ? new Date(exam.exam_date) : null,
           exam_grade: exam.exam_grade,
           passed: exam.passed,
           cert_voucher_id: exam.cert_voucher.id,
@@ -237,6 +239,10 @@ function Exams({ userData }) {
       });
   };
 
+  const handleDateChange = (date, name) => {
+    setExamInfo({ ...examInfo, [name]: date });
+  };
+
   return (
     <>
       <ToastContainer />
@@ -295,11 +301,11 @@ function Exams({ userData }) {
                     <Label for="exam_date" sm={6}>
                       Exam Date
                     </Label>
-                    <Input
-                      name="exam_date"
-                      id="exam_date"
-                      defaultValue={examInfo.exam_date}
-                      onChange={handleInputChange}
+                    <DatePicker
+                      selected={examInfo.exam_date}
+                      onChange={(date) => handleDateChange(date, "exam_date")}
+                      className="input-date"
+                      isClearable
                     />
                   </Col>
                   <Col sm={6}>

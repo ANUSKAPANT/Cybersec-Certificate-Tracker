@@ -21,6 +21,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const dataFormatter = new Jsona();
 
@@ -79,8 +81,8 @@ function CertificateVouchers({ userData }) {
           id: data.id,
           certification_name: data.certification_name,
           student_course_id: data.student_course_id,
-          created_date: data.created_date,
-          expiry_date: data.expiry_date,
+          created_date: data.created_date ? new Date(data.created_date) : null,
+          expiry_date: data.created_date ? new Date(data.expiry_date) : null,
         };
         setCertificateVouchersInfo(certificateVouchersData);
       })
@@ -239,6 +241,10 @@ function CertificateVouchers({ userData }) {
     });
   };
 
+  const handleDateChange = (date, name) => {
+    setCertificateVouchersInfo({ ...certificateVouchersInfo, [name]: date });
+  };
+
   return (
     <>
       <ToastContainer />
@@ -301,22 +307,22 @@ function CertificateVouchers({ userData }) {
                     <Label for="created_date" sm={6}>
                       Created Date
                     </Label>
-                    <Input
-                      name="created_date"
-                      id="created_date"
-                      defaultValue={certificateVouchersInfo.created_date}
-                      onChange={handleInputChange}
+                    <DatePicker
+                      selected={certificateVouchersInfo.created_date}
+                      onChange={(date) => handleDateChange(date, "created_date")}
+                      className="input-date"
+                      isClearable
                     />
                   </Col>
                   <Col sm={6}>
                     <Label for="expiry_date" sm={6}>
                       Expiry Date
                     </Label>
-                    <Input
-                      name="expiry_date"
-                      id="expiry_date"
-                      defaultValue={certificateVouchersInfo.expiry_date}
-                      onChange={handleInputChange}
+                    <DatePicker
+                      selected={certificateVouchersInfo.expiry_date}
+                      onChange={(date) => handleDateChange(date, "expiry_date")}
+                      className="input-date"
+                      isClearable
                     />
                   </Col>
                 </FormGroup>

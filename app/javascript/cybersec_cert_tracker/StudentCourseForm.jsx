@@ -7,6 +7,9 @@ import Select from "react-select";
 import axios from "axios";
 import Snackbar from '@mui/material/Snackbar';
 import Jsona from "jsona";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const dataFormatter = new Jsona();
 
 const voucherOptions = [
@@ -123,7 +126,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                 id: data.id,
                 student: data.student,
                 course: data.course,
-                registration_date: data.registration_date,
+                registration_date: data.registration_date ? new Date(data.registration_date) : null,
                 voucher_purchased: data.voucher_purchased,
                 test_result: data.test_result,
                 canvas_course_completion: data.canvas_course_completion,
@@ -153,6 +156,11 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
     const handleSnackbarClose = () => {
         setOpenSnackbar(false);
     }
+
+    const handleDateChange = (date, name) => {
+        setStudentCourseInfo({ ...studentCourseInfo, [name]: date });
+    };
+    
 
     return (
         <>
@@ -184,12 +192,17 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                 <FormGroup row>
                                     <Col sm={12}>
                                         <Label for="registration_date" sm={6}>Registration Date</Label>
-                                        <Input name="registration_date" id="registration_date" defaultValue={studentCourseInfo.registration_date} onChange={handleInputChange} />
+                                        <DatePicker
+                                            selected={studentCourseInfo.registration_date}
+                                            onChange={(date) => handleDateChange(date, "registration_date")}
+                                            className="input-date"
+                                            isClearable
+                                        />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col sm={6}>
-                                        <Label for="voucher_purchased" sm={6}>Voucher Purchased</Label>
+                                    <Col sm={7}>
+                                        <Label for="voucher_purchased" sm={7}>Voucher Purchased</Label>
                                         <Select
                                             name="voucher_purchased"
                                             onChange={(value) => handleSelectChange(value, "voucher_purchased")}
@@ -198,18 +211,14 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             placeholder="Select Voucher Purchased"
                                         />
                                     </Col>
-                                    <Col sm={6}>
-                                        <Label for="test_result" sm={6}>Test Result</Label>
+                                    <Col sm={5}>
+                                        <Label for="test_result" sm={5}>Test Result</Label>
                                         <Input name="test_result" id="test_result" defaultValue={studentCourseInfo.test_result} onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col sm={6}>
-                                        <Label for="dcldp_code" sm={5}>Dcldp Code</Label>
-                                        <Input name="dcldp_code" id="dcldp_code" defaultValue={studentCourseInfo.dcldp_code} onChange={handleInputChange} />
-                                    </Col>
-                                    <Col sm={6}>
-                                        <Label for="canvas_course_completion" sm={5}>Canvas Course Completed</Label>
+                                    <Col sm={7}>
+                                        <Label for="canvas_course_completion" sm={7}>Canvas Course Completed</Label>
                                         <Select
                                             name="canvas_course_completion"
                                             onChange={(value) => handleSelectChange(value, "canvas_course_completion")}
@@ -217,6 +226,10 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             value={completionOptions.filter((option) => studentCourseInfo.canvas_course_completion == option.value)}
                                             placeholder="Select Canvas Course Completion"
                                         />
+                                    </Col>
+                                    <Col sm={5}>
+                                        <Label for="dcldp_code" sm={5}>Dcldp Code</Label>
+                                        <Input name="dcldp_code" id="dcldp_code" defaultValue={studentCourseInfo.dcldp_code} onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                             </CardBody>

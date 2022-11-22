@@ -151,6 +151,9 @@ function CybersecCertTrackerInit({ userData, children }) {
         <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
         <FaShippingFast /> {' '} Vendors
         </Link>
+        <Link style={linkStyle} to="/dashboard/users" id="users_nav">
+        <FaUser /> {' '} Users
+        </Link>
       </div>
 
       <div style={mainStyle}>{children}</div>
