@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../table.css";
 import DashboardTable from "../DashboardTable";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import Snackbar from '@mui/material/Snackbar';
 import {
   Col,
   Button,
@@ -17,7 +17,6 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
@@ -41,6 +40,8 @@ function StudentCourses({ userData }) {
   const [studentOptions, setStudentOptions] = useState([]);
   const [studentCourseInfo, setStudentCourseInfo] = useState({ id: null });
   const [studentCourses, setStudentCourses] = useState([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const handleClose = () => {
     setStudentCourseInfo({});
@@ -72,12 +73,8 @@ function StudentCourses({ userData }) {
         setStudentCourses(studentCourseData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -99,12 +96,8 @@ function StudentCourses({ userData }) {
         setStudentOptions(studentData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -130,12 +123,8 @@ function StudentCourses({ userData }) {
         setStudentCourseInfo(studentData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -155,12 +144,8 @@ function StudentCourses({ userData }) {
         setCourseOptions(coursesData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -176,21 +161,13 @@ function StudentCourses({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then(() => {
-        toast.success("Successfully Deleted", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
         fetchRecords();
+        setOpenSnackbar(true);
+        setSnackbarMsg("Successfully Deleted");
       })
       .catch((err) => {
-        toast.error("Error in deletingrecords", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -249,22 +226,14 @@ function StudentCourses({ userData }) {
         data,
       })
       .then(() => {
-        toast.success(`Successfully ${message}`, {
-          position: "bottom-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg(`Successfully ${message}`);
         fetchRecords();
         handleClose();
       })
       .catch(() => {
-        toast.error("Error Occured", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -277,9 +246,18 @@ function StudentCourses({ userData }) {
     setStudentCourseInfo({ ...studentCourseInfo, [name]: value.value });
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  }
+
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <Button
         color="success"
         className="csv-button"
