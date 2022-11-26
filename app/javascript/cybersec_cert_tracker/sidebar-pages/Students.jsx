@@ -4,35 +4,12 @@ import DashboardTable from "../DashboardTable";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import { Button } from "reactstrap";
-import "react-toastify/dist/ReactToastify.css";
+import Snackbar from '@mui/material/Snackbar';
+
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Stack from "@mui/material/Stack";
 
-const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 import StudentForm from "../StudentForm";
 
 const dataFormatter = new Jsona();
@@ -41,63 +18,9 @@ function Students({ userData }) {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [show, setShow] = useState(false);
-  const [formValue, setFormValue] = useState({});
-
-  const handleClose = () => setOpen(false);
-
-  const submitData = async () => {
-    let csrf = "";
-    //Not present always
-    if (document.querySelector("meta[name='csrf-token']"))
-      csrf = document
-        .querySelector("meta[name='csrf-token']")
-        .getAttribute("content");
-
-    //await axios.post(`/students`, { headers: { Authorization: `Bearer ${userData.token}`, "X-CSRF-Token": csrf}, data:{...formValue} });
-    const response = await axios({
-      method: "POST",
-      url: "/students.json",
-      headers: {
-        "Content-type": "application/json",
-        "X-CSRF-Token": csrf,
-      },
-      data: { ...formValue },
-    });
-
-    console.log(response);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    setOpen(false);
-    console.log(event);
-    console.log(formValue);
-    submitData();
-  };
-
-  const handleChange = (field, event) => {
-    const temp = formValue;
-    temp[field] = event.target.value;
-    setFormValue(temp);
-  };
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 900,
-    height: 700,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-  };
   const [studentId, setStudentId] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const fetchRecords = async () => {
     try {
@@ -125,12 +48,8 @@ function Students({ userData }) {
       setLoading(false);
       setStudents(studentData);
     } catch (error) {
-      toast.error("Error in fetching records", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
+      setOpenSnackbar(true);
+      setSnackbarMsg("Something went wrong");
     }
   };
 
@@ -144,20 +63,12 @@ function Students({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then((res) => {
-        toast.success("Successfully Deleted", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Successfully Deleted");
       })
       .catch((err) => {
-        toast.error("Error in deletingrecords", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -190,9 +101,18 @@ function Students({ userData }) {
     setLoading(false);
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  }
+
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <Button
         color="success"
         className="csv-button"

@@ -16,8 +16,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Snackbar from '@mui/material/Snackbar';
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
@@ -30,6 +29,8 @@ function Courses({ userData }) {
   const [open, setOpen] = React.useState(false);
   const [courseInfo, setCourseInfo] = useState({ id: null });
   const [vendorOptions, setVendorOptions] = useState([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const fetchRecords = () => {
     axios
@@ -49,12 +50,8 @@ function Courses({ userData }) {
         setCourses(coursesData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -69,20 +66,12 @@ function Courses({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then(() => {
-        toast.success("Successfully Deleted", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Successfully Deleted")
       })
       .catch(() => {
-        toast.error("Error in deletingrecords", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong")
       });
   };
 
@@ -120,12 +109,8 @@ function Courses({ userData }) {
         setCourseInfo(courseData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong")
       });
   };
 
@@ -146,12 +131,8 @@ function Courses({ userData }) {
         setVendorOptions(vendorsData);
       })
       .catch((error) => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -200,34 +181,35 @@ function Courses({ userData }) {
         data,
       })
       .then((res) => {
-        toast.success(`Successfully ${message}`, {
-          position: "bottom-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg(`Successfully ${message}`);
         fetchRecords();
         handleClose();
       })
-      .catch(() => {
-        toast.error("Error Occured", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+      .catch((err) => {
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  }
+
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <Button
         color="success"
         style={{ margin: "10px" }}
         className="csv-button"
         onClick={() => setOpen(true)}
-        id = "add_course_button"
+        id="add_course_button"
       >
         + Add Course
       </Button>
@@ -238,7 +220,7 @@ function Courses({ userData }) {
         style={{ maxWidth: "700px", width: "100%" }}
       >
         <ModalHeader toggle={handleClose} style={{ border: "none" }}>
-          Add Course
+          Course form
         </ModalHeader>
         <ModalBody>
           <Form>
