@@ -56,6 +56,7 @@ function CertificateVouchers({ userData }) {
             expiry_date: cert_voucher.expiry_date,
             exam_code: cert_voucher.exam.exam_code,
             exam_date: cert_voucher.exam.exam_date,
+            test_center:cert_voucher.exam.test_center,
             grade: cert_voucher.xam.exam_grade,
             passed: String(cert_voucher.exam.passed),
           };
@@ -206,6 +207,7 @@ function CertificateVouchers({ userData }) {
       expiry_date,
       student_course_id,
       exam_code,
+      test_center,
       exam_date,
       exam_grade,  
       passed
@@ -345,13 +347,13 @@ function CertificateVouchers({ userData }) {
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={6}>
-                    <Label for="exam_code" sm={6}>
-                      Exam Code
+                    <Label for="test_center" sm={6}>
+                      Test Center
                     </Label>
                     <Input
-                      name="exam_code"
-                      id="exam_code"
-                      defaultValue={certificateVouchersInfo.exam_code}
+                      name="test_center"
+                      id="test_center"
+                      defaultValue={certificateVouchersInfo.test_center}
                       onChange={handleInputChange}
                     />
                   </Col>
@@ -368,9 +370,20 @@ function CertificateVouchers({ userData }) {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Col sm={6}>
-                    <Label for="exam_grade" sm={6}>
+                  <Col sm={4}>
+                    <Label for="exam_code" sm={6}>
                       Exam Code
+                    </Label>
+                    <Input
+                      name="exam_code"
+                      id="exam_code"
+                      defaultValue={certificateVouchersInfo.exam_code}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={4}>
+                    <Label for="exam_grade" sm={6}>
+                      Exam Grade
                     </Label>
                     <Input
                       name="exam_grade"
@@ -379,7 +392,7 @@ function CertificateVouchers({ userData }) {
                       onChange={handleInputChange}
                     />
                   </Col>
-                  <Col sm={6}>
+                  <Col sm={4}>
                     <Label for="passed" sm={6}>
                       Passed
                     </Label>
