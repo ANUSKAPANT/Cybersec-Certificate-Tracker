@@ -32,19 +32,22 @@ export default function Columns(table) {
           Header: "Course Completed",
           accessor: "canvas_course_progress",
           Cell: ({ row }) => {
-            const status = row.original.canvas_course_progress ? "Completed" : "InComplete";
+            const status = row.original.canvas_course_progress
+              ? "Completed"
+              : "InComplete";
             return status;
-           },
+          },
         },
         {
           Header: "Voucher Purchased",
           accessor: "voucher_purchased",
           Cell: ({ row }) => {
-            const status = row.original.voucher_purchased ? "Purchased" : "False";
+            const status = row.original.voucher_purchased
+              ? "Purchased"
+              : "False";
             return status;
-           },
+          },
         },
-
       ];
 
     case "Student":
@@ -101,37 +104,37 @@ export default function Columns(table) {
         },
       ];
 
-      case "Student Course":
-        return [
-          {
-            Header: "Student",
-            accessor: "student_name",
-          },
-          {
-            Header: "Course",
-            accessor: "course_name",
-          },
-          {
-            Header: "Registration Date",
-            accessor: "registration_date",
-          },
-          {
-            Header: "Canvas Course Completion",
-            accessor: "canvas_course_completion",
-          },
-          {
-            Header: "Dcldp Code",
-            accessor: "dcldp_code",
-          },
-          {
-            Header: "Voucher Purchased",
-            accessor: "voucher_purchased",
-          },
-          {
-            Header: "Test Result",
-            accessor: "test_result",
-          },
-        ];
+    case "Student Course":
+      return [
+        {
+          Header: "Student",
+          accessor: "student_name",
+        },
+        {
+          Header: "Course",
+          accessor: "course_name",
+        },
+        {
+          Header: "Registration Date",
+          accessor: "registration_date",
+        },
+        {
+          Header: "Canvas Course Completion",
+          accessor: "canvas_course_completion",
+        },
+        {
+          Header: "Dcldp Code",
+          accessor: "dcldp_code",
+        },
+        {
+          Header: "Voucher Purchased",
+          accessor: "voucher_purchased",
+        },
+        {
+          Header: "Test Result",
+          accessor: "test_result",
+        },
+      ];
     case "Company":
       return [
         {
@@ -215,7 +218,7 @@ export default function Columns(table) {
       ];
 
     case "Certificate_Voucher":
-      return[
+      return [
         {
           Header: "Cert Name",
           accessor: "cert_name",
