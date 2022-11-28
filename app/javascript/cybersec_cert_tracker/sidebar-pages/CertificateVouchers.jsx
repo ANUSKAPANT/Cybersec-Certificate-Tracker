@@ -54,6 +54,10 @@ function CertificateVouchers({ userData }) {
             course: cert_voucher.student_course.course.name,
             created_date: cert_voucher.created_date,
             expiry_date: cert_voucher.expiry_date,
+            exam_code: cert_voucher.exam.exam_code,
+            exam_date: cert_voucher.exam.exam_date,
+            grade: cert_voucher.xam.exam_grade,
+            passed: String(cert_voucher.exam.passed),
           };
         });
         setLoading(false);
@@ -83,6 +87,10 @@ function CertificateVouchers({ userData }) {
           student_course_id: data.student_course_id,
           created_date: data.created_date ? new Date(data.created_date) : null,
           expiry_date: data.created_date ? new Date(data.expiry_date) : null,
+          exam_code: data.exam.exam_code,
+          exam_date: data.exam.exam_date ? new Date(data.exam.exam_date) : null,
+          exam_grade: data.exam.exam_grade,
+          passed: data.exam.passed,
         };
         setCertificateVouchersInfo(certificateVouchersData);
       })
@@ -197,6 +205,10 @@ function CertificateVouchers({ userData }) {
       created_date,
       expiry_date,
       student_course_id,
+      exam_code,
+      exam_date,
+      exam_grade,  
+      passed
     };
     axios
       .request({
@@ -229,6 +241,11 @@ function CertificateVouchers({ userData }) {
       });
   };
 
+  const passedOptions = [
+    { label: "Passed", value: true },
+    { label: "Failed", value: false },
+  ];
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCertificateVouchersInfo({ ...certificateVouchersInfo, [name]: value });
@@ -323,6 +340,57 @@ function CertificateVouchers({ userData }) {
                       onChange={(date) => handleDateChange(date, "expiry_date")}
                       className="input-date"
                       isClearable
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={6}>
+                    <Label for="exam_code" sm={6}>
+                      Exam Code
+                    </Label>
+                    <Input
+                      name="exam_code"
+                      id="exam_code"
+                      defaultValue={certificateVouchersInfo.exam_code}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="exam_date" sm={6}>
+                      Exam Date
+                    </Label>
+                    <DatePicker
+                      selected={certificateVouchersInfo.expiry_date}
+                      onChange={(date) => handleDateChange(date, "exam_date")}
+                      className="input-date"
+                      isClearable
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={6}>
+                    <Label for="exam_grade" sm={6}>
+                      Exam Code
+                    </Label>
+                    <Input
+                      name="exam_grade"
+                      id="exam_grade"
+                      defaultValue={certificateVouchersInfo.exam_grade}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="passed" sm={6}>
+                      Passed
+                    </Label>
+                    <Select
+                      name="passed"
+                      onChange={(value) => handleSelectChange(value, "passed")}
+                      options={passedOptions}
+                      value={passedOptions.filter(
+                        (option) => certificateVouchersInfo.passed == option.value
+                      )}
+                      placeholder="Select Passed"
                     />
                   </Col>
                 </FormGroup>

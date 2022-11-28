@@ -114,6 +114,7 @@ function Students({ userData }) {
           email_id: student.email_id,
           canvas_id: student.canvas_id,
           company: student.company,
+          title: student.title,
           courses: student.student_courses.map((sc) => {
             return {
               id: sc.course.id,
