@@ -57,7 +57,7 @@ function CertificateVouchers({ userData }) {
             exam_code: cert_voucher.exam.exam_code,
             exam_date: cert_voucher.exam.exam_date,
             test_center:cert_voucher.exam.test_center,
-            grade: cert_voucher.xam.exam_grade,
+            grade: cert_voucher.exam.exam_grade,
             passed: String(cert_voucher.exam.passed),
           };
         });
@@ -282,7 +282,7 @@ function CertificateVouchers({ userData }) {
         style={{ maxWidth: "700px", width: "100%" }}
       >
         <ModalHeader toggle={handleClose} style={{ border: "none" }}>
-          Add Student Course
+          Add Certificate Voucher
         </ModalHeader>
         <ModalBody>
           <Form>

@@ -7,8 +7,20 @@ import Select from "react-select";
 import axios from "axios";
 import Jsona from "jsona";
 import Snackbar from '@mui/material/Snackbar';
+import DatePicker from "react-datepicker";
 
 const dataFormatter = new Jsona();
+
+const voucherOptions = [
+    { label: "Purchased", value: true },
+    { label: "Not Purchased", value: false },
+  ];
+
+const completionOptions = [
+    { label: "Completed", value: true },
+    { label: "Incomplete", value: false },
+  ];
+
 
 function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => { } }) {
 
@@ -39,7 +51,13 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             email_id,
             canvas_id,
             title,
-            company_id
+            voucher_purchased,
+            registration_date,
+            expiry_date,
+            dcldp_code,
+            test_result,
+            canvas_course_completion,
+            company_id,
         } = studentFormInfo;
 
         const method = id ? 'patch' : 'post';
@@ -50,7 +68,13 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             last_name,
             email_id,
             title,
+            voucher_purchased,
+            registration_date,
+            expiry_date,
             canvas_id,
+            dcldp_code,
+            test_result,
+            canvas_course_completion,
             company_id,
         };
 
@@ -79,6 +103,10 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
     const handleSelectChange = (value, name) => {
         setStudentFormInfo({ ...studentFormInfo, [name]: value.value });
     };
+
+    const handleDateChange = (date, name) => {
+        setStudentFormInfo({ ...studentFormInfo, [name]: date });
+      };
 
     const fetchCompanies = async () => {
         try {
@@ -114,6 +142,10 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                 last_name: data.last_name,
                 email_id: data.email_id,
                 title: data.title,
+                voucher_purchased: String(data.voucher_purchased),
+                canvas_course_completion: String(data.canvas_course_completion),
+                registration_date: data.registration_date,
+                expiry_date: data.expiry_date,
                 canvas_id: data.canvas_id,
                 company_id: data.company.id,
             };
@@ -155,31 +187,33 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                             <CardBody>
                                 <FormGroup row>
                                     <Col sm={6}>
-                                        <Label for="first_name" sm={5}>First Name</Label>
+                                        <Label for="first_name" sm={6}>First Name</Label>
                                         <Input name="first_name" id="first_name" defaultValue={studentFormInfo.first_name} onChange={handleInputChange} />
                                     </Col>
                                     <Col sm={6}>
-                                        <Label for="last_name" sm={5}>Last Name</Label>
+                                        <Label for="last_name" sm={6}>Last Name</Label>
                                         <Input name="last_name" id="last_name" defaultValue={studentFormInfo.last_name} onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Col sm={6}>
-                                        <Label for="email_id" sm={5}>Email</Label>
+                                    <Col sm={12}>
+                                        <Label for="email_id" sm={12}>Email</Label>
                                         <Input name="email_id" id="email_id" defaultValue={studentFormInfo.email_id} onChange={handleInputChange} />
-                                    </Col>
-                                    <Col sm={6}>
-                                        <Label for="canvas_id" sm={5}>Canvas Id</Label>
-                                        <Input name="canvas_id" id="canvas_id" defaultValue={studentFormInfo.canvas_id} onChange={handleInputChange} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col sm={6}>
-                                        <Label for="title" sm={5}>Title</Label>
-                                        <Input name="title" id="title" defaultValue={studentFormInfo.title} onChange={handleInputChange} />
+                                        <Label for="canvas_id" sm={6}>Canvas ID</Label>
+                                        <Input name="canvas_id" id="canvas_id" defaultValue={studentFormInfo.canvas_id} onChange={handleInputChange} />
                                     </Col>
                                     <Col sm={6}>
-                                        <Label for="company_name" sm={5}>Company</Label>
+                                        <Label for="title" sm={6}>Title</Label>
+                                        <Input name="title" id="title" defaultValue={studentFormInfo.title} onChange={handleInputChange} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={12}>
+                                        <Label for="company_name" sm={12}>Company</Label>
                                         <Select
                                             name="company_id"
                                             id="company_id"
@@ -189,6 +223,94 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                                             placeholder="Select Company"
                                         />
                                     </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={12}>
+                                    <Label for="voucher_purchased" sm={12}>
+                                        Voucher Purchased
+                                    </Label>
+                                    <Select
+                                    name="voucher_purchased"
+                                    onChange={(value) =>
+                                        handleSelectChange(value, "voucher_purchased")
+                                    }
+                                    options={voucherOptions}
+                                    value={voucherOptions.filter(
+                                        (option) =>
+                                        studentFormInfo.voucher_purchased == option.value
+                                    )}
+                                    placeholder="Select Voucher Purchased"
+                                    />
+                                    </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                    <Col sm={6}>
+                                        <Label for="registration_date" sm={6}>
+                                        Registration Date
+                                        </Label>
+                                        <DatePicker
+                                        selected={studentFormInfo.registration_date}
+                                        onChange={(date) => handleDateChange(date, "registration_date")}
+                                        className="input-date"
+                                        isClearable
+                                        />
+                                    </Col>
+                                    <Col sm={6}>
+                                        <Label for="expiry_date" sm={6}>
+                                        Voucher Expiry Date
+                                        </Label>
+                                        <DatePicker
+                                        selected={studentFormInfo.expiry_date}
+                                        onChange={(date) => handleDateChange(date, "expiry_date")}
+                                        className="input-date"
+                                        isClearable
+                                        />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={12}>
+                                    <Label for="canvas_course_completion" sm={12}>
+                                    Canvas Course Completed
+                                    </Label>
+                                    <Select
+                                    name="canvas_course_completion"
+                                    onChange={(value) =>
+                                        handleSelectChange(value, "canvas_course_completion")
+                                    }
+                                    options={completionOptions}
+                                    value={completionOptions.filter(
+                                        (option) =>
+                                        studentFormInfo.canvas_course_completion ==
+                                        option.value
+                                    )}
+                                    placeholder="Select Canvas Course Completion"
+                                    />
+                                </Col>
+                                </FormGroup>
+                                <FormGroup row >
+                                <Col sm={6}>
+                                    <Label for="test_result" sm={6}>
+                                    Test Result
+                                    </Label>
+                                    <Input
+                                    name="test_result"
+                                    id="test_result"
+                                    defaultValue={studentFormInfo.test_result}
+                                    onChange={handleInputChange}
+                                    />
+                                </Col>
+                                                        
+                                <Col sm={6}>
+                                    <Label for="dcldp_code" sm={5}>
+                                    DCLDP Code
+                                    </Label>
+                                    <Input
+                                    name="dcldp_code"
+                                    id="dcldp_code"
+                                    defaultValue={studentFormInfo.dcldp_code}
+                                    onChange={handleInputChange}
+                                    />
+                                </Col>
                                 </FormGroup>
                             </CardBody>
                         </Card>

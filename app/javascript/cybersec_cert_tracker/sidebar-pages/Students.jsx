@@ -113,7 +113,13 @@ function Students({ userData }) {
           last_name: student.last_name,
           email_id: student.email_id,
           canvas_id: student.canvas_id,
+          canvas_course_completion: student.canvas_course_completion,
           company: student.company,
+          voucher_purchased: student.voucher_purchased,
+          registration_date: student.registration_date? new Date(student.registration_date) : null,
+          expiry_date: student.expiry_date? new Date(student.expiry_date) : null,
+          test_result: student.test_result,
+          dcldp_code: student.dcldp_code,
           title: student.title,
           courses: student.student_courses.map((sc) => {
             return {
