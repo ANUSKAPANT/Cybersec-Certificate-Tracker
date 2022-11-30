@@ -33,6 +33,15 @@ When("user fills student form without company") do
     fill_in 'canvas_id', :with => 'manual_entry'
 end
 
+When("user fills student form") do 
+    fill_in 'first_name', :with => 'manual_entry'
+    fill_in 'last_name', :with => 'manual_entry'
+    fill_in 'email_id', :with => 'manual_entry@gmail.com'
+    fill_in 'canvas_id', :with => 'manual_entry'
+    find('#company_id').click
+    find('#company_id > div', text: 'Unknown').click
+end
+
 When("user fills student form without first name") do 
     fill_in 'last_name', :with => 'manual_entry'
     fill_in 'email_id', :with => 'manual_entry@gmail.com'

@@ -33,4 +33,11 @@ Feature: Sidebar
     When user submits the form
     Then user should see cant be blank field error
 
+  Scenario: User is on student profile page and submits form with all fields
+    Given user is on student profile page
+    When user clicks add student button
+    When user fills student form
+    When user submits the form
+    Then user should see filled form data
+
 
