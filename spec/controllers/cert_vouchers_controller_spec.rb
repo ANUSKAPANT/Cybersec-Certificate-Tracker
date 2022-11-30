@@ -15,7 +15,7 @@ RSpec.describe CertVouchersController, type: :controller do
   describe 'PATCH update' do
     it 'updates the cert voucher' do
       create :cert_voucher
-      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023")
+      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533")
       cert_voucher.save
       patch :update, params: { id: cert_voucher.id, certification_name: "ccc" }
       expect(response).to have_http_status(201)
@@ -23,7 +23,7 @@ RSpec.describe CertVouchersController, type: :controller do
 
     it 'does not update the cert voucher' do
       create :cert_voucher
-      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023")
+      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533")
       cert_voucher.save
       patch :update, params: { id: cert_voucher.id, certification_name: nil }
       expect(response).to have_http_status(422)
@@ -33,7 +33,7 @@ RSpec.describe CertVouchersController, type: :controller do
   describe 'GET show' do
     it 'shows the cert voucher' do
       create :cert_voucher
-      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023")
+      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533")
       cert_voucher.save
       get :show, params: { id: cert_voucher.id }
       expect(response).to have_http_status(200)
@@ -43,7 +43,7 @@ RSpec.describe CertVouchersController, type: :controller do
   describe 'POST create' do
     it 'creates an cert voucher and renders a successful response' do
       create :cert_voucher
-      post :create, params: {student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023"}
+      post :create, params: {student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533"}
       expect(response).to have_http_status(201)
     end
 
@@ -56,7 +56,7 @@ RSpec.describe CertVouchersController, type: :controller do
   describe 'DESTROY delete' do
     it 'deletes an cert voucher and renders a successful response' do
       create :cert_voucher
-      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023")
+      cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533")
       cert_voucher.save
       delete :destroy, params: { id:cert_voucher.id }
       expect(response).to have_http_status(204)

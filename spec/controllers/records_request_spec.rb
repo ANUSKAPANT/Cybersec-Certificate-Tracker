@@ -11,8 +11,7 @@ RSpec.describe 'Records', type: :request do
   describe 'GET /records' do
     before do
       records.first(3).each do |student_course|
-        cert_voucher = create(:cert_voucher, student_course: student_course)
-        create(:exam, cert_voucher: cert_voucher)
+        create(:cert_voucher, student_course: student_course)
       end
     end
     it 'renders unauthorized' do
