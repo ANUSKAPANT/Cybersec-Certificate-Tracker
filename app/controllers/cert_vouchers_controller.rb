@@ -39,6 +39,6 @@ class CertVouchersController < BaseController
   end
 
   def cert_voucher_params
-    params.permit(:student_course_id, :certification_name, :created_date, :expiry_date, :voucher_code, :test_result, :score, :test_center_id, :exam_date)
+    params.permit(:student_course_id, :certification_name, :created_date, :expiry_date, :voucher_code, :test_result, :score, :test_center_id, :exam_date, :exam_code)
   end
 end

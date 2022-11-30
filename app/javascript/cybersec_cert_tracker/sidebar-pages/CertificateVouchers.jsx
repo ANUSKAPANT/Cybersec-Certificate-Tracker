@@ -55,11 +55,12 @@ function CertificateVouchers({ userData }) {
             course: cert_voucher.student_course.course.name,
             created_date: cert_voucher.created_date,
             expiry_date: cert_voucher.expiry_date,
-            exam_code: cert_voucher.exam.exam_code,
-            exam_date: cert_voucher.exam.exam_date,
-            test_center:cert_voucher.exam.test_center,
-            grade: cert_voucher.xam.exam_grade,
-            passed: String(cert_voucher.exam.passed),
+            voucher_code: cert_voucher.voucher_code,
+            exam_code: cert_voucher.exam_code,
+            exam_date: cert_voucher.exam_date,
+            test_center:cert_voucher.test_center_id,
+            score: cert_voucher.score,
+            test_result: cert_voucher.test_result,
           };
         });
         setLoading(false);
@@ -84,10 +85,13 @@ function CertificateVouchers({ userData }) {
           student_course_id: data.student_course_id,
           created_date: data.created_date ? new Date(data.created_date) : null,
           expiry_date: data.created_date ? new Date(data.expiry_date) : null,
-          exam_code: data.exam.exam_code,
-          exam_date: data.exam.exam_date ? new Date(data.exam.exam_date) : null,
-          exam_grade: data.exam.exam_grade,
-          passed: data.exam.passed,
+          exam_date: data.exam_date ? new Date(data.exam_date) : null,
+          voucher_code: data.voucher_code,
+          exam_code: data.exam_code,
+          exam_date: data.exam_date,
+          test_center: data.test_center_id,
+          score: data.score,
+          test_result: data.test_result,
         };
         setCertificateVouchersInfo(certificateVouchersData);
       })
@@ -177,6 +181,12 @@ function CertificateVouchers({ userData }) {
       created_date,
       expiry_date,
       student_course_id,
+      exam_code,
+      exam_date,
+      score,
+      test_center_id,
+      test_result,
+      voucher_code,
     } = certificateVouchersInfo;
     const method = id !== null ? "patch" : "post";
     const url = id == null ? "/cert_vouchers" : `/cert_vouchers/${id}`;
@@ -187,10 +197,11 @@ function CertificateVouchers({ userData }) {
       expiry_date,
       student_course_id,
       exam_code,
-      test_center,
       exam_date,
-      exam_grade,  
-      passed
+      score,
+      test_center_id,
+      test_result,
+      voucher_code,
     };
     axios
       .request({
@@ -216,8 +227,9 @@ function CertificateVouchers({ userData }) {
   };
 
   const passedOptions = [
-    { label: "Passed", value: true },
-    { label: "Failed", value: false },
+    { label: "Pass", value: "pass" },
+    { label: "Fail", value: "fail" },
+    { label: "TBD", value: "TBD" },
   ];
   
   const handleInputChange = (event) => {
@@ -263,7 +275,7 @@ function CertificateVouchers({ userData }) {
         style={{ maxWidth: "700px", width: "100%" }}
       >
         <ModalHeader toggle={handleClose} style={{ border: "none" }}>
-          Add Student Course
+          Add Certificate Voucher
         </ModalHeader>
         <ModalBody>
           <Form>
@@ -332,9 +344,9 @@ function CertificateVouchers({ userData }) {
                       Test Center
                     </Label>
                     <Input
-                      name="test_center"
-                      id="test_center"
-                      defaultValue={certificateVouchersInfo.test_center}
+                      name="test_center_id"
+                      id="test_center_id"
+                      defaultValue={certificateVouchersInfo.test_center_id}
                       onChange={handleInputChange}
                     />
                   </Col>
@@ -351,7 +363,18 @@ function CertificateVouchers({ userData }) {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Col sm={4}>
+                  <Col sm={6}>
+                    <Label for="voucher_code" sm={6}>
+                      Voucher Code
+                    </Label>
+                    <Input
+                      name="voucher_code"
+                      id="voucher_code"
+                      defaultValue={certificateVouchersInfo.voucher_code}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
                     <Label for="exam_code" sm={6}>
                       Exam Code
                     </Label>
@@ -362,29 +385,29 @@ function CertificateVouchers({ userData }) {
                       onChange={handleInputChange}
                     />
                   </Col>
-                  <Col sm={4}>
-                    <Label for="exam_grade" sm={6}>
+                  <Col sm={6}>
+                    <Label for="score" sm={6}>
                       Exam Grade
                     </Label>
                     <Input
-                      name="exam_grade"
-                      id="exam_grade"
-                      defaultValue={certificateVouchersInfo.exam_grade}
+                      name="score"
+                      id="score"
+                      defaultValue={certificateVouchersInfo.score}
                       onChange={handleInputChange}
                     />
                   </Col>
-                  <Col sm={4}>
-                    <Label for="passed" sm={6}>
-                      Passed
+                  <Col sm={6}>
+                    <Label for="test_result" sm={6}>
+                      Test Result
                     </Label>
                     <Select
-                      name="passed"
+                      name="test_result"
                       onChange={(value) => handleSelectChange(value, "passed")}
                       options={passedOptions}
                       value={passedOptions.filter(
                         (option) => certificateVouchersInfo.passed == option.value
                       )}
-                      placeholder="Select Passed"
+                      placeholder="Select Test Result"
                     />
                   </Col>
                 </FormGroup>

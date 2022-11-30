@@ -393,7 +393,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
   };
 
   const renderColumns = (column, rows) => {
-    console.log(column);
     if (column.canFilter) {
       if (column.id === "company_name") {
         return SelectColumnFilter(

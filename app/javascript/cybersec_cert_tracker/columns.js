@@ -167,30 +167,6 @@ export default function Columns(table) {
         },
       ];
 
-    case "Exam":
-      return [
-        {
-          Header: "Certification Name",
-          accessor: "certification_name",
-        },
-        {
-          Header: "Exam Code",
-          accessor: "exam_code",
-        },
-        {
-          Header: "Exam Date",
-          accessor: "exam_date",
-        },
-        {
-          Header: "Exam Grade",
-          accessor: "grade",
-        },
-        {
-          Header: "Certificate Voucher",
-          accessor: "cert_voucher",
-        },
-      ];
-
     case "Vendor":
       return [
         {
@@ -230,6 +206,30 @@ export default function Columns(table) {
         {
           Header: "Full Name",
           accessor: "full_name",
+        },
+        {
+          Header: "Voucher Code",
+          accessor: "voucher_code",
+        },
+        {
+          Header: "Exam Code",
+          accessor: "exam_code",
+        },
+        {
+          Header: "Exam Date",
+          accessor: "exam_date",
+        },
+        {
+          Header: "Score",
+          accessor: "score",
+        },
+        {
+          Header: "Test Result",
+          accessor: "test_result",
+        },
+        {
+          Header: "Test Center",
+          accessor: "test_center_id",
         },
         {
           Header: "Created Date",
