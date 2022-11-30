@@ -31,6 +31,17 @@ function Courses({ userData }) {
   const [vendorOptions, setVendorOptions] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [error, setError] = useState({});
+
+  const addError = (name) => {
+    return (
+      error[`${name}`] ? (
+        <div>
+          <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+        </div>
+      ) : null
+    );
+  }
 
   const fetchRecords = () => {
     axios
@@ -144,6 +155,7 @@ function Courses({ userData }) {
   const handleClose = () => {
     setCourseInfo({ id: null });
     setOpen(false);
+    setError({});
   };
 
   const handleInputChange = (event) => {
@@ -187,6 +199,7 @@ function Courses({ userData }) {
         handleClose();
       })
       .catch((err) => {
+        setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
@@ -237,6 +250,7 @@ function Courses({ userData }) {
                       defaultValue={courseInfo.name}
                       onChange={handleInputChange}
                     />
+                    {error['name'] && addError('name')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -253,6 +267,7 @@ function Courses({ userData }) {
                       )}
                       placeholder="Select Vendor"
                     />
+                    {error['vendor'] && addError('vendor')}
                   </Col>
                 </FormGroup>
               </CardBody>

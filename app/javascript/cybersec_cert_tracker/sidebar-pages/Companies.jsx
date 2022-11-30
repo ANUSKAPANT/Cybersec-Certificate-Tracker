@@ -35,6 +35,17 @@ function Companies({ userData }) {
   const [companyInfo, setCompanyInfo] = useState({ id: null });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [error, setError] = useState({});
+
+  const addError = (name) => {
+    return (
+      error[`${name}`] ? (
+        <div>
+          <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+        </div>
+      ) : null
+    );
+  }
 
   const fetchRecords = () => {
     axios
@@ -126,6 +137,7 @@ function Companies({ userData }) {
   const handleClose = () => {
     setCompanyInfo({ id: null });
     setOpen(false);
+    setError({});
   };
 
   const handleInputChange = (event) => {
@@ -172,7 +184,8 @@ function Companies({ userData }) {
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
       })
-      .catch(() => {
+      .catch((err) => {
+        setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
@@ -222,6 +235,7 @@ function Companies({ userData }) {
                       defaultValue={companyInfo.name}
                       onChange={handleInputChange}
                     />
+                    {error['name'] && addError('name')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -238,6 +252,7 @@ function Companies({ userData }) {
                       )}
                       placeholder="Select SMC"
                     />
+                    {error['smc'] && addError('smc')}
                   </Col>
                 </FormGroup>
               </CardBody>

@@ -35,6 +35,17 @@ function Users({ userData }) {
   const [userInfo, setUserInfo] = useState({ id: null });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [error, setError] = useState({});
+
+  const addError = (name) => {
+    return (
+      error[`${name}`] ? (
+        <div>
+          <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+        </div>
+      ) : null
+    );
+  }
 
   const fetchRecords = () => {
     axios
@@ -137,6 +148,7 @@ function Users({ userData }) {
   const handleClose = () => {
     setUserInfo({ id: null });
     setOpen(false);
+    setError({});
   };
 
   const handleSubmit = (event) => {
@@ -170,7 +182,8 @@ function Users({ userData }) {
         fetchRecords();
         handleClose();
       })
-      .catch((error) => {
+      .catch((err) => {
+        setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
@@ -229,6 +242,7 @@ function Users({ userData }) {
                       defaultValue={userInfo.first_name}
                       onChange={handleInputChange}
                     />
+                    {error['first_name'] && addError('first_name')}
                   </Col>
                   <Col sm={6}>
                     <Label for="last_name" sm={5}>
@@ -240,6 +254,7 @@ function Users({ userData }) {
                       defaultValue={userInfo.last_name}
                       onChange={handleInputChange}
                     />
+                    {error['last_name'] && addError('last_name')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -254,6 +269,7 @@ function Users({ userData }) {
                       defaultValue={userInfo.email}
                       onChange={handleInputChange}
                     />
+                    {error['email'] && addError('email')}
                   </Col>
                   <Col sm={6}>
                     <Label for="password" sm={5}>
@@ -266,6 +282,7 @@ function Users({ userData }) {
                       defaultValue={userInfo.password}
                       onChange={handleInputChange}
                     />
+                    {error['password'] && addError('password')}
                   </Col>
                   <Col sm={6}>
                     <Label for="role" sm={6}>
@@ -280,6 +297,7 @@ function Users({ userData }) {
                       )}
                       placeholder="Select Role"
                     />
+                    {error['role'] && addError('role')}
                   </Col>
                 </FormGroup>
               </CardBody>

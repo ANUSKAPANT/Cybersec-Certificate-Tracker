@@ -40,10 +40,12 @@ function StudentProfile({ userData }) {
                 test_result: student_course.test_result,
                 cert_voucher_id: student_course.cert_vouchers.map((cv) => cv.voucher_id),
                 voucher_use_by: student_course.cert_vouchers.map((cv) => cv.expiry_date),
-                exam_code: student_course.cert_vouchers.map((cv) => (cv.exam || {}).exam_code),
-                exam_date: student_course.cert_vouchers.map((cv) => (cv.exam || {}).exam_date),
-                exam_grade: student_course.cert_vouchers.map((cv) => (cv.exam || {}).exam_grade),
-                passed: student_course.cert_vouchers.map((cv) => (cv.exam || {}).passed),
+                exam_code: student_course.cert_vouchers.map((cv) => cv.exam_code),
+                voucher_code: student_course.cert_vouchers.map((cv) => cv.voucher_code),
+                exam_date: student_course.cert_vouchers.map((cv) => cv.exam_date),
+                test_result: student_course.cert_vouchers.map((cv) => cv.test_result),
+                test_center_id: student_course.cert_vouchers.map((cv) => cv.test_center_id),
+                score: student_course.cert_vouchers.map((cv) => cv.score),
             });
         });
         setCoursesInfo(courses);

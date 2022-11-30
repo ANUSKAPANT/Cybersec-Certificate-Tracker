@@ -16,9 +16,21 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
     const [studentFormInfo, setStudentFormInfo] = useState({});
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMsg, setSnackbarMsg] = useState("");
+    const [error, setError] = useState({});
+
+    const addError = (name) => {
+      return (
+        error[`${name}`] ? (
+          <div>
+            <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+          </div>
+        ) : null
+      );
+    }
 
     const handleClose = () => {
         setOpen(false);
+        setError({});
     }
 
     const handleInputChange = (event) => {
@@ -54,27 +66,31 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             company_id,
         };
 
-        try {
-            await axios.request({
-                method,
-                url,
-                headers: {
-                    "Content-type": "application/json",
-                    "X-CSRF-Token": csrf,
-                    "Authorization": `Bearer ${userData.token}`,
-                },
-                data
-            });
+        axios
+        .request({
+          method,
+          url,
+          headers: {
+            "Content-type": "application/json",
+            "X-CSRF-Token": csrf,
+            Authorization: `Bearer ${userData.token}`,
+          },
+          data,
+        })
+        .then(() => {
             setOpenSnackbar(true);
             setSnackbarMsg(`Successfully ${message}`)
             if (!id) setStudentFormInfo({}); // Means add student is used
             afterSubmit();
             handleClose();
-        } catch (error) {
+        })
+        .catch((err) => {
+            console.log
+            setError(err.response.data);
             setOpenSnackbar(true);
-            setSnackbarMsg("Something went wrong")
-        }
-    }
+            setSnackbarMsg("Something went wrong");
+        });
+    };
 
     const handleSelectChange = (value, name) => {
         setStudentFormInfo({ ...studentFormInfo, [name]: value.value });
@@ -95,8 +111,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                 };
             });
             setCompanies(companiesData);
-        } catch (error) {
-            console.log(error);
+        } catch (err) {
             setOpenSnackbar(true);
             setSnackbarMsg("Something went wrong")
         }
@@ -157,26 +172,31 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                                     <Col sm={6}>
                                         <Label for="first_name" sm={5}>First Name</Label>
                                         <Input name="first_name" id="first_name" defaultValue={studentFormInfo.first_name} onChange={handleInputChange} />
+                                        {error['first_name'] && addError('first_name')}
                                     </Col>
                                     <Col sm={6}>
                                         <Label for="last_name" sm={5}>Last Name</Label>
                                         <Input name="last_name" id="last_name" defaultValue={studentFormInfo.last_name} onChange={handleInputChange} />
+                                        {error['last_name'] && addError('last_name')}
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col sm={6}>
                                         <Label for="email_id" sm={5}>Email</Label>
                                         <Input name="email_id" id="email_id" defaultValue={studentFormInfo.email_id} onChange={handleInputChange} />
+                                        {error['email_id'] && addError('email_id')}
                                     </Col>
                                     <Col sm={6}>
                                         <Label for="canvas_id" sm={5}>Canvas Id</Label>
                                         <Input name="canvas_id" id="canvas_id" defaultValue={studentFormInfo.canvas_id} onChange={handleInputChange} />
+                                        {error['canvas_id'] && addError('canvas_id')}
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col sm={6}>
                                         <Label for="title" sm={5}>Title</Label>
                                         <Input name="title" id="title" defaultValue={studentFormInfo.title} onChange={handleInputChange} />
+                                        {error['title'] && addError('title')}
                                     </Col>
                                     <Col sm={6}>
                                         <Label for="company_name" sm={5}>Company</Label>
@@ -188,6 +208,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                                             value={companies.filter((option) => (studentFormInfo.company_id == option.value))}
                                             placeholder="Select Company"
                                         />
+                                        {error['company'] && addError('company')}
                                     </Col>
                                 </FormGroup>
                             </CardBody>
