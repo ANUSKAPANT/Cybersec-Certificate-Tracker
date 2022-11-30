@@ -17,7 +17,7 @@ Feature: Sidebar
     When user clicks add student button
     When user fills student form without company
     When user submits the form
-    Then user should see missing company field error
+    Then user should see must exist error
 
   Scenario: User is on student profile page and submits form without first name
     Given user is on student profile page

@@ -260,6 +260,7 @@ function Courses({ userData }) {
                     </Label>
                     <Select
                       name="vendor_id"
+                      id="vendor_id"
                       onChange={(value) => handleSelectChange(value)}
                       options={vendorOptions}
                       value={vendorOptions.filter(

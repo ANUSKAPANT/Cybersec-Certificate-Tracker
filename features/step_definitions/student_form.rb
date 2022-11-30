@@ -67,7 +67,7 @@ Then("user should see student data") do
     expect(page).to have_content("dummy@tamu.edu")
 end
 
-Then("user should see missing company field error") do
+Then("user should see must exist error") do
     expect(page).to have_content("must exist")
 end
 
