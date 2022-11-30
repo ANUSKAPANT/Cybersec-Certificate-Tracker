@@ -35,10 +35,12 @@ function CertificateVouchers({ userData }) {
   });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [error, setError] = useState({});
 
   const handleClose = () => {
     setCertificateVouchersInfo({ id: null });
     setOpen(false);
+    setError({});
   };
 
   const fetchRecords = () => {
@@ -220,7 +222,8 @@ function CertificateVouchers({ userData }) {
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
       })
-      .catch(() => {
+      .catch((err) => {
+        setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
@@ -250,6 +253,16 @@ function CertificateVouchers({ userData }) {
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
+  }
+
+  const addError = (name) => {
+    return (
+      error[`${name}`] ? (
+        <div>
+          <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+        </div>
+      ) : null
+    );
   }
 
   return (
@@ -299,6 +312,7 @@ function CertificateVouchers({ userData }) {
                       )}
                       placeholder="Select Student Course"
                     />
+                   {error['student_course'] && addError('student_course')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -312,6 +326,7 @@ function CertificateVouchers({ userData }) {
                       defaultValue={certificateVouchersInfo.certification_name}
                       onChange={handleInputChange}
                     />
+                   {error['certification_name'] && addError('certification_name')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -325,6 +340,7 @@ function CertificateVouchers({ userData }) {
                       className="input-date"
                       isClearable
                     />
+                    {error['created_date'] && addError('created_date')}
                   </Col>
                   <Col sm={6}>
                     <Label for="expiry_date" sm={6}>
@@ -336,6 +352,7 @@ function CertificateVouchers({ userData }) {
                       className="input-date"
                       isClearable
                     />
+                    {error['expiry_date'] && addError('expiry_date')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -350,6 +367,7 @@ function CertificateVouchers({ userData }) {
                       onChange={handleInputChange}
                     />
                   </Col>
+                  {error['test_center'] && addError('test_center')}
                   <Col sm={6}>
                     <Label for="exam_date" sm={6}>
                       Exam Date
@@ -360,6 +378,7 @@ function CertificateVouchers({ userData }) {
                       className="input-date"
                       isClearable
                     />
+                    {error['exam_date'] && addError('exam_date')}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -373,6 +392,7 @@ function CertificateVouchers({ userData }) {
                       defaultValue={certificateVouchersInfo.voucher_code}
                       onChange={handleInputChange}
                     />
+                    {error['voucher_code'] && addError('voucher_code')}
                   </Col>
                   <Col sm={6}>
                     <Label for="exam_code" sm={6}>
@@ -384,6 +404,7 @@ function CertificateVouchers({ userData }) {
                       defaultValue={certificateVouchersInfo.exam_code}
                       onChange={handleInputChange}
                     />
+                    {error['exam_code'] && addError('exam_code')}
                   </Col>
                   <Col sm={6}>
                     <Label for="score" sm={6}>
@@ -395,6 +416,7 @@ function CertificateVouchers({ userData }) {
                       defaultValue={certificateVouchersInfo.score}
                       onChange={handleInputChange}
                     />
+                    {error['score'] && addError('score')}
                   </Col>
                   <Col sm={6}>
                     <Label for="test_result" sm={6}>
@@ -409,6 +431,7 @@ function CertificateVouchers({ userData }) {
                       )}
                       placeholder="Select Test Result"
                     />
+                    {error['test_result'] && addError('test_result')}
                   </Col>
                 </FormGroup>
               </CardBody>

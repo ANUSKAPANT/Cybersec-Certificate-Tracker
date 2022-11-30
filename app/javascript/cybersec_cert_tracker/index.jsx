@@ -16,7 +16,6 @@ import Students from "./sidebar-pages/Students";
 import Courses from "./sidebar-pages/Courses";
 import Companies from "./sidebar-pages/Companies";
 import CertificateVouchers from "./sidebar-pages/CertificateVouchers";
-import Exams from "./sidebar-pages/Exams";
 import Vendors from "./sidebar-pages/Vendors";
 import Users from "./sidebar-pages/Users";
 import StudentProfile from "./StudentProfile";
@@ -42,7 +41,6 @@ export default function CybersecCertTrackerApp({ data }) {
                       path="cert_vouchers"
                       element={<CertificateVouchers userData={data} />}
                     />
-                    <Route path="exams" element={<Exams userData={data} />} />
                     <Route path="vendors" element={<Vendors userData={data} />} />
                     <Route path="users" element={<Users userData={data} />} />
                   </>

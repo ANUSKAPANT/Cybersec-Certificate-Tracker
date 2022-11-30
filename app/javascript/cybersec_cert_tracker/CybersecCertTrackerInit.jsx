@@ -147,9 +147,6 @@ function CybersecCertTrackerInit({ userData, children }) {
         >
           <FaAddressCard /> Certificate Vouchers
         </Link>
-        <Link style={linkStyle} to="/dashboard/exams" id="exams_nav">
-          <FaFileSignature /> Exams
-        </Link>
         <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
           <FaShippingFast /> Vendors
         </Link>

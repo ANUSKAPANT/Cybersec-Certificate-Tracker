@@ -31,6 +31,17 @@ function Vendors({ userData }) {
   const [vendorInfo, setVendorInfo] = useState({ id: null });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [error, setError] = useState({});
+
+  const addError = (name) => {
+    return (
+      error[`${name}`] ? (
+        <div>
+          <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+        </div>
+      ) : null
+    );
+  }
 
   const fetchRecords = () => {
     axios
@@ -148,6 +159,7 @@ function Vendors({ userData }) {
   const handleClose = () => {
     setVendorInfo({ id: null });
     setOpen(false);
+    setError({});
   };
 
   const handleInputChange = (event) => {
@@ -186,7 +198,8 @@ function Vendors({ userData }) {
         fetchRecords();
         handleClose();
       })
-      .catch(() => {
+      .catch((err) => {
+        setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
@@ -242,6 +255,7 @@ function Vendors({ userData }) {
                       defaultValue={vendorInfo.name}
                       onChange={handleInputChange}
                     />
+                    {error['name'] && addError('name')}
                   </Col>
                 </FormGroup>
                 {vendorInfo.id && (

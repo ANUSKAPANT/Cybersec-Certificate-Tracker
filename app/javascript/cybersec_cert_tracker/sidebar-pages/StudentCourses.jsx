@@ -42,10 +42,22 @@ function StudentCourses({ userData }) {
   const [studentCourses, setStudentCourses] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [error, setError] = useState({});
+
+  const addError = (name) => {
+    return (
+      error[`${name}`] ? (
+        <div>
+          <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+        </div>
+      ) : null
+    );
+  }
 
   const handleClose = () => {
     setStudentCourseInfo({});
     setOpen(false);
+    setError({});
   };
 
   const fetchRecords = () => {
@@ -231,7 +243,8 @@ function StudentCourses({ userData }) {
         fetchRecords();
         handleClose();
       })
-      .catch(() => {
+      .catch((err) => {
+        setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });

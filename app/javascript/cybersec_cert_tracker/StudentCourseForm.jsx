@@ -30,9 +30,21 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
     const [courseSelectDisabled, setCourseSelectDisabled] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMsg, setSnackbarMsg] = useState("");
+    const [error, setError] = useState({});
 
+    const addError = (name) => {
+      return (
+        error[`${name}`] ? (
+          <div>
+            <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+          </div>
+        ) : null
+      );
+    }
+  
     const handleClose = () => {
         setOpen(false);
+        setError({});
     }
 
     const handleInputChange = (event) => {
@@ -72,27 +84,30 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
             student_id,
             course_id,
         };
-        try {
-            await axios.request({
-                method,
-                url,
-                headers: {
-                    "Content-type": "application/json",
-                    "X-CSRF-Token": csrf,
-                    "Authorization": `Bearer ${userData.token}`,
-                },
-                data
-            })
+        axios
+        .request({
+          method,
+          url,
+          headers: {
+            "Content-type": "application/json",
+            "X-CSRF-Token": csrf,
+            Authorization: `Bearer ${userData.token}`,
+          },
+          data,
+        })
+        .then(() => {
             afterSubmit();
             setCourseSelectDisabled(false);
             handleClose();
             setOpenSnackbar(true);
             setSnackbarMsg(`Successfully ${message}`);
-        } catch (error) {
+        })
+        .catch((err) => {
+            setError(err.response.data);
             setOpenSnackbar(true);
             setSnackbarMsg("Something went wrong")
-        }
-    }
+        });
+    };
 
     const fetchCourses = async () => {
         try {
@@ -108,7 +123,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                 };
             });
             setCourseOptions(coursesData);
-        } catch (error) {
+        } catch (err) {
             setOpenSnackbar(true);
             setSnackbarMsg("Something went wrong")
         }
@@ -135,7 +150,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                 course_id: data.course.id,
             };
             setStudentCourseInfo(studentData);
-        } catch (error) {
+        } catch (err) {
             setOpenSnackbar(true);
             setSnackbarMsg("Something went wrong");
         }
@@ -187,6 +202,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             placeholder="Select Course"
                                             isDisabled={courseSelectDisabled}
                                         />
+                                        {error['course'] && addError('course')}
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -198,6 +214,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             className="input-date"
                                             isClearable
                                         />
+                                        {error['registration_date'] && addError('registration_date')}
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -210,10 +227,12 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             value={voucherOptions.filter((option) => studentCourseInfo.voucher_purchased == option.value)}
                                             placeholder="Select Voucher Purchased"
                                         />
+                                        {error['voucher_purchased'] && addError('voucher_purchased')}
                                     </Col>
                                     <Col sm={5}>
                                         <Label for="test_result" sm={5}>Test Result</Label>
                                         <Input name="test_result" id="test_result" defaultValue={studentCourseInfo.test_result} onChange={handleInputChange} />
+                                        {error['test_result'] && addError('test_result')}
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -226,10 +245,12 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             value={completionOptions.filter((option) => studentCourseInfo.canvas_course_completion == option.value)}
                                             placeholder="Select Canvas Course Completion"
                                         />
+                                        {error['canvas_course_completion'] && addError('canvas_course_completion')}
                                     </Col>
                                     <Col sm={5}>
                                         <Label for="dcldp_code" sm={5}>Dcldp Code</Label>
                                         <Input name="dcldp_code" id="dcldp_code" defaultValue={studentCourseInfo.dcldp_code} onChange={handleInputChange} />
+                                        {error['dcldp_code'] && addError('dcldp_code')}
                                     </Col>
                                 </FormGroup>
                             </CardBody>

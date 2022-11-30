@@ -135,6 +135,7 @@ export default function Columns(table) {
           accessor: "test_result",
         },
       ];
+  
     case "Company":
       return [
         {
