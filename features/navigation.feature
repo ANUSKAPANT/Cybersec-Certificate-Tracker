@@ -23,12 +23,6 @@ Feature: Navigation
     When user clicks the hamburger icon
     When user clicks on cert_vouchers in the navigation menu
     Then user should be redirected to cert_vouchers page
-  
-  Scenario: User clicks on the exams in the navigation menu and is redirected to exams page
-    Given user is on dashboard page with data uploaded
-    When user clicks the hamburger icon
-    When user clicks on exams in the navigation menu
-    Then user should be redirected to exams page
 
   Scenario: User clicks on the vendors in the navigation menu and is redirected to vendors page
     Given user is on dashboard page with data uploaded

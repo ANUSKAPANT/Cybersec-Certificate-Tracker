@@ -7,7 +7,7 @@ When('user clicks on {word} in the navigation menu') do |menu_item|
 end
 
 Then("user should see the navigation menu") do 
-    ['Students', 'Courses', 'Companies', 'Certificate Vouchers', 'Exams', 'Vendors'].each do |menu_item|
+    ['Students', 'Courses', 'Companies', 'Certificate Vouchers', 'Vendors'].each do |menu_item|
         expect(page).to have_content(menu_item)
     end 
 end
