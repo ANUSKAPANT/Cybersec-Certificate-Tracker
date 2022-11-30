@@ -10,6 +10,7 @@ Feature: Company page
         When user deletes a Unknown record
         Then user should see success toast
 
+    @wip 
     Scenario: User successfully edits a company record
         Given user is on dashboard page with data uploaded
         When user clicks the hamburger icon
