@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-FaUser, FaAddressCard, FaSchool, FaBook, FaDashcube, FaShippingFast, FaFileSignature
+  FaUser,
+  FaAddressCard,
+  FaSchool,
+  FaBook,
+  FaDashcube,
+  FaShippingFast,
+  FaFileSignature,
 } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useStoreContext } from "./Store";
@@ -123,36 +129,32 @@ function CybersecCertTrackerInit({ userData, children }) {
           />
         </div>
         <Link style={linkStyle} to="/dashboard" id="dashboard_nav">
-          <FaDashcube />  {' '} Dashboard
+          <FaDashcube /> Dashboard
         </Link>
-        <Link
-          style={linkStyle}
-          to="/dashboard/students"
-          id="students_nav"
-        >
-          <FaUser /> {' '} Students
+        <Link style={linkStyle} to="/dashboard/students" id="students_nav">
+          <FaUser /> Students
         </Link>
         <Link style={linkStyle} to="/dashboard/courses" id="courses_nav">
-        <FaBook /> {' '} Courses
+          <FaBook /> Courses
         </Link>
         <Link style={linkStyle} to="/dashboard/companies" id="companies_nav">
-        <FaSchool /> {' '} Companies
+          <FaSchool /> Companies
         </Link>
         <Link
           style={linkStyle}
           to="/dashboard/cert_vouchers"
           id="cert_vouchers_nav"
         >
-          <FaAddressCard /> {' '} Certificate Vouchers
+          <FaAddressCard /> Certificate Vouchers
         </Link>
         <Link style={linkStyle} to="/dashboard/exams" id="exams_nav">
-        <FaFileSignature /> {' '} Exams
+          <FaFileSignature /> Exams
         </Link>
         <Link style={linkStyle} to="/dashboard/vendors" id="vendors_nav">
-        <FaShippingFast /> {' '} Vendors
+          <FaShippingFast /> Vendors
         </Link>
         <Link style={linkStyle} to="/dashboard/users" id="users_nav">
-        <FaUser /> {' '} Users
+          <FaUser /> Users
         </Link>
       </div>
 

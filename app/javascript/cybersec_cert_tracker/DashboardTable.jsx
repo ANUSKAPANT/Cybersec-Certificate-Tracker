@@ -19,6 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Button } from "reactstrap";
 import SortIcon from "@mui/icons-material/Sort";
+import Autocomplete from "@mui/material/Autocomplete";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -70,9 +71,13 @@ function DefaultColumnFilter(filterValue, preFilteredRows, setFilter, numRows) {
 
 // This is a custom filter UI for selecting
 // a unique option from a list
-function SelectColumnFilter({
-  column: { filterValue, setFilter, preFilteredRows, id },
-}) {
+export function SelectColumnFilter(
+  filterValue,
+  preFilteredRows,
+  setFilter,
+  id,
+  numRows
+) {
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = React.useMemo(() => {
@@ -85,19 +90,23 @@ function SelectColumnFilter({
 
   // Render a multi-select box
   return (
-    <select
-      value={filterValue}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined);
+    <Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={options}
+      onInputChange={(event, newInputValue) => {
+        setFilter(newInputValue || undefined);
       }}
-    >
-      <option value="">All</option>
-      {options.map((option, i) => (
-        <option key={i} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
+      renderInput={(params) => (
+        <div ref={params.InputProps.ref}>
+          <input
+            {...params.inputProps}
+            value={filterValue || ""}
+            placeholder={`Search ${numRows} records...`}
+          />
+        </div>
+      )}
+    />
   );
 }
 
@@ -248,8 +257,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-              .toLowerCase()
-              .startsWith(String(filterValue).toLowerCase())
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -383,6 +392,29 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     }
   };
 
+  const renderColumns = (column, rows) => {
+    console.log(column);
+    if (column.canFilter) {
+      if (column.id === "company_name") {
+        return SelectColumnFilter(
+          column.filterValue,
+          column.preFilteredRows,
+          column.setFilter,
+          column.id,
+          rows.length
+        );
+      }
+      return DefaultColumnFilter(
+        column.filterValue,
+        column.preFilteredRows,
+        column.setFilter,
+        rows.length
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
       <Modal
@@ -438,7 +470,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
         <div>
           <Select
             id="demo-simple-select"
-            size='small'
+            size="small"
             value={numRecords === rows.length ? "All" : numRecords}
             onChange={handleChange}
             autoWidth={true}
@@ -474,16 +506,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
                         )}
                       </div>
                     </div>
-                    <div>
-                      {column.canFilter
-                        ? DefaultColumnFilter(
-                          column.filterValue,
-                          column.preFilteredRows,
-                          column.setFilter,
-                          rows.length
-                        )
-                        : null}
-                    </div>
+                    <div>{renderColumns(column, rows)}</div>
                   </th>
                 ))}
               </tr>
