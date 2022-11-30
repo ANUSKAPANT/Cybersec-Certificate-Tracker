@@ -26,9 +26,21 @@ When("user clicks add student button") do
     page.find("#add_student_button").click
 end
 
-When("user fills incomplete student form") do 
+When("user fills student form without company") do 
     fill_in 'first_name', :with => 'manual_entry'
     fill_in 'last_name', :with => 'manual_entry'
+    fill_in 'email_id', :with => 'manual_entry@gmail.com'
+    fill_in 'canvas_id', :with => 'manual_entry'
+end
+
+When("user fills student form without first name") do 
+    fill_in 'last_name', :with => 'manual_entry'
+    fill_in 'email_id', :with => 'manual_entry@gmail.com'
+    fill_in 'canvas_id', :with => 'manual_entry'
+end
+
+When("user fills student form without last name") do 
+    fill_in 'first_name', :with => 'manual_entry'
     fill_in 'email_id', :with => 'manual_entry@gmail.com'
     fill_in 'canvas_id', :with => 'manual_entry'
 end
@@ -48,6 +60,10 @@ end
 
 Then("user should see missing company field error") do
     expect(page).to have_content("must exist")
+end
+
+Then("user should see cant be blank field error") do
+    expect(page).to have_content("can't be blank")
 end
 
 Then("user should see filled form data") do
