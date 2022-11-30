@@ -85,7 +85,6 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             handleClose();
         })
         .catch((err) => {
-            console.log
             setError(err.response.data);
             setOpenSnackbar(true);
             setSnackbarMsg("Something went wrong");

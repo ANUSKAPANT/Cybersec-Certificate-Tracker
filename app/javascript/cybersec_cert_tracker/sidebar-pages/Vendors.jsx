@@ -199,7 +199,6 @@ function Vendors({ userData }) {
         handleClose();
       })
       .catch((err) => {
-        debugger
         setError(err.response.data);
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
