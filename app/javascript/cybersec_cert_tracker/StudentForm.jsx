@@ -38,6 +38,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             last_name,
             email_id,
             canvas_id,
+            title,
             company_id
         } = studentFormInfo;
 
@@ -48,6 +49,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
             first_name,
             last_name,
             email_id,
+            title,
             canvas_id,
             company_id,
         };
@@ -111,6 +113,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 email_id: data.email_id,
+                title: data.title,
                 canvas_id: data.canvas_id,
                 company_id: data.company.id,
             };
@@ -171,6 +174,10 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
+                                    <Col sm={6}>
+                                        <Label for="title" sm={5}>Title</Label>
+                                        <Input name="title" id="title" defaultValue={studentFormInfo.title} onChange={handleInputChange} />
+                                    </Col>
                                     <Col sm={6}>
                                         <Label for="company_name" sm={5}>Company</Label>
                                         <Select

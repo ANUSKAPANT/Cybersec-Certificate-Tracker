@@ -55,6 +55,12 @@ function CertificateVouchers({ userData }) {
             course: cert_voucher.student_course.course.name,
             created_date: cert_voucher.created_date,
             expiry_date: cert_voucher.expiry_date,
+            voucher_code: cert_voucher.voucher_code,
+            exam_code: cert_voucher.exam_code,
+            exam_date: cert_voucher.exam_date,
+            test_center:cert_voucher.test_center_id,
+            score: cert_voucher.score,
+            test_result: cert_voucher.test_result,
           };
         });
         setLoading(false);
@@ -79,6 +85,13 @@ function CertificateVouchers({ userData }) {
           student_course_id: data.student_course_id,
           created_date: data.created_date ? new Date(data.created_date) : null,
           expiry_date: data.created_date ? new Date(data.expiry_date) : null,
+          exam_date: data.exam_date ? new Date(data.exam_date) : null,
+          voucher_code: data.voucher_code,
+          exam_code: data.exam_code,
+          exam_date: data.exam_date,
+          test_center: data.test_center_id,
+          score: data.score,
+          test_result: data.test_result,
         };
         setCertificateVouchersInfo(certificateVouchersData);
       })
@@ -168,6 +181,12 @@ function CertificateVouchers({ userData }) {
       created_date,
       expiry_date,
       student_course_id,
+      exam_code,
+      exam_date,
+      score,
+      test_center_id,
+      test_result,
+      voucher_code,
     } = certificateVouchersInfo;
     const method = id !== null ? "patch" : "post";
     const url = id == null ? "/cert_vouchers" : `/cert_vouchers/${id}`;
@@ -177,6 +196,12 @@ function CertificateVouchers({ userData }) {
       created_date,
       expiry_date,
       student_course_id,
+      exam_code,
+      exam_date,
+      score,
+      test_center_id,
+      test_result,
+      voucher_code,
     };
     axios
       .request({
@@ -201,6 +226,12 @@ function CertificateVouchers({ userData }) {
       });
   };
 
+  const passedOptions = [
+    { label: "Pass", value: "pass" },
+    { label: "Fail", value: "fail" },
+    { label: "TBD", value: "TBD" },
+  ];
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCertificateVouchersInfo({ ...certificateVouchersInfo, [name]: value });
@@ -244,7 +275,7 @@ function CertificateVouchers({ userData }) {
         style={{ maxWidth: "700px", width: "100%" }}
       >
         <ModalHeader toggle={handleClose} style={{ border: "none" }}>
-          Add Student Course
+          Add Certificate Voucher
         </ModalHeader>
         <ModalBody>
           <Form>
@@ -304,6 +335,79 @@ function CertificateVouchers({ userData }) {
                       onChange={(date) => handleDateChange(date, "expiry_date")}
                       className="input-date"
                       isClearable
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={6}>
+                    <Label for="test_center" sm={6}>
+                      Test Center
+                    </Label>
+                    <Input
+                      name="test_center_id"
+                      id="test_center_id"
+                      defaultValue={certificateVouchersInfo.test_center_id}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="exam_date" sm={6}>
+                      Exam Date
+                    </Label>
+                    <DatePicker
+                      selected={certificateVouchersInfo.expiry_date}
+                      onChange={(date) => handleDateChange(date, "exam_date")}
+                      className="input-date"
+                      isClearable
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={6}>
+                    <Label for="voucher_code" sm={6}>
+                      Voucher Code
+                    </Label>
+                    <Input
+                      name="voucher_code"
+                      id="voucher_code"
+                      defaultValue={certificateVouchersInfo.voucher_code}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="exam_code" sm={6}>
+                      Exam Code
+                    </Label>
+                    <Input
+                      name="exam_code"
+                      id="exam_code"
+                      defaultValue={certificateVouchersInfo.exam_code}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="score" sm={6}>
+                      Exam Grade
+                    </Label>
+                    <Input
+                      name="score"
+                      id="score"
+                      defaultValue={certificateVouchersInfo.score}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="test_result" sm={6}>
+                      Test Result
+                    </Label>
+                    <Select
+                      name="test_result"
+                      onChange={(value) => handleSelectChange(value, "passed")}
+                      options={passedOptions}
+                      value={passedOptions.filter(
+                        (option) => certificateVouchersInfo.passed == option.value
+                      )}
+                      placeholder="Select Test Result"
                     />
                   </Col>
                 </FormGroup>

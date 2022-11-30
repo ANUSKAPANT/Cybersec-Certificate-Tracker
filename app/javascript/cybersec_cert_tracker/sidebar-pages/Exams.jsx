@@ -52,6 +52,7 @@ function Exams({ userData }) {
             exam_code: exam.exam_code,
             certification_name: exam.cert_voucher.certification_name,
             exam_date: exam.exam_date,
+            test_center: exam.test_center,
             grade: exam.exam_grade,
             passed: String(exam.passed),
             cert_voucher: "",
@@ -100,6 +101,7 @@ function Exams({ userData }) {
           certification_name: exam.cert_voucher.certification_name,
           exam_date: exam.exam_date ? new Date(exam.exam_date) : null,
           exam_grade: exam.exam_grade,
+          test_center: exam.test_center,
           passed: exam.passed,
           cert_voucher_id: exam.cert_voucher.id,
         };
@@ -185,6 +187,7 @@ function Exams({ userData }) {
     const data = {
       cert_voucher_id: cert_voucher_id,
       exam_code,
+      test_center,
       exam_date,
       passed,
       exam_grade,
@@ -314,6 +317,17 @@ function Exams({ userData }) {
                       name="exam_grade"
                       id="exam_grade"
                       defaultValue={examInfo.exam_grade}
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Label for="test_center" sm={6}>
+                      Test Center
+                    </Label>
+                    <Input
+                      name="test_center"
+                      id="test_center"
+                      defaultValue={examInfo.test_center}
                       onChange={handleInputChange}
                     />
                   </Col>
