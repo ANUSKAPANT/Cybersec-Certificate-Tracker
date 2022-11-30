@@ -3,8 +3,8 @@ Given("user is on student profile page") do
     fill_in 'email', :with => $test_email
     fill_in 'password', :with => $test_password
     page.find("#login_button").click
-    page.should have_selector?("#uploadCSVButton")
     page.find("#uploadCSVButton").click
+    sleep(1)
     attach_file("csvFile", 'features/test_data/canvas.csv', make_visible: true)
     sleep(1) #wait for data upload to finish in backend
     visit current_path #remove upload box
@@ -26,17 +26,15 @@ When("user clicks add student button") do
     page.find("#add_student_button").click
 end
 
-When("user fills the form") do 
+When("user fills incomplete student form") do 
     fill_in 'first_name', :with => 'manual_entry'
     fill_in 'last_name', :with => 'manual_entry'
-    fill_in 'email', :with => 'manual_entry@gmail.com'
-    fill_in 'company_id', :with => '1'
-    fill_in 'title', :with => 'manual_entry'
+    fill_in 'email_id', :with => 'manual_entry@gmail.com'
     fill_in 'canvas_id', :with => 'manual_entry'
 end
 
 When("user submits the form") do 
-    page.find("#form_submit").click
+    page.find("#submit").click
 end
 
 Then("user should see student panel in sidebar") do
@@ -46,6 +44,10 @@ end
 
 Then("user should see student data") do
     expect(page).to have_content("dummy@tamu.edu")
+end
+
+Then("user should see missing company field error") do
+    expect(page).to have_content("must exist")
 end
 
 Then("user should see filled form data") do

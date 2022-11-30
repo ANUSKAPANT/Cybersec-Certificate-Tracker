@@ -12,10 +12,9 @@ Feature: Sidebar
     When user clicks student panel
     Then user should see student data
 
-  @wip
-  Scenario: User is on student profile page and submits a form
+  Scenario: User is on student profile page and submits incomplete form
     Given user is on student profile page
     When user clicks add student button
-    When user fills the form
+    When user fills incomplete student form
     When user submits the form
-    Then user should see filled form data
+    Then user should see missing company field error
