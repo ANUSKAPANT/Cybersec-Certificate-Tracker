@@ -92,8 +92,14 @@ class CsvFile < ApplicationRecord
     if row['course_completion']!=nil
       std_course.update(voucher_purchased: true)
       created_date = DateTime.strptime(row['course_completion'], "%m/%d/%Y %H:%M")
-      cert_voucher = CertVoucher.create(student_course_id: std_course.id, certification_name: dummy_cert_names.sample(), created_date:created_date, expiry_date: DateTime.now-rand(30))
-      Exam.create(cert_voucher_id: cert_voucher.id, exam_code: 'CODE2022', exam_date: cert_voucher.expiry_date-rand(10), exam_grade: 90.0)
+      cert_voucher = CertVoucher.create(student_course_id: std_course.id,
+                                      certification_name: dummy_cert_names.sample(), 
+                                      created_date:created_date, 
+                                      expiry_date: DateTime.now-rand(30), 
+                                      test_result: "pass", score: 90, 
+                                      voucher_code: (0...8).map { (65 + rand(26)).chr }.join,
+                                      test_center_id: "KYLE_FIELD_204"
+                                    )
     end
   end
 

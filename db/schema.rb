@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_093917) do
+ActiveRecord::Schema.define(version: 2022_11_29_125703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,12 @@ ActiveRecord::Schema.define(version: 2022_11_07_093917) do
     t.date "expiry_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "exam_code"
+    t.date "exam_date"
+    t.string "test_result"
+    t.integer "score"
+    t.string "test_center_id"
+    t.string "voucher_code"
     t.index ["student_course_id"], name: "index_cert_vouchers_on_student_course_id"
   end
 
@@ -50,17 +56,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_093917) do
     t.index ["user_id"], name: "index_csv_files_on_user_id"
   end
 
-  create_table "exams", force: :cascade do |t|
-    t.bigint "cert_voucher_id", null: false
-    t.string "exam_code"
-    t.date "exam_date"
-    t.boolean "passed"
-    t.float "exam_grade"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["cert_voucher_id"], name: "index_exams_on_cert_voucher_id"
-  end
-
   create_table "student_courses", force: :cascade do |t|
     t.bigint "student_id", null: false
     t.bigint "course_id", null: false
@@ -73,6 +68,17 @@ ActiveRecord::Schema.define(version: 2022_11_07_093917) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_student_courses_on_course_id"
     t.index ["student_id"], name: "index_student_courses_on_student_id"
+  end
+
+  create_table "student_infos", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "title"
+    t.string "registration_type"
+    t.string "company_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "students", force: :cascade do |t|
@@ -112,7 +118,6 @@ ActiveRecord::Schema.define(version: 2022_11_07_093917) do
   add_foreign_key "cert_vouchers", "student_courses"
   add_foreign_key "courses", "vendors"
   add_foreign_key "csv_files", "users"
-  add_foreign_key "exams", "cert_vouchers"
   add_foreign_key "student_courses", "courses"
   add_foreign_key "student_courses", "students"
   add_foreign_key "students", "companies"

@@ -31,9 +31,12 @@ class RecordsController < BaseController
           cloned_record_row[:cert_name] = cert_voucher.certification_name
           cloned_record_row[:cert_voucher_id] = cert_voucher.id
           cloned_record_row[:voucher_use_by] = cert_voucher.expiry_date
-          cloned_record_row[:exam_code] = cert_voucher.exam&.exam_code
-          cloned_record_row[:exam_date] = cert_voucher.exam&.exam_date
-          cloned_record_row[:exam_grade] = cert_voucher.exam&.exam_grade
+          cloned_record_row[:exam_code] = cert_voucher.exam_code
+          cloned_record_row[:exam_date] = cert_voucher.exam_date
+          cloned_record_row[:exam_grade] = cert_voucher.test_result
+          cloned_record_row[:exam_grade] = cert_voucher.test_center_id
+          cloned_record_row[:exam_grade] = cert_voucher.voucher_code
+          cloned_record_row[:exam_grade] = cert_voucher.score
           all_record_rows << cloned_record_row
         end
       else
