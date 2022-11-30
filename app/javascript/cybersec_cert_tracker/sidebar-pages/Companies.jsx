@@ -16,8 +16,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Snackbar from '@mui/material/Snackbar';
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
@@ -34,6 +33,8 @@ function Companies({ userData }) {
   const [companies, setCompanies] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [companyInfo, setCompanyInfo] = useState({ id: null });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const fetchRecords = () => {
     axios
@@ -53,15 +54,9 @@ function Companies({ userData }) {
         setLoading(false);
         setCompanies(companiesData);
       })
-
       .catch((error) => {
-        console.log(error);
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong")
       });
   };
 
@@ -75,20 +70,12 @@ function Companies({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then(() => {
-        toast.success("Successfully Deleted", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Successfully Deleted");
       })
       .catch(() => {
-        toast.error("Error in deletingrecords", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong")
       });
   };
 
@@ -126,12 +113,8 @@ function Companies({ userData }) {
         setCompanyInfo(companyData);
       })
       .catch(() => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong")
       });
   };
 
@@ -184,28 +167,28 @@ function Companies({ userData }) {
       })
       .then(() => {
         setLoading(true);
-        toast.success(`Successfully ${message}`, {
-          position: "bottom-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
         fetchRecords();
         handleClose();
+        setOpenSnackbar(true);
+        setSnackbarMsg(`Successfully ${message}`);
       })
       .catch(() => {
-        toast.error("Error Occured", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  }
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <Button
         color="success"
         className="csv-button"

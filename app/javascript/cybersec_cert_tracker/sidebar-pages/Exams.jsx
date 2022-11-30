@@ -16,8 +16,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Snackbar from '@mui/material/Snackbar';
 import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
@@ -37,6 +36,8 @@ function Exams({ userData }) {
   const [open, setOpen] = React.useState(false);
   const [examInfo, setExamInfo] = useState({ id: null });
   const [certificateVouchers, setCertificateVouchers] = useState([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const fetchRecords = () => {
     axios
@@ -61,12 +62,8 @@ function Exams({ userData }) {
         setExams(examsData);
       })
       .catch((error) => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -86,12 +83,8 @@ function Exams({ userData }) {
         setCertificateVouchers(certificateVouchersData);
       })
       .catch((error) => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -115,12 +108,8 @@ function Exams({ userData }) {
         setExamInfo(examsData);
       })
       .catch((error) => {
-        toast.error("Error in fetching records", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -135,20 +124,12 @@ function Exams({ userData }) {
         headers: { Authorization: `Bearer ${userData.token}` },
       })
       .then(() => {
-        toast.success("Successfully Deleted", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Successfully Deleted");
       })
       .catch(() => {
-        toast.error("Error in deletingrecords", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -223,22 +204,14 @@ function Exams({ userData }) {
         data,
       })
       .then(() => {
-        toast.success(`Successfully ${message}`, {
-          position: "bottom-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg(`Successfully ${message}`);
         fetchRecords();
         handleClose();
       })
       .catch((error) => {
-        toast.error("Error Occured", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        setOpenSnackbar(true);
+        setSnackbarMsg("Something went wrong");
       });
   };
 
@@ -246,9 +219,18 @@ function Exams({ userData }) {
     setExamInfo({ ...examInfo, [name]: date });
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  }
+
   return (
     <>
-      <ToastContainer />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <Button
         color="success"
         className="csv-button"
