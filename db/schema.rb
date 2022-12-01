@@ -70,17 +70,6 @@ ActiveRecord::Schema.define(version: 2022_11_29_125703) do
     t.index ["student_id"], name: "index_student_courses_on_student_id"
   end
 
-  create_table "student_infos", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
-    t.string "title"
-    t.string "registration_type"
-    t.string "company_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "students", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"

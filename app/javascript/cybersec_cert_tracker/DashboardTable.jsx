@@ -20,6 +20,7 @@ import Select from "@mui/material/Select";
 import { Button } from "reactstrap";
 import SortIcon from "@mui/icons-material/Sort";
 import Autocomplete from "@mui/material/Autocomplete";
+import { CSVLink } from "react-csv";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
@@ -414,6 +415,47 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     }
   };
 
+  let csvData = rows.map((data) => {
+    let temp = { ...data.original };
+
+    let name = temp["full_name"];
+    let first_name = name.split(" ")[0];
+    let last_name = name.split(" ")[1];
+    delete temp["full_name"];
+    temp["first_name"] = first_name;
+    temp["last_name"] = last_name;
+
+    if (!("voucher_code" in temp)) {
+      temp["voucher_code"] = "N/A";
+    }
+
+    if (!("score" in temp)) {
+      temp["score"] = "N/A";
+    }
+
+    return temp;
+  });
+
+  const headers = [
+    { label: "first_name", key: "first_name" },
+    { label: "last_name", key: "last_name" },
+    { label: "canvas_id", key: "canvas_id" },
+    { label: "title", key: "title" },
+    { label: "company", key: "company_name" },
+    { label: "email_address", key: "email_address" },
+    { label: "course_name", key: "canvas_course_enrollment" },
+    { label: "registration_date", key: "registration_date" },
+    { label: "DCLDP_code", key: "dcldp_code" },
+    { label: "voucher_purchased", key: "voucher_purchased" },
+    { label: "voucher_code", key: "voucher_code" },
+    { label: "cert_name", key: "certification_name" },
+    { label: "exam_code", key: "exam_code" },
+    { label: "exam_date", key: "exam_date" },
+    { label: "test_result", key: "test_result" },
+    { label: "score", key: "score" },
+    { label: "test_center_id", key: "test_center_id" },
+  ];
+
   return (
     <>
       <Modal
@@ -455,7 +497,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
             globalFilter={state.globalFilter}
             setGlobalFilter={setGlobalFilter}
           />
-
           <Button
             color="danger"
             onClick={() => {
@@ -465,6 +506,9 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           >
             Reset Filters
           </Button>
+          <CSVLink data={csvData} headers={headers}>
+            <Button color="primary">Download CSV</Button>
+          </CSVLink>
         </div>
         <div>
           <Select
