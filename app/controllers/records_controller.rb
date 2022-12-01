@@ -7,6 +7,7 @@ class RecordsController < BaseController
     StudentCourse.includes(:student, :course).all.each do |student_course|
       record_row = {}
       record_row[:stucourse_id] = student_course.id
+      record_row[:canvas_id] = student_course.student.canvas_id
       record_row[:participant_id] = student_course.student_id
       record_row[:full_name] = student_course.student.full_comma_separated_name
       record_row[:email_address] = student_course.student.email_id
@@ -34,9 +35,9 @@ class RecordsController < BaseController
           cloned_record_row[:exam_code] = cert_voucher.exam_code
           cloned_record_row[:exam_date] = cert_voucher.exam_date
           cloned_record_row[:exam_grade] = cert_voucher.test_result
-          cloned_record_row[:exam_grade] = cert_voucher.test_center_id
-          cloned_record_row[:exam_grade] = cert_voucher.voucher_code
-          cloned_record_row[:exam_grade] = cert_voucher.score
+          cloned_record_row[:test_center_id] = cert_voucher.test_center_id
+          cloned_record_row[:voucher_code] = cert_voucher.voucher_code
+          cloned_record_row[:score] = cert_voucher.score
           all_record_rows << cloned_record_row
         end
       else
