@@ -12,10 +12,32 @@ Feature: Sidebar
     When user clicks student panel
     Then user should see student data
 
-  @wip
-  Scenario: User is on student profile page and submits a form
+  Scenario: User is on student profile page and submits form without company
     Given user is on student profile page
     When user clicks add student button
-    When user fills the form
+    When user fills student form without company
+    When user submits the form
+    Then user should see must exist error
+
+  Scenario: User is on student profile page and submits form without first name
+    Given user is on student profile page
+    When user clicks add student button
+    When user fills student form without first name
+    When user submits the form
+    Then user should see cant be blank field error
+
+  Scenario: User is on student profile page and submits form without last name
+    Given user is on student profile page
+    When user clicks add student button
+    When user fills student form without last name
+    When user submits the form
+    Then user should see cant be blank field error
+
+  Scenario: User is on student profile page and submits form with all fields
+    Given user is on student profile page
+    When user clicks add student button
+    When user fills student form
     When user submits the form
     Then user should see filled form data
+
+
