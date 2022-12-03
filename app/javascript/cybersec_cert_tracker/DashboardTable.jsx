@@ -415,26 +415,34 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     }
   };
 
-  let csvData = rows.map((data) => {
-    let temp = { ...data.original };
+  console.log(rows);
 
-    let name = temp["full_name"];
-    let first_name = name.split(" ")[0];
-    let last_name = name.split(" ")[1];
-    delete temp["full_name"];
-    temp["first_name"] = first_name;
-    temp["last_name"] = last_name;
+  let csvData = [];
 
-    if (!("voucher_code" in temp)) {
-      temp["voucher_code"] = "N/A";
-    }
+  if (type == "Dashboard") {
+    csvData = rows.map((data) => {
+      let temp = { ...data.original };
 
-    if (!("score" in temp)) {
-      temp["score"] = "N/A";
-    }
+      let name = temp["full_name"];
+      let first_name = name.split(" ")[0];
+      let last_name = name.split(" ")[1];
+      delete temp["full_name"];
+      temp["first_name"] = first_name;
+      temp["last_name"] = last_name;
 
-    return temp;
-  });
+      if (!("voucher_code" in temp)) {
+        temp["voucher_code"] = "N/A";
+      }
+
+      if (!("score" in temp)) {
+        temp["score"] = "N/A";
+      }
+
+      return temp;
+    });
+  }
+
+  console.log(csvData);
 
   const headers = [
     { label: "first_name", key: "first_name" },
@@ -506,9 +514,15 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           >
             Reset Filters
           </Button>
-          <CSVLink data={csvData} headers={headers}>
-            <Button color="primary">Download CSV</Button>
-          </CSVLink>
+          {type === "Dashboard" ? (
+            <div>
+              <CSVLink data={csvData} headers={headers}>
+                <Button color="primary">Download CSV</Button>
+              </CSVLink>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <div>
           <Select
