@@ -424,7 +424,7 @@ function CertificateVouchers({ userData }) {
                     </Label>
                     <Select
                       name="test_result"
-                      onChange={(value) => handleSelectChange(value, "passed")}
+                      onChange={(value) => handleSelectChange(value, "test_result")}
                       options={passedOptions}
                       value={passedOptions.filter(
                         (option) => certificateVouchersInfo.passed == option.value
