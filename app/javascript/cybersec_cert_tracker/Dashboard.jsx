@@ -7,7 +7,7 @@ import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { FileUploader } from "react-drag-drop-files";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
-import Snackbar from '@mui/material/Snackbar';
+import Snackbar from "@mui/material/Snackbar";
 
 const fileTypes = ["csv"];
 
@@ -28,9 +28,8 @@ function Dashboard({ userData }) {
       setLoading(false);
       setTableData(records);
     } catch (error) {
-      console.log(error);
       setOpenSnackbar(true);
-      setSnackbarMsg("Something went wrong")
+      setSnackbarMsg("Something went wrong");
     }
   };
 
@@ -69,11 +68,11 @@ function Dashboard({ userData }) {
       });
       setUploading(false);
       setOpenSnackbar(true);
-      setSnackbarMsg("Successfully Uploaded!")
+      setSnackbarMsg("Successfully Uploaded!");
       fetchRecords();
     } catch (error) {
       setOpenSnackbar(true);
-      setSnackbarMsg("Something went wrong")
+      setSnackbarMsg("Something went wrong");
     }
   };
 
@@ -94,7 +93,7 @@ function Dashboard({ userData }) {
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
-  }
+  };
 
   return (
     <>

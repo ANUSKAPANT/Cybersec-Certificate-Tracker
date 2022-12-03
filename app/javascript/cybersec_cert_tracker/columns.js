@@ -9,6 +9,18 @@ export default function Columns(table) {
           accessor: "full_name",
         },
         {
+          Header: "Canvas Id",
+          accessor: "canvas_id",
+        },
+        {
+          Header: "Title",
+          accessor: "title",
+        },
+        {
+          Header: "Company Name",
+          accessor: "company_name",
+        },
+        {
           Header: "Email Address",
           accessor: "email_address",
         },
@@ -17,26 +29,12 @@ export default function Columns(table) {
           accessor: "canvas_course_enrollment",
         },
         {
-          Header: "Cert Name",
-          accessor: "cert_name",
-        },
-        {
-          Header: "Company Name",
-          accessor: "company_name",
-        },
-        {
           Header: "Registration Date",
           accessor: "registration_date",
         },
         {
-          Header: "Course Completed",
-          accessor: "canvas_course_progress",
-          Cell: ({ row }) => {
-            const status = row.original.canvas_course_progress
-              ? "Completed"
-              : "InComplete";
-            return status;
-          },
+          Header: "DLDCP_code",
+          accessor: "dldcp_code",
         },
         {
           Header: "Voucher Purchased",
@@ -47,6 +45,44 @@ export default function Columns(table) {
               : "False";
             return status;
           },
+        },
+        {
+          Header: "Voucher Code",
+          accessor: "voucher_code",
+          Cell: ({ row }) => {
+            const status = row.original.voucher_code
+              ? row.original.voucher_code
+              : "N/A";
+            return status;
+          },
+        },
+        {
+          Header: "Cert Name",
+          accessor: "cert_name",
+        },
+        {
+          Header: "Exam Code",
+          accessor: "exam_code",
+        },
+        {
+          Header: "Exam Date",
+          accessor: "exam_date",
+        },
+        {
+          Header: "Test Result",
+          accessor: "test_result",
+        },
+        {
+          Header: "Score",
+          accessor: "score",
+          Cell: ({ row }) => {
+            const status = row.original.score ? row.original.score : "N/A";
+            return status;
+          },
+        },
+        {
+          Header: "Test Center ID",
+          accessor: "test_center_id",
         },
       ];
 
@@ -135,7 +171,7 @@ export default function Columns(table) {
           accessor: "test_result",
         },
       ];
-  
+
     case "Company":
       return [
         {
