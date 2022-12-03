@@ -4,6 +4,7 @@ class Student < ApplicationRecord
   has_many :courses, through: :student_courses
   validates :first_name, presence: true
   validates :last_name, presence: true
+  validates :email_id, presence: true, uniqueness: true
 
   def full_comma_separated_name
     "#{first_name} #{last_name}"
