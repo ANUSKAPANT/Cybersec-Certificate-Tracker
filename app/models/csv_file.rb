@@ -98,9 +98,7 @@ class CsvFile < ApplicationRecord
     end
 
     if row['first_name']
-      # debugger
       std_course.update(voucher_purchased: row['voucher_purchased']=="true")
-      debugger
       cert_voucher = CertVoucher.create(student_course_id: std_course.id,
                                         certification_name: row['cert_name'], 
                                         test_result: (row['test_result']==nil or row['test_result']=="") ? "TBD" : row['test_result'], score: row["score"]=="N/A" ? nil : (row["score"].to_i), 
