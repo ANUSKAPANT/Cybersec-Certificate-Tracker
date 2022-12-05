@@ -456,7 +456,7 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     { label: "DCLDP_code", key: "dcldp_code" },
     { label: "voucher_purchased", key: "voucher_purchased" },
     { label: "voucher_code", key: "voucher_code" },
-    { label: "cert_name", key: "certification_name" },
+    { label: "cert_name", key: "cert_name" },
     { label: "exam_code", key: "exam_code" },
     { label: "exam_date", key: "exam_date" },
     { label: "test_result", key: "test_result" },
