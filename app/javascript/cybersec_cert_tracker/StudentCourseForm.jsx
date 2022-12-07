@@ -32,15 +32,15 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
     const [error, setError] = useState({});
 
     const addError = (name) => {
-      return (
-        error[`${name}`] ? (
-          <div>
-            <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
-          </div>
-        ) : null
-      );
+        return (
+            error[`${name}`] ? (
+                <div>
+                    <span className="text-danger label"><span className="text-danger label">{error[`${name}`]}</span></span>
+                </div>
+            ) : null
+        );
     }
-  
+
     const handleClose = () => {
         setOpen(false);
         setError({});
@@ -84,28 +84,28 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
             course_id,
         };
         axios
-        .request({
-          method,
-          url,
-          headers: {
-            "Content-type": "application/json",
-            "X-CSRF-Token": csrf,
-            Authorization: `Bearer ${userData.token}`,
-          },
-          data,
-        })
-        .then(() => {
-            afterSubmit();
-            setCourseSelectDisabled(false);
-            handleClose();
-            setOpenSnackbar(true);
-            setSnackbarMsg(`Successfully ${message}`);
-        })
-        .catch((err) => {
-            setError(err.response.data);
-            setOpenSnackbar(true);
-            setSnackbarMsg("Something went wrong")
-        });
+            .request({
+                method,
+                url,
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRF-Token": csrf,
+                    Authorization: `Bearer ${userData.token}`,
+                },
+                data,
+            })
+            .then(() => {
+                afterSubmit();
+                setCourseSelectDisabled(false);
+                handleClose();
+                setOpenSnackbar(true);
+                setSnackbarMsg(`Successfully ${message}`);
+            })
+            .catch((err) => {
+                setError(err.response.data);
+                setOpenSnackbar(true);
+                setSnackbarMsg("Something went wrong")
+            });
     };
 
     const fetchCourses = async () => {
@@ -174,7 +174,7 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
     const handleDateChange = (date, name) => {
         setStudentCourseInfo({ ...studentCourseInfo, [name]: date });
     };
-    
+
 
     return (
         <>
@@ -227,11 +227,6 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                                             placeholder="Select Voucher Purchased"
                                         />
                                         {error['voucher_purchased'] && addError('voucher_purchased')}
-                                    </Col>
-                                    <Col sm={5}>
-                                        <Label for="test_result" sm={5}>Test Result</Label>
-                                        <Input name="test_result" id="test_result" defaultValue={studentCourseInfo.test_result} onChange={handleInputChange} />
-                                        {error['test_result'] && addError('test_result')}
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
