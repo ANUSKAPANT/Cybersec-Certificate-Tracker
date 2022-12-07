@@ -8,6 +8,8 @@ import StudentCourseTable from './StudentCourseTable';
 import StudentForm from './StudentForm'
 import Grid from '@mui/material/Grid';
 import StudentCourseForm from './StudentCourseForm';
+import DeleteModal from './DeleteModal';
+import Snackbar from "@mui/material/Snackbar";
 
 function StudentProfile({ userData }) {
     const dataFormatter = new Jsona();
@@ -15,7 +17,10 @@ function StudentProfile({ userData }) {
     const [coursesInfo, setCoursesInfo] = useState([]);
     const [open, setOpen] = useState(false);
     const [courseSelectionOpen, setCourseSelectionOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [studentCourseId, setStudentCourseId] = useState(null);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMsg, setSnackbarMsg] = useState("");
 
     const [readOnly, setReadOnly] = useState(true);
 
@@ -56,12 +61,42 @@ function StudentProfile({ userData }) {
         setStudentCourseId(id);
     })
 
+    const onCourseDelete = ((id) => {
+        setDeleteModalOpen(true);
+        setStudentCourseId(id);
+    })
+
+    const deleteCourse = async (id) => {
+        try {
+            await axios.delete(`/student_courses/${id}`, {
+                headers: { Authorization: `Bearer ${userData.token}` },
+            })
+            setOpenSnackbar(true);
+            setSnackbarMsg("Successfully Deleted");
+            fetchProfile();
+        } catch (error) {
+            setOpenSnackbar(true);
+            setSnackbarMsg("Something went wrong");
+        }
+    }
+
+    const handleSnackbarClose = () => {
+        setOpenSnackbar(false);
+    };
+
     useEffect(() => {
         fetchProfile();
     }, []);
 
     return (
         <Grid container spacing={2} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                message={snackbarMsg}
+            />
+            <DeleteModal open={deleteModalOpen} setOpen={setDeleteModalOpen} deleteItem={deleteCourse} id={studentCourseId} />
             <Grid container style={{ marginLeft: "15px" }}>
                 <Grid item xs={4} style={{ margin: "auto" }}>
                     <h3 style={{ display: "inline" }}>Overview</h3>
@@ -142,7 +177,7 @@ function StudentProfile({ userData }) {
                         </Grid>
                     </Grid>
                     <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} studentCourseId={studentCourseId} />
-                    <StudentCourseTable coursesInfo={coursesInfo} onEdit={onCourseEdit} />
+                    <StudentCourseTable coursesInfo={coursesInfo} onEdit={onCourseEdit} onDelete={onCourseDelete} />
                 </Form>
             </Grid >
         </Grid >
