@@ -8,7 +8,6 @@ import axios from "axios";
 import Snackbar from '@mui/material/Snackbar';
 import Jsona from "jsona";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const dataFormatter = new Jsona();
 
