@@ -16,7 +16,7 @@ RSpec.describe VendorsController, type: :controller do
       vendor = Vendor.new(name: "Test vendor")
       vendor.save
       patch :update, params: {id: vendor.id, name: "CompTier" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not update the vendor' do
@@ -39,7 +39,7 @@ RSpec.describe VendorsController, type: :controller do
   describe 'POST create' do
     it 'creates a vendor and renders a successful response' do
       post :create, params: { name: "CompTier" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not create a vendor' do

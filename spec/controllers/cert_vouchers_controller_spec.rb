@@ -18,7 +18,7 @@ RSpec.describe CertVouchersController, type: :controller do
       cert_voucher = CertVoucher.new(student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533")
       cert_voucher.save
       patch :update, params: { id: cert_voucher.id, certification_name: "ccc" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not update the cert voucher' do
@@ -44,7 +44,7 @@ RSpec.describe CertVouchersController, type: :controller do
     it 'creates an cert voucher and renders a successful response' do
       create :cert_voucher
       post :create, params: {student_course_id: StudentCourse.first.id, certification_name: "Abc", created_date: "02-01-2022", expiry_date: "02-01-2023", voucher_code: "45865", test_result: "pass", score: "20", test_center_id: "533"}
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not create a cert voucher' do

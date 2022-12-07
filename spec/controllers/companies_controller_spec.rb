@@ -18,7 +18,7 @@ RSpec.describe CompaniesController, type: :controller do
       company = Company.new(name: "Test company", smc: true)
       company.save
       patch :update, params: {id: company.id, name: "CompTier" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not update the company' do
@@ -41,7 +41,7 @@ RSpec.describe CompaniesController, type: :controller do
   describe 'POST create' do
     it 'creates a company and renders a successful response' do
       post :create, params: { name: "CompTier", smc: true }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not create a company' do
