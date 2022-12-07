@@ -15,14 +15,15 @@ import {
   FormFeedback,
 } from "reactstrap";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Snackbar from "@mui/material/Snackbar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailValidation, setEmailValidation] = useState("");
   const [passValidation, setPassValidation] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   useEffect(() => {
     document.body.classList.toggle("login-page");
@@ -32,15 +33,8 @@ export default function Login() {
   }, []);
 
   const notify = (message) => {
-    toast.error(message, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    setOpenSnackbar(true);
+    setSnackbarMsg(message);
   };
 
   const handleSubmit = (event) => {
@@ -86,9 +80,18 @@ export default function Login() {
       });
   };
 
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <>
-      <ToastContainer/>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMsg}
+      />
       <div className="bg-gradient-info">
         <div className="container d-flex flex-column min-vh-100 justify-content-center align-items-center">
           <Col lg="4" md="6" className="mx-auto my-auto">
