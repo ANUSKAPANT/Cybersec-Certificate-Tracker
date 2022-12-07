@@ -24,7 +24,6 @@ import { CSVLink } from "react-csv";
 
 // Define a default UI for filtering
 function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
-  const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
@@ -42,9 +41,8 @@ function GlobalFilter({ numRows, globalFilter, setGlobalFilter }) {
       <TextField
         id="outlined-basic"
         variant="outlined"
-        value={value || ""}
+        value={globalFilter || ""}
         onChange={(e) => {
-          setValue(e.target.value);
           onChange(e.target.value);
         }}
         placeholder={`${numRows} records...`}
@@ -414,7 +412,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
       return null;
     }
   };
-
 
   let csvData = [];
 
