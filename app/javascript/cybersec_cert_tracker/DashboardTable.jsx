@@ -415,7 +415,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
     }
   };
 
-  console.log(rows);
 
   let csvData = [];
 
@@ -441,8 +440,6 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
       return temp;
     });
   }
-
-  console.log(csvData);
 
   const headers = [
     { label: "first_name", key: "first_name" },

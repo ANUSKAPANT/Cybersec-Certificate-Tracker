@@ -21,7 +21,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Jsona from "jsona";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const dataFormatter = new Jsona();
 
@@ -427,7 +426,7 @@ function CertificateVouchers({ userData }) {
                       onChange={(value) => handleSelectChange(value, "test_result")}
                       options={passedOptions}
                       value={passedOptions.filter(
-                        (option) => certificateVouchersInfo.passed == option.value
+                        (option) => certificateVouchersInfo.test_result == option.value
                       )}
                       placeholder="Select Test Result"
                     />
