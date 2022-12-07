@@ -77,11 +77,11 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
           },
           data,
         })
-        .then(() => {
+        .then((res) => {
             setOpenSnackbar(true);
             setSnackbarMsg(`Successfully ${message}`)
             if (!id) setStudentFormInfo({}); // Means add student is used
-            afterSubmit();
+            afterSubmit(res, method);
             handleClose();
         })
         .catch((err) => {
@@ -182,7 +182,7 @@ function StudentForm({ userData, open, studentId, setOpen, afterSubmit = () => {
                                 <FormGroup row>
                                     <Col sm={6}>
                                         <Label for="email_id" sm={5}>Email</Label>
-                                        <Input name="email_id" id="email_id" defaultValue={studentFormInfo.email_id} onChange={handleInputChange} />
+                                        <Input name="email_id" id="email_id" type="email" defaultValue={studentFormInfo.email_id} onChange={handleInputChange} />
                                         {error['email_id'] && addError('email_id')}
                                     </Col>
                                     <Col sm={6}>

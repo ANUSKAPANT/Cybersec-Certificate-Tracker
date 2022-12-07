@@ -195,7 +195,7 @@ function Courses({ userData }) {
       .then((res) => {
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
-        fetchRecords();
+        onFormSubmission(res, method);
         handleClose();
       })
       .catch((err) => {
@@ -204,6 +204,23 @@ function Courses({ userData }) {
         setSnackbarMsg("Something went wrong");
       });
   };
+
+  const onFormSubmission = (response, method) => {
+    const data = dataFormatter.deserialize(response.data);
+    const courseData = {
+      id: data.id,
+      name: data.name,
+      vendor: data.vendor.name,
+    };
+    let newData = [...courses];
+    if(method == "post") {
+      newData = [ courseData, ...newData];
+    } else {
+      newData = newData.map(el => (el.id === courseData.id ? {...el, ...courseData} : el));
+    }
+    setCourses(newData);
+  };
+
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);

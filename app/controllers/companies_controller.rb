@@ -8,7 +8,7 @@ class CompaniesController < BaseController
   def create
     @company = Company.new(company_params)
     if @company.save
-      render json: @company, status: :created
+      render json: CompanySerializer.new(@company).serialized_json, status: :ok
     else
       render json: @company.errors, status: :unprocessable_entity
     end
@@ -20,7 +20,7 @@ class CompaniesController < BaseController
 
   def update
     if @company.update(company_params)
-      render json: @company, status: :created
+      render json: CompanySerializer.new(@company).serialized_json, status: :ok
     else
       render json: @company.errors, status: :unprocessable_entity
     end

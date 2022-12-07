@@ -7,9 +7,10 @@ class VendorsController < BaseController
   end
 
   def create
+    options = { include: [:courses] }
     @vendor = Vendor.new(vendor_params)
     if @vendor.save
-      render json: @vendor, status: :created
+      render json: VendorSerializer.new(@vendor, options).serialized_json, status: :ok
     else
       render json: @vendor.errors, status: :unprocessable_entity
     end
@@ -21,8 +22,9 @@ class VendorsController < BaseController
   end
 
   def update
+    options = { include: [:courses] }
     if @vendor.update(vendor_params)
-      render json: @vendor, status: :created
+      render json: VendorSerializer.new(@vendor, options).serialized_json, status: :ok
     else
       render json: @vendor.errors, status: :unprocessable_entity
     end

@@ -20,7 +20,7 @@ RSpec.describe CoursesController, type: :controller do
       course = Course.new(name: "Test course", vendor_id: Vendor.first.id)
       course.save
       patch :update, params: {id: course.id, name: "New Course" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not update the course' do
@@ -46,7 +46,7 @@ RSpec.describe CoursesController, type: :controller do
     it 'creates a course and renders a successful response' do
       create :vendor
       post :create, params: { name: "Test course", vendor_id: Vendor.first.id }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not create a course' do

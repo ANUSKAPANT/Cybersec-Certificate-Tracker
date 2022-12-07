@@ -7,9 +7,10 @@ class StudentCoursesController < BaseController
   end
 
   def create
+    options = { include: [:course, :student] }
     @student_course = StudentCourse.new(student_course_params)
     if @student_course.save
-      render json: @student_course, status: :created  
+      render json: StudentCourseSerializer.new(@student_course, options).serialized_json, status: :ok
     else
       render json: @student_course.errors, status: :unprocessable_entity
     end
@@ -25,8 +26,9 @@ class StudentCoursesController < BaseController
   end
 
   def update
+    options = { include: [:course, :student] }
     if @student_course.update(student_course_params)
-      render json: @student_course, status: :created
+      render json: StudentCourseSerializer.new(@student_course, options).serialized_json, status: :ok
     else
       render json: @student_course.errors, status: :unprocessable_entity
     end

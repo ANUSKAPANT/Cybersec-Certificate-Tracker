@@ -20,7 +20,7 @@ RSpec.describe StudentsController, type: :controller do
       student = Student.new(first_name: "Anooska", last_name: "Pa", canvas_id: "123", title: "CyberSec", company_id: Company.first.id, email_id: "demo@example.com")
       student.save
       patch :update, params: { id: student.id, first_name: "Anuska", last_name: "Pant" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not update the student' do
@@ -46,7 +46,7 @@ RSpec.describe StudentsController, type: :controller do
     it 'creates a student and renders a successful response' do
       create :company
       post :create, params: { first_name: "Anooska", last_name: "Pa", canvas_id: "123", title: "CyberSec", company_id: Company.first.id, email_id: "demo@example.com" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not create a student' do

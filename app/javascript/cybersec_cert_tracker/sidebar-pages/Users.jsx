@@ -179,7 +179,7 @@ function Users({ userData }) {
       .then((res) => {
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
-        fetchRecords();
+        onFormSubmission(res, method);
         handleClose();
       })
       .catch((err) => {
@@ -187,6 +187,24 @@ function Users({ userData }) {
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
+  };
+
+  const onFormSubmission = (response, method) => {
+    const data = dataFormatter.deserialize(response.data);
+    const userData = {
+      first_name: data.first_name || "",
+      last_name: data.last_name || "",
+      id: data.id,
+      email: data.email,
+      role: data.role,
+    };
+    let newData = [...users];
+    if(method == "post") {
+      newData = [ userData, ...newData];
+    } else {
+      newData = newData.map(el => (el.id === userData.id ? {...el, ...userData} : el));
+    }
+    setUsers(newData);
   };
 
   const handleInputChange = (event) => {

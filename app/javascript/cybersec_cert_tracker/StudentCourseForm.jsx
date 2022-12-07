@@ -23,7 +23,6 @@ const completionOptions = [
 
 
 function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId, afterSubmit = () => { } }) {
-
     const [courseOptions, setCourseOptions] = useState([]);
     const [studentCourseInfo, setStudentCourseInfo] = useState({ id: null });
     const [courseSelectDisabled, setCourseSelectDisabled] = useState(false);
@@ -94,8 +93,8 @@ function StudentCourseForm({ userData, open, studentId, setOpen, studentCourseId
                 },
                 data,
             })
-            .then(() => {
-                afterSubmit();
+            .then((res) => {
+                afterSubmit(res, method);
                 setCourseSelectDisabled(false);
                 handleClose();
                 setOpenSnackbar(true);

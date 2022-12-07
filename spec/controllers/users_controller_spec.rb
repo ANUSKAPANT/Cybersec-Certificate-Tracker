@@ -19,7 +19,7 @@ RSpec.describe UsersController, type: :controller do
       user = User.new(email: "demo@example.com", password: "demo123")
       user.save
       patch :update, params: { id: user.id, password: "demo1234"}
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not update the user' do
@@ -42,7 +42,7 @@ RSpec.describe UsersController, type: :controller do
   describe 'POST create' do
     it 'creates a user and renders a successful response' do
       post :create, params: { email: "demo12@example.com", password: "demo12345" }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(200)
     end
 
     it 'does not create a user' do
