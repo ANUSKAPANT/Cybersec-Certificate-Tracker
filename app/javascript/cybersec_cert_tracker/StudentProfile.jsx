@@ -42,7 +42,6 @@ function StudentProfile({ userData }) {
                 cert_name: student_course.cert_vouchers.map((cv) => cv.certification_name),
                 registration_date: student_course.registration_date,
                 voucher_purchased: student_course.voucher_purchased || false,
-                test_result: student_course.test_result,
                 cert_voucher_id: student_course.cert_vouchers.map((cv) => cv.voucher_id),
                 voucher_use_by: student_course.cert_vouchers.map((cv) => cv.expiry_date),
                 exam_code: student_course.cert_vouchers.map((cv) => cv.exam_code),
@@ -51,6 +50,7 @@ function StudentProfile({ userData }) {
                 test_result: student_course.cert_vouchers.map((cv) => cv.test_result),
                 test_center_id: student_course.cert_vouchers.map((cv) => cv.test_center_id),
                 score: student_course.cert_vouchers.map((cv) => cv.score),
+                dcldp_code: student_course.dcldp_code,
             });
         });
         setCoursesInfo(courses);
