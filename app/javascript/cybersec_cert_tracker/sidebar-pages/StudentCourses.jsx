@@ -237,10 +237,10 @@ function StudentCourses({ userData }) {
         },
         data,
       })
-      .then(() => {
+      .then((res) => {
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
-        fetchRecords();
+        onFormSubmission(res, method);
         handleClose();
       })
       .catch((err) => {

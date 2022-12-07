@@ -62,6 +62,7 @@ function CertificateVouchers({ userData }) {
             test_center:cert_voucher.test_center_id,
             score: cert_voucher.score,
             test_result: cert_voucher.test_result,
+            full_name: cert_voucher.student_course.student.full_comma_separated_name || '',
           };
         });
         setLoading(false);
@@ -93,6 +94,7 @@ function CertificateVouchers({ userData }) {
           test_center: data.test_center_id,
           score: data.score,
           test_result: data.test_result,
+          full_name: data.student_course.student.full_comma_separated_name || '',
         };
         setCertificateVouchersInfo(certificateVouchersData);
       })
@@ -215,8 +217,8 @@ function CertificateVouchers({ userData }) {
         },
         data,
       })
-      .then(() => {
-        fetchRecords();
+      .then((res) => {
+        onFormSubmission(res, method);
         handleClose();
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
@@ -227,6 +229,32 @@ function CertificateVouchers({ userData }) {
         setSnackbarMsg("Something went wrong");
       });
   };
+
+  const onFormSubmission = (response, method) => {
+    const data = dataFormatter.deserialize(response.data);
+    const cvData = {
+      id: data.id,
+      cert_name: data.certification_name,
+      course: data.student_course.course.name,
+      created_date: data.created_date,
+      expiry_date: data.expiry_date,
+      voucher_code: data.voucher_code,
+      exam_code: data.exam_code,
+      exam_date: data.exam_date,
+      test_center:data.test_center_id,
+      score: data.score,
+      test_result: data.test_result,
+      full_name: data.student_course.student.full_comma_separated_name || '',
+    };
+    let newData = [...certificateVouchers];
+    if(method == "post") {
+      newData = [ cvData, ...newData];
+    } else {
+      newData = newData.map(el => (el.id === cvData.id ? {...el, ...cvData} : el));
+    }
+    setCertificateVouchers(newData);
+  };
+
 
   const passedOptions = [
     { label: "Pass", value: "pass" },

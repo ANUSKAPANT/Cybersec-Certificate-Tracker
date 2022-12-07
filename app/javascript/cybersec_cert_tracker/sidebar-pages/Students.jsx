@@ -96,10 +96,31 @@ function Students({ userData }) {
     setStudentId(id);
   };
 
-  const onFormSubmission = async () => {
-    setLoading(true);
-    await fetchRecords();
-    setLoading(false);
+  const onFormSubmission = (response, method) => {
+    const data = dataFormatter.deserialize(response.data);
+    const studentData = {
+      id: data.id,
+      full_name: data.full_comma_separated_name,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email_id: data.email_id,
+      title: data.title,
+      canvas_id: data.canvas_id,
+      company: data.company,
+      courses: data.student_courses.map((sc) => {
+        return {
+          id: sc.course.id,
+          name: sc.course.name,
+        };
+      }),
+    };
+    let newData = [...students];
+    if(method == "post") {
+      newData = [ studentData, ...newData];
+    } else {
+      newData = newData.map(el => (el.id === studentData.id ? {...studentData} : el));
+    }
+    setStudents(newData);
   };
 
   const handleSnackbarClose = () => {

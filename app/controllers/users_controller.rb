@@ -20,7 +20,7 @@ class UsersController < BaseController
 
   def update
     if @user.update(user_params)
-      render json: @user, status: :created
+      render json: UserSerializer.new(@user).serialized_json
     else
       render json: @user.errors, status: :unprocessable_entity
     end

@@ -192,10 +192,10 @@ function Vendors({ userData }) {
         },
         data,
       })
-      .then(() => {
+      .then((res) => {
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
-        fetchRecords();
+        onFormSubmission(res, method);
         handleClose();
       })
       .catch((err) => {
@@ -203,6 +203,27 @@ function Vendors({ userData }) {
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
+  };
+
+  const onFormSubmission = (response, method) => {
+    const data = dataFormatter.deserialize(response.data);
+    const vendorData = {
+      id: data.id,
+      name: data.name,
+      courses: data.courses.map((course) => {
+        return {
+          id: course.id,
+          name: course.name,
+        };
+      }),
+    };
+    let newData = [...vendors];
+    if(method == "post") {
+      newData = [ vendorData, ...newData];
+    } else {
+      newData = newData.map(el => (el.id === vendorData.id ? {...el, ...vendorData} : el));
+    }
+    setVendors(newData);
   };
 
   const handleCoursesChange = (value) => {

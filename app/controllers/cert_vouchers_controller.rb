@@ -7,9 +7,10 @@ class CertVouchersController < BaseController
   end
 
   def create
+    options = { include: [:student_course, "student_course.student", "student_course.course"] }
     @cert_voucher = CertVoucher.new(cert_voucher_params)
     if @cert_voucher.save
-      render json: @cert_voucher, status: :created
+      render json: CertVoucherSerializer.new(@cert_voucher, options).serialized_json, status: :ok
     else
       render json: @cert_voucher.errors, status: :unprocessable_entity
     end
@@ -21,8 +22,9 @@ class CertVouchersController < BaseController
   end
 
   def update
+    options = { include: [:student_course, "student_course.student", "student_course.course"] }
     if @cert_voucher.update(cert_voucher_params)
-      render json: @cert_voucher, status: :created
+      render json: CertVoucherSerializer.new(@cert_voucher, options).serialized_json, status: :ok
     else
       render json: @cert_voucher.errors, status: :unprocessable_entity
     end

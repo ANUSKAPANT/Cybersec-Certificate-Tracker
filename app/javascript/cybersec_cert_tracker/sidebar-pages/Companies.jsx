@@ -177,9 +177,8 @@ function Companies({ userData }) {
         },
         data,
       })
-      .then(() => {
-        setLoading(true);
-        fetchRecords();
+      .then((res) => {
+        onFormSubmission(res, method)
         handleClose();
         setOpenSnackbar(true);
         setSnackbarMsg(`Successfully ${message}`);
@@ -189,6 +188,22 @@ function Companies({ userData }) {
         setOpenSnackbar(true);
         setSnackbarMsg("Something went wrong");
       });
+  };
+
+  const onFormSubmission = (response, method) => {
+    const data = dataFormatter.deserialize(response.data);
+    const companyData = {
+      id: data.id,
+      name: data.name,
+      smc: String(data.smc),
+    };
+    let newData = [...companies];
+    if(method == "post") {
+      newData = [ companyData, ...newData];
+    } else {
+      newData = newData.map(el => (el.id === companyData.id ? {...el, ...companyData} : el));
+    }
+    setCompanies(newData);
   };
 
   const handleSnackbarClose = () => {
