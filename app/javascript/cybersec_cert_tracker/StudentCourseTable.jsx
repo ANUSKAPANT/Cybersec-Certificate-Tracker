@@ -7,10 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 
 const blacklistedColumns = ['student_course_id'];
 
-export default function StudentCourseTable({ coursesInfo, onEdit }) {
+export default function StudentCourseTable({ coursesInfo, onEdit, onDelete }) {
 
     const [cols, setCols] = useState([]);
 
@@ -76,6 +77,9 @@ export default function StudentCourseTable({ coursesInfo, onEdit }) {
                                             <TableCell>
                                                 <EditOutlinedIcon
                                                     onClick={() => { onEdit(row.student_course_id) }}
+                                                />
+                                                <RemoveCircleOutlineOutlinedIcon
+                                                    onClick={() => { onDelete(row.student_course_id) }}
                                                 />
                                             </TableCell>
                                             {cols.map((column) => {
