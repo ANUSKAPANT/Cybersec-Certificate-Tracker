@@ -39,17 +39,8 @@ function StudentProfile({ userData }) {
                 student_course_id: student_course.id,
                 canvas_course: student_course.course.name,
                 course_completed: student_course.canvas_course_completion,
-                cert_name: student_course.cert_vouchers.map((cv) => cv.certification_name),
                 registration_date: student_course.registration_date,
                 voucher_purchased: student_course.voucher_purchased || false,
-                cert_voucher_id: student_course.cert_vouchers.map((cv) => cv.voucher_id),
-                voucher_use_by: student_course.cert_vouchers.map((cv) => cv.expiry_date),
-                exam_code: student_course.cert_vouchers.map((cv) => cv.exam_code),
-                voucher_code: student_course.cert_vouchers.map((cv) => cv.voucher_code),
-                exam_date: student_course.cert_vouchers.map((cv) => cv.exam_date),
-                test_result: student_course.cert_vouchers.map((cv) => cv.test_result),
-                test_center_id: student_course.cert_vouchers.map((cv) => cv.test_center_id),
-                score: student_course.cert_vouchers.map((cv) => cv.score),
                 dcldp_code: student_course.dcldp_code,
             });
         });
