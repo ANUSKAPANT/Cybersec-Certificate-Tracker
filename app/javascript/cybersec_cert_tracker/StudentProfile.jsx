@@ -104,7 +104,7 @@ function StudentProfile({ userData }) {
                     </Button>}
                 </Grid>
             </Grid>
-            <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} afterSubmit={fetchProfile} />
+            {userData.role == "admin" && <StudentForm userData={userData} studentId={id} open={open} setOpen={setOpen} afterSubmit={fetchProfile} />}
             <Grid item xs={12}>
                 <Form>
                     <Card>
@@ -167,8 +167,8 @@ function StudentProfile({ userData }) {
                             </Button>}
                         </Grid>
                     </Grid>
-                    <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} studentCourseId={studentCourseId} />
-                    <StudentCourseTable coursesInfo={coursesInfo} onEdit={onCourseEdit} onDelete={onCourseDelete} />
+                    {userData.role == "admin" && <StudentCourseForm userData={userData} studentId={id} open={courseSelectionOpen} setOpen={setCourseSelectionOpen} afterSubmit={fetchProfile} studentCourseId={studentCourseId} />}
+                    <StudentCourseTable userData={userData} coursesInfo={coursesInfo} onEdit={onCourseEdit} onDelete={onCourseDelete} />
                 </Form>
             </Grid >
         </Grid >

@@ -11,7 +11,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 
 const blacklistedColumns = ['student_course_id'];
 
-export default function StudentCourseTable({ coursesInfo, onEdit, onDelete }) {
+export default function StudentCourseTable({ userData, coursesInfo, onEdit, onDelete }) {
 
     const [cols, setCols] = useState([]);
 
@@ -54,11 +54,12 @@ export default function StudentCourseTable({ coursesInfo, onEdit, onDelete }) {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell
-                                    key="edit_option"
-                                    style={{ minWidth: 10 }}
-                                >
-                                </TableCell>
+                                {userData.role == "admin" &&
+                                    <TableCell
+                                        key="edit_option"
+                                        style={{ minWidth: 10 }}
+                                    >
+                                    </TableCell>}
                                 {cols.map((column) => (
                                     <TableCell
                                         key={column.name}
@@ -74,14 +75,15 @@ export default function StudentCourseTable({ coursesInfo, onEdit, onDelete }) {
                                 .map((row) => {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={row.student_course_id}>
-                                            <TableCell>
-                                                <EditOutlinedIcon
-                                                    onClick={() => { onEdit(row.student_course_id) }}
-                                                />
-                                                <RemoveCircleOutlineOutlinedIcon
-                                                    onClick={() => { onDelete(row.student_course_id) }}
-                                                />
-                                            </TableCell>
+                                            {userData.role == "admin" &&
+                                                <TableCell>
+                                                    <EditOutlinedIcon
+                                                        onClick={() => { onEdit(row.student_course_id) }}
+                                                    />
+                                                    <RemoveCircleOutlineOutlinedIcon
+                                                        onClick={() => { onDelete(row.student_course_id) }}
+                                                    />
+                                                </TableCell>}
                                             {cols.map((column) => {
                                                 const value = row[column.name];
                                                 return (
