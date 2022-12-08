@@ -256,8 +256,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
           const rowValue = row.values[id];
           return rowValue !== undefined
             ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+              .toLowerCase()
+              .startsWith(String(filterValue).toLowerCase())
             : true;
         });
       },
@@ -297,8 +297,8 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
   );
 
   const handleRowClick = (row) => {
-    if (type == "Dashboard") {
-      const id = row.original.participant_id;
+    if (type == "Dashboard" || type == "Student") {
+      const id = row.original.participant_id || row.original.id;
       navigate(`/student/profile?id=${id}`);
     }
   };
@@ -569,6 +569,12 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
               return (
                 <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
                   {row.cells.map((cell) => {
+                    if (cell.column.id == 'edit') {
+                      return (
+                        <td {...cell.getCellProps()} onClick={(e) => e.stopPropagation()}
+                        >{cell.render("Cell")}</td>
+                      );
+                    }
                     return (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     );
