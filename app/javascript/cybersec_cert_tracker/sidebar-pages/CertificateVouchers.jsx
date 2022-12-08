@@ -400,7 +400,7 @@ function CertificateVouchers({ userData }) {
                       Exam Date
                     </Label>
                     <DatePicker
-                      selected={certificateVouchersInfo.expiry_date}
+                      selected={certificateVouchersInfo.exam_date}
                       onChange={(date) => handleDateChange(date, "exam_date")}
                       className="input-date"
                       isClearable
