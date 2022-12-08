@@ -90,7 +90,6 @@ function CertificateVouchers({ userData }) {
           exam_date: data.exam_date ? new Date(data.exam_date) : null,
           voucher_code: data.voucher_code,
           exam_code: data.exam_code,
-          exam_date: data.exam_date,
           test_center: data.test_center_id,
           score: data.score,
           test_result: data.test_result,
