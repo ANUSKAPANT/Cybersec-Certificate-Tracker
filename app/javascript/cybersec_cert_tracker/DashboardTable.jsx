@@ -569,6 +569,12 @@ function DashboardTable({ data, type, deleteItem, editItem }) {
               return (
                 <tr {...row.getRowProps()} onClick={() => handleRowClick(row)}>
                   {row.cells.map((cell) => {
+                    if (cell.column.id == 'edit') {
+                      return (
+                        <td {...cell.getCellProps()} onClick={(e) => e.stopPropagation()}
+                        >{cell.render("Cell")}</td>
+                      );
+                    }
                     return (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     );
