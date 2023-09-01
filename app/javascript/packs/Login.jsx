@@ -40,6 +40,11 @@ export default function Login() {
   const handleSubmit = (event) => {
     let csrf = "";
     //Not present always
+    const userVal = {
+      email: "test@example.com",
+      password: "test123"
+    };
+
     if (document.querySelector("meta[name='csrf-token']"))
       csrf = document
         .querySelector("meta[name='csrf-token']")
@@ -50,7 +55,7 @@ export default function Login() {
       /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
     );
 
-    if (!pattern.test(email)) {
+    if (event.target.innerText != "Guest Login" && !pattern.test(email)) {
       setEmailValidation("Invalid");
       return "Invalid";
     } else {
@@ -65,7 +70,7 @@ export default function Login() {
         "X-CSRF-Token": csrf,
       },
       data: {
-        user: { email, password },
+        user: event.target.innerText == "Guest Login" ? userVal : { email, password },
       },
     })
       .then((response) => {
@@ -138,6 +143,17 @@ export default function Login() {
                     id="login_button"
                   >
                     Submit
+                  </Button>
+                  <Button
+                    block
+                    className="mt-3"
+                    color="primary"
+                    onClick={handleSubmit}
+                    size="lg"
+                    type="submit"
+                    id="login_button"
+                  >
+                    Guest Login
                   </Button>
                 </Form>
               </CardBody>
